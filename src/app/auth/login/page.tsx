@@ -111,9 +111,7 @@ export default function Login() {
           </form>
         </CardContent>
         <CardFooter className="flex-col gap-2">
-          <Button variant="neutral" className="w-full">
-            Login with Google
-          </Button>
+          <Button className="w-full">Login with Google</Button>
         </CardFooter>
       </Card>
     </div>
