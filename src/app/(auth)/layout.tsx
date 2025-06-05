@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { Archivo } from "next/font/google";
-import Header from "@/components/utils/Header";
-import "./ui/globals.css";
+import "@/app/ui/globals.css";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,17 +12,14 @@ const archivo = Archivo({
   subsets: ["latin"],
 });
 
-export default function RootLayout({
+export default function AuthLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en">
-      <body className={`${archivo.className} antialiased`}>
-        <Header />
-        {children}
-      </body>
+      <body className={`${archivo.className} antialiased`}>{children}</body>
     </html>
   );
 }

@@ -19,11 +19,11 @@ export default function Header() {
           </ul>
         </div>
         <div className="flex items-center gap-5">
-          <Link href="/auth/login" className="cursor-pointer">
+          <Link href="/login" className="cursor-pointer">
             Log in
           </Link>
           <Button>
-            <Link href="/auth/signup" className="cursor-pointer">
+            <Link href="/signup" className="cursor-pointer">
               Get Started
             </Link>
           </Button>
