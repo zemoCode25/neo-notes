@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { Archivo } from "next/font/google";
+import Header from "@/components/utils/Header";
 import "./ui/globals.css";
 
 export const metadata: Metadata = {
@@ -19,7 +20,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${archivo.className} antialiased`}>{children}</body>
+      <body className={`${archivo.className} antialiased`}>
+        <Header />
+        {children}
+      </body>
     </html>
   );
 }
