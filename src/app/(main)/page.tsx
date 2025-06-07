@@ -2,6 +2,7 @@
 
 // import NeonotesLogo from "@/components/utils/neonotes-logo";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 console.log("ASKLASDJLKJAS");
 
@@ -14,9 +15,11 @@ export default function Home() {
           Let AI organize your thoughts to help you focus on what really
           matters.
         </p>
-        <Button className="font-medium text-lg cursor-pointer">
-          Start taking notes
-        </Button>
+        <Link href="/dashboard">
+          <Button className="font-medium text-lg cursor-pointer">
+            Start taking notes
+          </Button>
+        </Link>
       </div>
     </div>
   );
