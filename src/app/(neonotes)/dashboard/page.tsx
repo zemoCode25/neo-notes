@@ -22,12 +22,9 @@ import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
 import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
-
-type TContent = {
-  readonly id: number;
-  title?: string;
-  text?: string;
-};
+import { TContent } from "@/app/types/content";
+// utils component
+import { CardContent } from "@/components/utils/CardContent";
 
 export default function Dashboard() {
   const [content, setContent] = useState<TContent | null>(null);
@@ -120,14 +117,5 @@ export default function Dashboard() {
         </Dialog>
       </div>
     </div>
-  );
-}
-
-export function CardContent({ content }: { content: TContent | null }) {
-  return (
-    <DialogContent>
-      <DialogTitle>{content?.title}</DialogTitle>
-      <p>{content?.text}</p>
-    </DialogContent>
   );
 }
