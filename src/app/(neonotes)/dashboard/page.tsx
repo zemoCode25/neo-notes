@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogTitle,
@@ -20,6 +19,9 @@ import { useState } from "react";
 
 // Icons
 import { Sparkle } from "lucide-react";
+import { LetterText } from "lucide-react";
+import { Palette } from "lucide-react";
+import { Tag } from "lucide-react";
 
 type TContent = {
   readonly id: number;
@@ -70,14 +72,29 @@ export default function Dashboard() {
                 placeholder="Take your note"
                 className="outline-none w-full min-h-40 p-3 whitespace-pre border-black border-1 rounded-md my-2"
               ></textarea>
-              <DialogFooter>
-                <Button
-                  onClick={(e) => e.preventDefault()}
-                  className="bg-cyan-100"
-                >
-                  NeoNotes AI <Sparkle />
-                </Button>
-                <Button type="submit">Save</Button>
+              <DialogFooter className="flex !justify-between !w-full">
+                <div className="flex gap-3">
+                  <Button className="cursor-pointer bg-blue-200">
+                    <LetterText />
+                  </Button>
+                  <Button className="cursor-pointer bg-blue-200">
+                    <Palette />
+                  </Button>
+                  <Button className="cursor-pointer bg-blue-200">
+                    <Tag />
+                  </Button>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Button
+                    onClick={(e) => e.preventDefault()}
+                    className="bg-cyan-100 cursor-pointer"
+                  >
+                    NeoNotes AI <Sparkle />
+                  </Button>
+                  <Button className="cursor-pointer" type="submit">
+                    Save
+                  </Button>
+                </div>
               </DialogFooter>
             </form>
           </DialogContent>
