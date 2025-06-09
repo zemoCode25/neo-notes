@@ -25,6 +25,7 @@ import { Tag } from "lucide-react";
 import { TContent } from "@/app/types/content";
 // utils component
 import { CardContent } from "@/components/utils/CardContent";
+import { createNote } from "@/app/api/note/actions/create";
 
 export default function Dashboard() {
   const [content, setContent] = useState<TContent | null>(null);
@@ -56,7 +57,7 @@ export default function Dashboard() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[700px]">
             <DialogTitle className="hidden" />
-            <form action="">
+            <form action={createNote}>
               <Input
                 className="h-10 mt-5 block !text-xl"
                 placeholder="Title"
