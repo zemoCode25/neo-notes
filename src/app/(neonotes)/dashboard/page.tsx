@@ -30,6 +30,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 export default function Dashboard() {
   const [content, setContent] = useState<TContent | null>(null);
+  const [openModal, setOpenModal] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -50,6 +51,7 @@ export default function Dashboard() {
       const result = await createNote(formData);
       form.reset();
       if (result) toast.success("Note successfully recorded!");
+      setOpenModal(false);
     } catch (err) {
       console.error("Submit error:", err);
     }
@@ -68,7 +70,7 @@ export default function Dashboard() {
       <div className="w-full flex items-center justify-center gap-5">
         <Toaster position="bottom-right" reverseOrder={false} />
         <Input className="w-1/4" placeholder="Search..."></Input>
-        <Dialog>
+        <Dialog open={openModal} onOpenChange={setOpenModal}>
           <DialogTrigger asChild>
             <Button className="cursor">Take Note</Button>
           </DialogTrigger>
