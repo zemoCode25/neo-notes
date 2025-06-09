@@ -87,7 +87,7 @@ export default function Dashboard() {
                 name="note"
                 id="note"
                 placeholder="Take your note"
-                className="outline-none w-full min-h-40 p-3 whitespace-pre border-black border-1 rounded-md my-2"
+                className="outline-none w-full min-h-80 p-3 whitespace-pre border-black border-1 rounded-md my-2"
               ></textarea>
               <DialogFooter className="flex !justify-between !w-full">
                 <div className="flex gap-3">
