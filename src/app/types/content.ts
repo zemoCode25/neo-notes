@@ -1,7 +1,7 @@
 export type TContent = {
   readonly id: number;
   title?: string;
-  text?: string;
+  note?: string;
 };
 
 export type TResult = {

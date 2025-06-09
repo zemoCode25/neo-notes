@@ -8,7 +8,7 @@ export async function GET() {
   const sql = neon(url);
   const response = await sql`SELECT * FROM note`;
 
-  return NextResponse.json({ version: response[0] }, { status: 200 });
+  return NextResponse.json({ notes: response }, { status: 200 });
 }
 
 export async function POST(req: NextRequest) {

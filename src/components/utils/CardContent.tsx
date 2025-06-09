@@ -5,7 +5,7 @@ export function CardContent({ content }: { content: TContent | null }) {
   return (
     <DialogContent>
       <DialogTitle>{content?.title}</DialogTitle>
-      <p>{content?.text}</p>
+      <p>{content?.note}</p>
     </DialogContent>
   );
 }

@@ -13,7 +13,7 @@ import {
 // import { Label } from "@/components/ui/label";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // import Link from "next/link";
 // import { useEffect } from "react";
 
@@ -22,14 +22,14 @@ import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
 import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
-import { TContent } from "@/app/types/content";
 // utils component
-import { CardContent } from "@/components/utils/CardContent";
-import { createNote } from "@/app/api/note/actions/create";
+import { createNote, retriveNote } from "@/app/api/note/actions/create";
 import toast, { Toaster } from "react-hot-toast";
+// type
+import { TContent } from "@/app/types/content";
 
 export default function Dashboard() {
-  const [content, setContent] = useState<TContent | null>(null);
+  const [notes, setNotes] = useState<TContent[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -38,13 +38,22 @@ export default function Dashboard() {
     const params = new URLSearchParams(searchParams.toString());
     params.set("id", id.toString());
     router.push(`?${params.toString()}`);
-    setContent(contentObj.find((obj) => obj?.id === 1) || null);
   }
+
+  async function fetchNotes() {
+    const result = await retriveNote();
+    console.log(result?.notes);
+    setNotes(result?.notes);
+  }
+
+  useEffect(() => {
+    fetchNotes();
+  }, []);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    const form = e.currentTarget; // 👈 Destructure early
+    const form = e.currentTarget;
 
     try {
       const formData = new FormData(form);
@@ -52,18 +61,11 @@ export default function Dashboard() {
       form.reset();
       if (result) toast.success("Note successfully recorded!");
       setOpenModal(false);
+      fetchNotes();
     } catch (err) {
       console.error("Submit error:", err);
     }
   }
-
-  const contentObj: TContent[] = [
-    {
-      id: 1,
-      title: "NeoNotes AI Notes Features 1",
-      text: "Color theme customization - Assign labels to be arranged in the dashboard sidebar - Title seach for every note -Mobile-responsiveness - Pin priotization - Profile Customization AI-features",
-    },
-  ];
 
   return (
     <div>
@@ -118,23 +120,23 @@ export default function Dashboard() {
         </Dialog>
       </div>
       <div className="columns-1 sm:columns-2 md:columns-5 gap-4 my-5">
-        <Dialog>
-          <DialogTrigger
-            className="cursor-pointer"
-            onClick={() => handleClick(1)}
-          >
-            <Card className="bg-violet-50 w-full h-fit rounded-md p-3 mb-4 break-inside-avoid text-left">
-              <h1 className="text-lg">NeoNotes AI Notes Features 1</h1>
-              <p>
-                Color theme customization - Assign labels to be arranged in the
-                dashboard sidebar - Title seach for every note -
-                Mobile-responsiveness - Pin priotization - Profile Customization
-                AI-features
-              </p>
-            </Card>
-          </DialogTrigger>
-          <CardContent content={content} />
-        </Dialog>
+        {notes.map((note) => (
+          <Dialog key={note?.id}>
+            <DialogTrigger
+              className="cursor-pointer"
+              onClick={() => handleClick(1)}
+            >
+              <Card className="bg-violet-50 w-full h-fit rounded-md p-3 mb-4 break-inside-avoid text-left">
+                <h1 className="text-lg">{note?.title}</h1>
+                <p className="whitespace-pre-wrap">{note?.note}</p>
+              </Card>
+            </DialogTrigger>
+            <DialogContent className="whitespace-pre">
+              <DialogTitle>{note?.title}</DialogTitle>
+              <p className="whitespace-pre-wrap">{note?.note}</p>
+            </DialogContent>
+          </Dialog>
+        ))}
       </div>
     </div>
   );

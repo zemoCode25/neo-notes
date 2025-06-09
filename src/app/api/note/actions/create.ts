@@ -21,3 +21,20 @@ export async function createNote(formData: FormData) {
     throw Error(`${err}`);
   }
 }
+
+export async function retriveNote() {
+  try {
+    const response = await fetch("/api/note", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error("Failed to save note");
+    }
+    return result;
+  } catch (err) {
+    throw Error(`${err}`);
+  }
+}
