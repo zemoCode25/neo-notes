@@ -26,6 +26,7 @@ import { TContent } from "@/app/types/content";
 // utils component
 import { CardContent } from "@/components/utils/CardContent";
 import { createNote } from "@/app/api/note/actions/create";
+import toast, { Toaster } from "react-hot-toast";
 
 export default function Dashboard() {
   const [content, setContent] = useState<TContent | null>(null);
@@ -39,6 +40,21 @@ export default function Dashboard() {
     setContent(contentObj.find((obj) => obj?.id === 1) || null);
   }
 
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = e.currentTarget; // 👈 Destructure early
+
+    try {
+      const formData = new FormData(form);
+      const result = await createNote(formData);
+      form.reset();
+      if (result) toast.success("Note successfully recorded!");
+    } catch (err) {
+      console.error("Submit error:", err);
+    }
+  }
+
   const contentObj: TContent[] = [
     {
       id: 1,
@@ -50,6 +66,7 @@ export default function Dashboard() {
   return (
     <div>
       <div className="w-full flex items-center justify-center gap-5">
+        <Toaster position="bottom-right" reverseOrder={false} />
         <Input className="w-1/4" placeholder="Search..."></Input>
         <Dialog>
           <DialogTrigger asChild>
@@ -57,7 +74,7 @@ export default function Dashboard() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-[700px]">
             <DialogTitle className="hidden" />
-            <form action={createNote}>
+            <form onSubmit={handleSubmit}>
               <Input
                 className="h-10 mt-5 block !text-xl"
                 placeholder="Title"

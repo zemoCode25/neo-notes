@@ -3,3 +3,7 @@ export type TContent = {
   title?: string;
   text?: string;
 };
+
+export type TResult = {
+  message: Promise<string>;
+};

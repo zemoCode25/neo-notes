@@ -1,3 +1,5 @@
+import { TResult } from "@/app/types/content";
+
 export async function createNote(formData: FormData) {
   const title = formData.get("title"); // Get data from form fields
   const note = formData.get("note");
@@ -10,8 +12,11 @@ export async function createNote(formData: FormData) {
       },
       body: JSON.stringify({ title: title, note: note }),
     });
-    const result = await response.json();
-    console.log(result);
+    const result: TResult = await response.json();
+    if (!response.ok) {
+      throw new Error("Failed to save note");
+    }
+    return result;
   } catch (err) {
     throw Error(`${err}`);
   }
