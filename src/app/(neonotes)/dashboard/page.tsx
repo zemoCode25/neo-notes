@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import {
   Dialog,
   DialogContent,
@@ -31,6 +32,7 @@ import { TContent } from "@/app/types/content";
 export default function Dashboard() {
   const [notes, setNotes] = useState<TContent[]>([]);
   const [openModal, setOpenModal] = useState(false);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -41,9 +43,14 @@ export default function Dashboard() {
   }
 
   async function fetchNotes() {
-    const result = await retriveNote();
-    console.log(result?.notes);
-    setNotes(result?.notes);
+    try {
+      const result = await retriveNote();
+      setNotes(result?.notes);
+    } catch (error) {
+      throw Error(`${error}`);
+    } finally {
+      setLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -119,25 +126,40 @@ export default function Dashboard() {
           </DialogContent>
         </Dialog>
       </div>
-      <div className="columns-1 sm:columns-2 md:columns-5 gap-4 my-5">
-        {notes.map((note) => (
-          <Dialog key={note?.id}>
-            <DialogTrigger
-              className="cursor-pointer"
-              onClick={() => handleClick(1)}
-            >
-              <Card className="bg-violet-50 w-full h-fit rounded-md p-3 mb-4 break-inside-avoid text-left">
-                <h1 className="text-lg">{note?.title}</h1>
+
+      {loading ? (
+        <div className="columns-1 sm:columns-2 md:columns-5 gap-4 my-5 w-full">
+          <Skeleton className="h-90 rounded-xl" />
+          <Skeleton className="h-90 rounded-xl" />
+          <Skeleton className="h-90 rounded-xl" />
+          <Skeleton className="h-90 rounded-xl" />
+          <Skeleton className="h-90 rounded-xl" />
+        </div>
+      ) : (
+        <div className="columns-1 sm:columns-2 md:columns-5 w-full gap-4 my-5">
+          {notes.map((note) => (
+            <Dialog key={note?.id}>
+              <DialogTrigger
+                className="cursor-pointer w-full"
+                onClick={() => handleClick(1)}
+              >
+                <Card className="w-full bg-violet-50 rounded-md p-4 mb-4 break-inside-avoid text-left">
+                  <div>
+                    <h1 className="text-lg font-semibold mb-2">
+                      {note?.title}
+                    </h1>
+                    <p className="whitespace-pre-wrap text-sm">{note?.note}</p>
+                  </div>
+                </Card>
+              </DialogTrigger>
+              <DialogContent className="!w-full !max-w-none !h-screen p-6 overflow-y-auto">
+                <DialogTitle>{note?.title}</DialogTitle>
                 <p className="whitespace-pre-wrap">{note?.note}</p>
-              </Card>
-            </DialogTrigger>
-            <DialogContent className="whitespace-pre">
-              <DialogTitle>{note?.title}</DialogTitle>
-              <p className="whitespace-pre-wrap">{note?.note}</p>
-            </DialogContent>
-          </Dialog>
-        ))}
-      </div>
+              </DialogContent>
+            </Dialog>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
