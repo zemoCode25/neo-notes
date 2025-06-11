@@ -1,4 +1,4 @@
-export type TContent = {
+export type TNote = {
   readonly id: number;
   title?: string;
   note?: string;
