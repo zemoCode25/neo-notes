@@ -11,7 +11,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 // Actions
-import { createNote, retriveNote } from "@/app/api/note/actions/note-actions";
+import {
+  createNote,
+  retriveNote,
+  updateNote,
+} from "@/app/api/note/actions/note-actions";
 // Utils component
 import FormContent from "./components/FormContent";
 // type
@@ -66,14 +70,25 @@ export default function Dashboard() {
     e.preventDefault();
 
     const form = e.currentTarget;
+    const id = Number(form?.dataset.id);
 
     try {
       const formData = new FormData(form);
-      const result = await createNote(formData);
+      const result = await updateNote(formData, id);
       form.reset();
-      if (result) toast.success("Note successfully recorded!");
+      if (result) toast.success("Note successfully updated!");
       setOpenModal(false);
-      fetchNotes();
+      setNotes((prevNotes) => {
+        return prevNotes?.map((noteItem) =>
+          noteItem?.id === id
+            ? {
+                ...noteItem,
+                title: String(formData?.get("title")),
+                note: String(formData?.get("note")),
+              }
+            : noteItem
+        );
+      });
     } catch (err) {
       console.error("Submit error:", err);
     }
