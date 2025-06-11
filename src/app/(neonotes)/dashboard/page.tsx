@@ -5,18 +5,13 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 // React
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 // Actions
-import { createNote, retriveNote } from "@/app/api/note/actions/create";
+import { createNote, retriveNote } from "@/app/api/note/actions/note-actions";
 // Utils component
 import FormContent from "./components/FormContent";
 // type
@@ -50,7 +45,24 @@ export default function Dashboard() {
     fetchNotes();
   }, []);
 
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleCreateNoteSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+
+    const form = e.currentTarget;
+
+    try {
+      const formData = new FormData(form);
+      const result = await createNote(formData);
+      form.reset();
+      if (result) toast.success("Note successfully recorded!");
+      setOpenModal(false);
+      fetchNotes();
+    } catch (err) {
+      console.error("Submit error:", err);
+    }
+  }
+
+  async function handleUpdateNoteSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -76,8 +88,7 @@ export default function Dashboard() {
           <DialogTrigger asChild>
             <Button className="cursor">Take Note</Button>
           </DialogTrigger>
-          <FormContent handleSubmit={handleSubmit} />
-          <form action="" onSubmit={handleSubmit}></form>
+          <FormContent handleSubmit={handleCreateNoteSubmit} />
         </Dialog>
       </div>
 
@@ -112,10 +123,10 @@ export default function Dashboard() {
                   </div>
                 </Card>
               </DialogTrigger>
-              <DialogContent className="p-6 max-h-170 overflow-y-scroll">
-                <DialogTitle>{noteItem?.title}</DialogTitle>
-                <p className="whitespace-pre-wrap">{noteItem?.note}</p>
-              </DialogContent>
+              <FormContent
+                noteItem={noteItem}
+                handleSubmit={handleUpdateNoteSubmit}
+              />
             </Dialog>
           ))}
         </div>
