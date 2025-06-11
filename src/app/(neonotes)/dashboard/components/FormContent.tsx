@@ -9,9 +9,11 @@ import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
 // Type
 import { TFormContentProp } from "@/app/types/form-content";
+// uuid
+import { v4 as uuidv4 } from "uuid";
 
 export default function FormContent({
-  noteItem = { id: 1, title: "", note: "" },
+  noteItem = { id: Number(uuidv4()), title: "", note: "" },
   handleSubmit,
 }: TFormContentProp) {
   return (
