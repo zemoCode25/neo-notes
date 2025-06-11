@@ -137,8 +137,8 @@ export default function Dashboard() {
         </div>
       ) : (
         <div className="columns-1 sm:columns-2 md:columns-5 w-full gap-4 my-5">
-          {notes.map((note) => (
-            <Dialog key={note?.id}>
+          {notes.map((noteItem) => (
+            <Dialog key={noteItem?.id}>
               <DialogTrigger
                 className="cursor-pointer w-full"
                 onClick={() => handleClick(1)}
@@ -146,15 +146,21 @@ export default function Dashboard() {
                 <Card className="w-full bg-violet-50 rounded-md p-4 mb-4 break-inside-avoid text-left">
                   <div>
                     <h1 className="text-lg font-semibold mb-2">
-                      {note?.title}
+                      {noteItem?.title}
                     </h1>
-                    <p className="whitespace-pre-wrap text-sm">{note?.note}</p>
+                    <p className="whitespace-pre-wrap text-sm">
+                      {`${
+                        (noteItem?.note?.length || 0) > 400
+                          ? noteItem?.note?.slice(0, 400) + "..."
+                          : noteItem?.note
+                      }`}
+                    </p>
                   </div>
                 </Card>
               </DialogTrigger>
-              <DialogContent className="!w-full !max-w-none !h-screen p-6 overflow-y-auto">
-                <DialogTitle>{note?.title}</DialogTitle>
-                <p className="whitespace-pre-wrap">{note?.note}</p>
+              <DialogContent className="p-6 max-h-170 overflow-y-scroll">
+                <DialogTitle>{noteItem?.title}</DialogTitle>
+                <p className="whitespace-pre-wrap">{noteItem?.note}</p>
               </DialogContent>
             </Dialog>
           ))}
