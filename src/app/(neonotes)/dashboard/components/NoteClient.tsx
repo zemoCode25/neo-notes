@@ -18,7 +18,7 @@ import {
 } from "@/app/api/note/actions/note-actions";
 // Utils component
 import CreateForm from "./CreateForm";
-import UpdateForm from "./UpdateContent";
+import UpdateForm from "./UpdateForm";
 // type
 import { TNote } from "@/app/types/content";
 
