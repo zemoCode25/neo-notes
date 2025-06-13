@@ -24,7 +24,7 @@ export async function createNote(formData: FormData) {
 
 export async function retriveNote() {
   try {
-    const response = await fetch("/api/note", {
+    const response = await fetch("http://localhost:3000/api/note/", {
       headers: {
         "Content-Type": "application/json",
       },
