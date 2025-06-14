@@ -7,4 +7,5 @@ export type TNote = {
 
 export type TResult = {
   success: boolean;
+  error: string | null;
 };

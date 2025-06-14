@@ -55,6 +55,10 @@ export async function DELETE(req: NextRequest) {
   const body = await req.json();
   const { id } = body;
 
+  if (!id) {
+    return NextResponse.json({ error: "Note ID is required" }, { status: 400 });
+  }
+
   await sql`DELETE FROM note WHERE id = ${id}`;
   return NextResponse.json({ success: true }, { status: 200 });
 }
