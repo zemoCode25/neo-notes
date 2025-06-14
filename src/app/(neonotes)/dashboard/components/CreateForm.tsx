@@ -3,11 +3,14 @@ import { DialogFooter, DialogTitle } from "@/components/ui/dialog";
 
 import { DialogContent } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
 import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
+import { EllipsisVertical } from "lucide-react";
+
+// Utils
+import { ButtonIcon } from "@/components/utils/ButtonIcon";
 
 type CreateFormProp = {
   handleSubmit: React.FormEventHandler<HTMLFormElement>;
@@ -32,26 +35,29 @@ export default function CreateForm({ handleSubmit }: CreateFormProp) {
         ></textarea>
         <DialogFooter className="flex !justify-between !w-full">
           <div className="flex gap-3">
-            <Button className="cursor-pointer bg-blue-200">
+            <ButtonIcon className="cursor-pointer bg-blue-200">
               <LetterText />
-            </Button>
-            <Button className="cursor-pointer bg-blue-200">
+            </ButtonIcon>
+            <ButtonIcon className="cursor-pointer bg-blue-200">
               <Palette />
-            </Button>
-            <Button className="cursor-pointer bg-blue-200">
+            </ButtonIcon>
+            <ButtonIcon className="cursor-pointer bg-blue-200">
               <Tag />
-            </Button>
+            </ButtonIcon>
+            <ButtonIcon className="cursor-pointer bg-blue-200">
+              <EllipsisVertical />
+            </ButtonIcon>
           </div>
           <div className="flex items-center gap-3">
-            <Button
+            <ButtonIcon
               onClick={(e) => e.preventDefault()}
               className="bg-cyan-100 cursor-pointer"
             >
               NeoNotes AI <Sparkle />
-            </Button>
-            <Button className="cursor-pointer" type="submit">
+            </ButtonIcon>
+            <ButtonIcon className="cursor-pointer" type="submit">
               Save
-            </Button>
+            </ButtonIcon>
           </div>
         </DialogFooter>
       </form>
