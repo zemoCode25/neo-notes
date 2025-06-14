@@ -2,7 +2,7 @@ export type TNote = {
   readonly id: number;
   title?: string;
   note?: string;
-  colorTheme?: string;
+  colortheme?: string;
 };
 
 export type TResult = {

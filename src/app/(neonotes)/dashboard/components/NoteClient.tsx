@@ -35,6 +35,7 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
     try {
       const result = await retriveNote();
       setNotes(result?.notes);
+      console.log(result?.notes);
     } catch (error) {
       throw Error(`${error}`);
     } finally {
@@ -112,7 +113,9 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
                 onClick={() => handleClick(1)}
               >
                 <Card
-                  className={`w-full rounded-md p-4 mb-4 break-inside-avoid text-left ${noteItem?.colorTheme}`}
+                  className={`w-full rounded-md p-4 mb-4 break-inside-avoid text-left ${
+                    noteItem?.colortheme || "bg-white"
+                  }`}
                 >
                   <div>
                     <h1 className="text-lg font-semibold mb-2">

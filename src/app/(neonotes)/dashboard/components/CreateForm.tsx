@@ -20,7 +20,7 @@ import {
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { Button } from "@/components/ui/button";
 import { TColorTheme } from "@/app/types/color-theme";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import { createNote } from "@/app/api/note/actions/note-actions";
 
@@ -30,7 +30,7 @@ type CreateFormProp = {
 };
 
 export default function CreateForm({ closeModal, fetchNotes }: CreateFormProp) {
-  const [selectedColor, setSelectedColor] = useState<string>("bg-red-100");
+  const [selectedColor, setSelectedColor] = useState<string>("bg-blue-100");
   const [colorThemeDialogOpen, setColorThemeDialogOpen] = useState(false);
   const colorThemes: TColorTheme[] = [
     {
@@ -109,7 +109,6 @@ export default function CreateForm({ closeModal, fetchNotes }: CreateFormProp) {
 
   return (
     <DialogContent className="sm:max-w-[700px]">
-      <Toaster position="bottom-right" />
       <DialogTitle className="hidden" />
       <form onSubmit={handleCreateNoteSubmit}>
         <Input

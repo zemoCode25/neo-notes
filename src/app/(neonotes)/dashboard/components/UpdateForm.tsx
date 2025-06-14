@@ -16,7 +16,7 @@ import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
 import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 
 import { EllipsisVertical, CopyPlus, Trash } from "lucide-react";
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
@@ -40,7 +40,6 @@ export default function UpdateForm({
       }
       const result = await deleteNote(noteItem?.id);
       if (result?.success) {
-        toast.success("Note deleted successfully");
         fetchNotes();
         closeModal();
       } else {
@@ -52,8 +51,7 @@ export default function UpdateForm({
   }
 
   return (
-    <DialogContent className="sm:max-w-[700px]">
-      <Toaster position="bottom-right" />
+    <DialogContent className={`sm:max-w-[700px] ${noteItem?.colortheme}`}>
       <DialogTitle className="hidden" />
       <form onSubmit={handleSubmit} data-id={`${noteItem?.id}`}>
         <Input
