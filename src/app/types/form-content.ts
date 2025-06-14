@@ -1,4 +1,4 @@
-import { TNote } from "@/app/types/content";
+import { TNote } from "@/app/types/note";
 
 export type TFormContentProp = {
   noteItem?: TNote;

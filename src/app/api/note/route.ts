@@ -12,15 +12,27 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const url = process.env.DATABASE_URL;
-  if (!url) throw new Error("DATABASE_URL is not defined");
+  try {
+    const url = process.env.DATABASE_URL;
+    if (!url) throw new Error("DATABASE_URL is not defined");
 
-  const sql = neon(url);
-  const body = await req.json();
-  const { title, note } = body;
+    const sql = neon(url);
+    const body = await req.json();
+    const { title, note, colorTheme } = body;
 
-  await sql`INSERT INTO note (title, note) VALUES (${title}, ${note})`;
-  return NextResponse.json({ message: "Note saved!" }, { status: 201 });
+    if (!title || !note || !colorTheme) {
+      return NextResponse.json({ error: "Missing fields" }, { status: 400 });
+    }
+
+    await sql`INSERT INTO note (title, note, colortheme) VALUES (${title}, ${note}, ${colorTheme})`;
+    return NextResponse.json({ success: true }, { status: 201 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function PUT(req: NextRequest) {
@@ -29,9 +41,9 @@ export async function PUT(req: NextRequest) {
 
   const sql = neon(url);
   const body = await req.json();
-  const { title, note, id } = body;
+  const { title, note, id, colorTheme } = body;
 
-  await sql`UPDATE note set title = ${title}, note = ${note} WHERE id = ${id}`;
+  await sql`UPDATE note set title = ${title}, note = ${note}, colorTheme = ${colorTheme} WHERE id = ${id}`;
   return NextResponse.json({ message: "Note saved!" }, { status: 201 });
 }
 
@@ -44,5 +56,5 @@ export async function DELETE(req: NextRequest) {
   const { id } = body;
 
   await sql`DELETE FROM note WHERE id = ${id}`;
-  return NextResponse.json({ success: true }, { status: 200 });
+  return NextResponse.json({ message: "Note deleted!" }, { status: 200 });
 }

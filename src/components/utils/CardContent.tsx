@@ -1,5 +1,5 @@
 import { DialogContent, DialogTitle } from "@/components/ui/dialog";
-import { TContent } from "@/app/types/content";
+import { TContent } from "@/app/types/note";
 
 export function CardContent({ content }: { content: TContent | null }) {
   return (

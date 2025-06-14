@@ -11,16 +11,12 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 // Actions
-import {
-  createNote,
-  retriveNote,
-  updateNote,
-} from "@/app/api/note/actions/note-actions";
+import { retriveNote, updateNote } from "@/app/api/note/actions/note-actions";
 // Utils component
 import CreateForm from "./CreateForm";
 import UpdateForm from "./UpdateForm";
 // type
-import { TNote } from "@/app/types/content";
+import { TNote } from "@/app/types/note";
 
 export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   const [notes, setNotes] = useState<TNote[]>(notesList);
@@ -49,23 +45,6 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   useEffect(() => {
     fetchNotes();
   }, []);
-
-  async function handleCreateNoteSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const form = e.currentTarget;
-
-    try {
-      const formData = new FormData(form);
-      const result = await createNote(formData);
-      form.reset();
-      if (result) toast.success("Note successfully recorded!");
-      setOpenModal(false);
-      fetchNotes();
-    } catch (err) {
-      console.error("Submit error:", err);
-    }
-  }
 
   async function handleUpdateNoteSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -104,7 +83,10 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
           <DialogTrigger asChild>
             <Button className="cursor">Take Note</Button>
           </DialogTrigger>
-          <CreateForm handleSubmit={handleCreateNoteSubmit} />
+          <CreateForm
+            closeModal={() => setOpenModal(false)}
+            fetchNotes={fetchNotes}
+          />
         </Dialog>
       </div>
 
@@ -129,7 +111,9 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
                 className="cursor-pointer w-full"
                 onClick={() => handleClick(1)}
               >
-                <Card className="w-full bg-violet-50 rounded-md p-4 mb-4 break-inside-avoid text-left">
+                <Card
+                  className={`w-full rounded-md p-4 mb-4 break-inside-avoid text-left ${noteItem?.colorTheme}`}
+                >
                   <div>
                     <h1 className="text-lg font-semibold mb-2">
                       {noteItem?.title}
