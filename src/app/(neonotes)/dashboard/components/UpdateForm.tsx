@@ -7,10 +7,18 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
 import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
+
+import { EllipsisVertical, CopyPlus, Trash } from "lucide-react";
+import { ButtonIcon } from "@/components/utils/ButtonIcon";
 
 import { TFormContentProp } from "@/app/types/form-content";
 
@@ -38,15 +46,40 @@ export default function UpdateForm({
         ></textarea>
         <DialogFooter className="flex !justify-between !w-full">
           <div className="flex gap-3">
-            <Button className="cursor-pointer bg-blue-200">
+            <ButtonIcon className="cursor-pointer bg-blue-200">
               <LetterText />
-            </Button>
-            <Button className="cursor-pointer bg-blue-200">
+            </ButtonIcon>
+            <ButtonIcon className="cursor-pointer bg-blue-200">
               <Palette />
-            </Button>
-            <Button className="cursor-pointer bg-blue-200">
+            </ButtonIcon>
+            <ButtonIcon className="cursor-pointer bg-blue-200">
               <Tag />
-            </Button>
+            </ButtonIcon>
+            <Popover>
+              <PopoverTrigger asChild>
+                <ButtonIcon className="cursor-pointer bg-blue-200">
+                  <EllipsisVertical />
+                </ButtonIcon>
+              </PopoverTrigger>
+              <PopoverContent className="w-fit text-main-foreground flex flex-col gap-2 items-center">
+                <div className="flex flex-col gap-2">
+                  <ButtonIcon
+                    className="w-full justify-start text-left text-sm bg-blue-200 hover:bg-blue-300"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <CopyPlus />
+                    Duplicate Note
+                  </ButtonIcon>
+                  <ButtonIcon
+                    className="w-full justify-start text-left bg-red-400 hover:bg-red-500 text-sm"
+                    onClick={(e) => e.preventDefault()}
+                  >
+                    <Trash />
+                    Delete Note
+                  </ButtonIcon>
+                </div>
+              </PopoverContent>
+            </Popover>
           </div>
           <div className="flex items-center gap-3">
             <Button

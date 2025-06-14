@@ -7,10 +7,10 @@ import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
 import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
-import { EllipsisVertical } from "lucide-react";
 
 // Utils
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
+import { Button } from "@/components/ui/button";
 
 type CreateFormProp = {
   handleSubmit: React.FormEventHandler<HTMLFormElement>;
@@ -44,9 +44,6 @@ export default function CreateForm({ handleSubmit }: CreateFormProp) {
             <ButtonIcon className="cursor-pointer bg-blue-200">
               <Tag />
             </ButtonIcon>
-            <ButtonIcon className="cursor-pointer bg-blue-200">
-              <EllipsisVertical />
-            </ButtonIcon>
           </div>
           <div className="flex items-center gap-3">
             <ButtonIcon
@@ -55,9 +52,9 @@ export default function CreateForm({ handleSubmit }: CreateFormProp) {
             >
               NeoNotes AI <Sparkle />
             </ButtonIcon>
-            <ButtonIcon className="cursor-pointer" type="submit">
+            <Button className="cursor-pointer" type="submit">
               Save
-            </ButtonIcon>
+            </Button>
           </div>
         </DialogFooter>
       </form>
