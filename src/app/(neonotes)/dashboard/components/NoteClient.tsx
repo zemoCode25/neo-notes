@@ -115,7 +115,14 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
           ))}
         </div>
       ) : (
-        <div className="columns-1 sm:columns-2 md:columns-5 w-full gap-4 my-5">
+        <div
+          className={`columns-1 sm:columns-2 md:columns-5 w-full gap-4 my-5 ${
+            notes.length === 0 ? "flex items-center justify-center w-full" : ""
+          }`}
+        >
+          {notes.length === 0 && (
+            <div className="text-center text-gray-500">No notes available.</div>
+          )}
           {notes.map((noteItem) => (
             <Dialog key={noteItem?.id}>
               <DialogTrigger
@@ -140,6 +147,8 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
               <UpdateForm
                 noteItem={noteItem}
                 handleSubmit={handleUpdateNoteSubmit}
+                fetchNotes={fetchNotes}
+                closeModal={() => setOpenModal(false)}
               />
             </Dialog>
           ))}

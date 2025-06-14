@@ -16,18 +16,44 @@ import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
 import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
+import toast, { Toaster } from "react-hot-toast";
 
 import { EllipsisVertical, CopyPlus, Trash } from "lucide-react";
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 
 import { TFormContentProp } from "@/app/types/form-content";
+// actions
+import { deleteNote } from "@/app/api/note/actions/note-actions";
 
 export default function UpdateForm({
   noteItem,
   handleSubmit,
+  fetchNotes,
+  closeModal,
 }: TFormContentProp) {
+  async function handleDeleteNote(e: React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
+    try {
+      if (!noteItem?.id) {
+        toast.error("Note ID is missing");
+        throw new Error("Note ID is missing");
+      }
+      const result = await deleteNote(noteItem?.id);
+      if (result?.success) {
+        toast.success("Note deleted successfully");
+        fetchNotes();
+        closeModal();
+      } else {
+        toast.error("Failed to delete note");
+      }
+    } catch (error) {
+      toast.error(`Error deleting note: ${error}`);
+    }
+  }
+
   return (
     <DialogContent className="sm:max-w-[700px]">
+      <Toaster position="bottom-right" />
       <DialogTitle className="hidden" />
       <form onSubmit={handleSubmit} data-id={`${noteItem?.id}`}>
         <Input
@@ -72,7 +98,7 @@ export default function UpdateForm({
                   </ButtonIcon>
                   <ButtonIcon
                     className="w-full justify-start text-left bg-red-400 hover:bg-red-500 text-sm"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={handleDeleteNote}
                   >
                     <Trash />
                     Delete Note

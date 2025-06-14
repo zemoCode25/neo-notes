@@ -5,5 +5,5 @@ export type TNote = {
 };
 
 export type TResult = {
-  message: Promise<string>;
+  success: boolean;
 };
