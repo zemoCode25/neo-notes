@@ -1,7 +1,7 @@
 import { TResult } from "@/app/types/note";
 import { TCreateNote } from "@/app/types/create-note";
 
-export async function createNote(noteDetails: TCreateNote) {
+export async function createNoteToDB(noteDetails: TCreateNote) {
   try {
     const response = await fetch("http://localhost:3000/api/note/", {
       method: "POST",

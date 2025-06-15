@@ -20,16 +20,16 @@ import {
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { Button } from "@/components/ui/button";
 import { colorThemes } from "@/lib/color-theme";
-import toast from "react-hot-toast";
-
-import { createNote } from "@/app/api/note/actions/note-actions";
+// Types
+import { TCreateNote } from "@/app/types/create-note";
 
 type CreateFormProp = {
   closeModal: () => void;
   fetchNotes: () => Promise<void>;
+  createNote: (noteDetails: TCreateNote) => Promise<void>;
 };
 
-export default function CreateForm({ closeModal, fetchNotes }: CreateFormProp) {
+export default function CreateForm({ createNote }: CreateFormProp) {
   const [selectedColor, setSelectedColor] = useState<string>("bg-blue-100");
   const [colorThemeDialogOpen, setColorThemeDialogOpen] = useState(false);
 
@@ -38,7 +38,7 @@ export default function CreateForm({ closeModal, fetchNotes }: CreateFormProp) {
     setColorThemeDialogOpen(false);
   }
 
-  async function handleCreateNoteSubmit(e: React.FormEvent<HTMLFormElement>) {
+  function handleCreateNoteSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -57,15 +57,7 @@ export default function CreateForm({ closeModal, fetchNotes }: CreateFormProp) {
       colorTheme: selectedColor,
     };
 
-    try {
-      const result = await createNote(noteDetails);
-      form.reset();
-      if (result) toast.success("Note successfully recorded!");
-      closeModal();
-      fetchNotes();
-    } catch (err) {
-      console.error("Submit error:", err);
-    }
+    createNote(noteDetails);
   }
 
   return (

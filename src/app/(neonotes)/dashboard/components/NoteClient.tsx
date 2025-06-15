@@ -11,12 +11,17 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 // Actions
-import { retriveNote, updateNote } from "@/app/api/note/actions/note-actions";
+import {
+  retriveNote,
+  updateNote,
+  createNoteToDB,
+} from "@/app/api/note/actions/note-actions";
 // Utils component
 import CreateForm from "./CreateForm";
 import UpdateForm from "./UpdateForm";
 // type
 import { TNote } from "@/app/types/note";
+import { TCreateNote } from "@/app/types/create-note";
 
 export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   const [notes, setNotes] = useState<TNote[]>(notesList);
@@ -46,6 +51,21 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   useEffect(() => {
     fetchNotes();
   }, []);
+
+  async function createNote(noteDetails: TCreateNote) {
+    try {
+      const result = await createNoteToDB(noteDetails);
+      if (!result) {
+        throw new Error("Failed to create note");
+      }
+      toast.success("Note created successfully!");
+      setOpenModal(false);
+      fetchNotes();
+    } catch (error) {
+      console.error("Error creating note:", error);
+      toast.error("Failed to create note.");
+    }
+  }
 
   async function handleUpdateNoteSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -87,6 +107,7 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
           <CreateForm
             closeModal={() => setOpenModal(false)}
             fetchNotes={fetchNotes}
+            createNote={createNote}
           />
         </Dialog>
       </div>
