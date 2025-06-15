@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   DialogContent,
   DialogFooter,
@@ -14,23 +15,32 @@ import {
 } from "@/components/ui/popover";
 import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
-import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { EllipsisVertical, CopyPlus, Trash } from "lucide-react";
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 
-import { TFormContentProp } from "@/app/types/form-content";
+import ColorPopover from "./ColorPopover";
 // actions
 import { deleteNote } from "@/app/api/note/actions/note-actions";
+// types
+import { TNote } from "@/app/types/note";
+import { TUpdateNote } from "@/app/types/update-note";
+
+type UpdateFormProps = {
+  noteItem: TNote;
+  updateNote: (noteDetails: TUpdateNote) => Promise<void>;
+  fetchNotes: () => Promise<void>;
+  closeModal: () => void;
+};
 
 export default function UpdateForm({
   noteItem,
-  handleSubmit,
+  updateNote,
   fetchNotes,
   closeModal,
-}: TFormContentProp) {
+}: UpdateFormProps) {
   async function handleDeleteNote(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
@@ -51,10 +61,40 @@ export default function UpdateForm({
     }
   }
 
+  const [selectedColor, setSelectedColor] = useState<string>(
+    `${noteItem?.colortheme || "bg-blue-100"}`
+  );
+  const [colorThemeDialogOpen, setColorThemeDialogOpen] = useState(false);
+
+  function handleColorChange(colorClass: string) {
+    setSelectedColor(colorClass);
+    setColorThemeDialogOpen(false);
+  }
+
+  function handleUpdateNoteSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    const form = e.currentTarget;
+    if (!form) {
+      console.error("Form is not defined");
+      return;
+    }
+    const formData = new FormData(form);
+    const title = formData.get("title");
+    const note = formData.get("note");
+    const noteDetails = {
+      id: noteItem?.id,
+      title: title ? String(title) : "",
+      note: note ? String(note) : "",
+      colortheme: selectedColor,
+    };
+
+    updateNote(noteDetails);
+  }
+
   return (
-    <DialogContent className={`sm:max-w-[700px] ${noteItem?.colortheme}`}>
+    <DialogContent className={`sm:max-w-[700px] ${selectedColor}`}>
       <DialogTitle className="hidden" />
-      <form onSubmit={handleSubmit} data-id={`${noteItem?.id}`}>
+      <form onSubmit={handleUpdateNoteSubmit} data-id={`${noteItem?.id}`}>
         <Input
           className="h-10 mt-5 block !text-xl"
           placeholder="Title"
@@ -74,9 +114,12 @@ export default function UpdateForm({
             <ButtonIcon className="cursor-pointer bg-blue-200">
               <LetterText />
             </ButtonIcon>
-            <ButtonIcon className="cursor-pointer bg-blue-200">
-              <Palette />
-            </ButtonIcon>
+            <ColorPopover
+              selectedColor={selectedColor}
+              handleColorChange={handleColorChange}
+              colorThemeDialogOpen={colorThemeDialogOpen}
+              setColorThemeDialogOpen={setColorThemeDialogOpen}
+            />
             <ButtonIcon className="cursor-pointer bg-blue-200">
               <Tag />
             </ButtonIcon>

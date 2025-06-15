@@ -6,7 +6,7 @@ export async function GET() {
   if (!url) throw new Error("DATABASE_URL is not defined");
 
   const sql = neon(url);
-  const response = await sql`SELECT * FROM note`;
+  const response = await sql`SELECT * FROM note ORDER BY id DESC`;
 
   return NextResponse.json({ notes: response }, { status: 200 });
 }
@@ -41,9 +41,9 @@ export async function PUT(req: NextRequest) {
 
   const sql = neon(url);
   const body = await req.json();
-  const { title, note, id, colorTheme } = body;
+  const { title, note, id, colortheme } = body;
 
-  await sql`UPDATE note set title = ${title}, note = ${note}, colorTheme = ${colorTheme} WHERE id = ${id}`;
+  await sql`UPDATE note set title = ${title}, note = ${note}, colorTheme = ${colortheme} WHERE id = ${id}`;
   return NextResponse.json({ message: "Note saved!" }, { status: 201 });
 }
 

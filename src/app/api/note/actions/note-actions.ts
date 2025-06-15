@@ -1,5 +1,6 @@
 import { TResult } from "@/app/types/note";
 import { TCreateNote } from "@/app/types/create-note";
+import { TNote } from "@/app/types/note";
 
 export async function createNoteToDB(noteDetails: TCreateNote) {
   try {
@@ -44,17 +45,14 @@ export async function retriveNote() {
   }
 }
 
-export async function updateNote(formData: FormData, id: number) {
-  const title = formData.get("title"); // Get data from form fields
-  const note = formData.get("note");
-
+export async function updateNoteToDB(noteDetails: TNote) {
   try {
     const response = await fetch("/api/note", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ id: id, title: title, note: note }),
+      body: JSON.stringify(noteDetails),
     });
     const result: TResult = await response.json();
     if (!response.ok) {

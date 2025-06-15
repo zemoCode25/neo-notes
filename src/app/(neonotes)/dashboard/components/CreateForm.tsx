@@ -8,18 +8,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
-import { Palette } from "lucide-react";
 import { Tag } from "lucide-react";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 
 // Utils
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { Button } from "@/components/ui/button";
-import { colorThemes } from "@/lib/color-theme";
+import ColorPopover from "./ColorPopover";
 // Types
 import { TCreateNote } from "@/app/types/create-note";
 
@@ -81,32 +75,12 @@ export default function CreateForm({ createNote }: CreateFormProp) {
             <ButtonIcon className="cursor-pointer bg-blue-200">
               <LetterText />
             </ButtonIcon>
-            <Popover
-              open={colorThemeDialogOpen}
-              onOpenChange={setColorThemeDialogOpen}
-            >
-              <PopoverTrigger asChild>
-                <ButtonIcon className={`cursor-pointer ${selectedColor}`}>
-                  <Palette />
-                </ButtonIcon>
-              </PopoverTrigger>
-              <PopoverContent className="w-fit text-main-foreground flex flex-col gap-2 items-center">
-                <div className="grid grid-cols-3 gap-2">
-                  {colorThemes.map((theme) => (
-                    <ButtonIcon
-                      key={theme.colorName}
-                      className={`w-full justify-center text-sm hover:bg-opacity-80 cursor-pointer ${theme.colorClass}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleColorChange(theme.colorClass);
-                      }}
-                    >
-                      <span className="text-xs">{theme.colorName}</span>
-                    </ButtonIcon>
-                  ))}
-                </div>
-              </PopoverContent>
-            </Popover>
+            <ColorPopover
+              selectedColor={selectedColor}
+              handleColorChange={handleColorChange}
+              colorThemeDialogOpen={colorThemeDialogOpen}
+              setColorThemeDialogOpen={setColorThemeDialogOpen}
+            />
             <ButtonIcon className="cursor-pointer bg-blue-200">
               <Tag />
             </ButtonIcon>

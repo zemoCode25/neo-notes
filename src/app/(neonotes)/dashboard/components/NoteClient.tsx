@@ -13,7 +13,7 @@ import toast, { Toaster } from "react-hot-toast";
 // Actions
 import {
   retriveNote,
-  updateNote,
+  updateNoteToDB,
   createNoteToDB,
 } from "@/app/api/note/actions/note-actions";
 // Utils component
@@ -22,6 +22,7 @@ import UpdateForm from "./UpdateForm";
 // type
 import { TNote } from "@/app/types/note";
 import { TCreateNote } from "@/app/types/create-note";
+import { TUpdateNote } from "@/app/types/update-note";
 
 export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   const [notes, setNotes] = useState<TNote[]>(notesList);
@@ -36,11 +37,19 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
     router.push(`?${params.toString()}`);
   }
 
+  function updateNoteState(noteDetails: TNote) {
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === noteDetails.id ? { ...note, ...noteDetails } : note
+      )
+    );
+    console.log("ASKLSAJKLASDJ", noteDetails);
+  }
+
   async function fetchNotes() {
     try {
       const result = await retriveNote();
       setNotes(result?.notes);
-      console.log(result?.notes);
     } catch (error) {
       throw Error(`${error}`);
     } finally {
@@ -67,31 +76,16 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
     }
   }
 
-  async function handleUpdateNoteSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-
-    const form = e.currentTarget;
-    const id = Number(form?.dataset.id);
-
+  async function updateNote(noteDetails: TUpdateNote) {
     try {
-      const formData = new FormData(form);
-      const result = await updateNote(formData, id);
-      form.reset();
+      const result = await updateNoteToDB(noteDetails);
       if (result) toast.success("Note successfully updated!");
       setOpenModal(false);
-      setNotes((prevNotes) => {
-        return prevNotes?.map((noteItem) =>
-          noteItem?.id === id
-            ? {
-                ...noteItem,
-                title: String(formData?.get("title")),
-                note: String(formData?.get("note")),
-              }
-            : noteItem
-        );
-      });
+      updateNoteState(noteDetails);
     } catch (err) {
       console.error("Submit error:", err);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -135,7 +129,7 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
               >
                 <Card
                   className={`w-full rounded-md p-4 mb-4 break-inside-avoid text-left ${
-                    noteItem?.colortheme || "bg-white"
+                    noteItem?.colortheme || "bg-violet-100"
                   }`}
                 >
                   <div>
@@ -154,7 +148,7 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
               </DialogTrigger>
               <UpdateForm
                 noteItem={noteItem}
-                handleSubmit={handleUpdateNoteSubmit}
+                updateNote={updateNote}
                 fetchNotes={fetchNotes}
                 closeModal={() => setOpenModal(false)}
               />
