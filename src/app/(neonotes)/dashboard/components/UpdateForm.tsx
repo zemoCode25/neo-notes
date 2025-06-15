@@ -42,6 +42,7 @@ export default function UpdateForm({
       if (result?.success) {
         fetchNotes();
         closeModal();
+        toast.success("Note deleted successfully");
       } else {
         toast.error("Failed to delete note");
       }

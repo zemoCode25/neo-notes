@@ -48,17 +48,28 @@ export async function PUT(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  const url = process.env.DATABASE_URL;
-  if (!url) throw new Error("DATABASE_URL is not defined");
+  try {
+    const url = process.env.DATABASE_URL;
+    if (!url) throw new Error("DATABASE_URL is not defined");
 
-  const sql = neon(url);
-  const body = await req.json();
-  const { id } = body;
+    const sql = neon(url);
+    const body = await req.json();
+    const { id } = body;
 
-  if (!id) {
-    return NextResponse.json({ error: "Note ID is required" }, { status: 400 });
+    if (!id) {
+      return NextResponse.json(
+        { error: "Note ID is required" },
+        { status: 400 }
+      );
+    }
+
+    await sql`DELETE FROM note WHERE id = ${id}`;
+    return NextResponse.json({ success: true }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
   }
-
-  await sql`DELETE FROM note WHERE id = ${id}`;
-  return NextResponse.json({ success: true }, { status: 200 });
 }
