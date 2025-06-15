@@ -19,7 +19,7 @@ import {
 // Utils
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { Button } from "@/components/ui/button";
-import { TColorTheme } from "@/app/types/color-theme";
+import { colorThemes } from "@/lib/color-theme";
 import toast from "react-hot-toast";
 
 import { createNote } from "@/app/api/note/actions/note-actions";
@@ -32,44 +32,6 @@ type CreateFormProp = {
 export default function CreateForm({ closeModal, fetchNotes }: CreateFormProp) {
   const [selectedColor, setSelectedColor] = useState<string>("bg-blue-100");
   const [colorThemeDialogOpen, setColorThemeDialogOpen] = useState(false);
-  const colorThemes: TColorTheme[] = [
-    {
-      colorName: "red",
-      colorClass: "bg-red-100",
-    },
-    {
-      colorName: "green",
-      colorClass: "bg-green-100",
-    },
-    {
-      colorName: "blue",
-      colorClass: "bg-blue-100",
-    },
-    {
-      colorName: "yellow",
-      colorClass: "bg-yellow-100",
-    },
-    {
-      colorName: "purple",
-      colorClass: "bg-purple-100",
-    },
-    {
-      colorName: "orange",
-      colorClass: "bg-orange-100",
-    },
-    {
-      colorName: "pink",
-      colorClass: "bg-pink-100",
-    },
-    {
-      colorName: "cyan",
-      colorClass: "bg-cyan-100",
-    },
-    {
-      colorName: "white",
-      colorClass: "bg-white",
-    },
-  ];
 
   function handleColorChange(colorClass: string) {
     setSelectedColor(colorClass);
@@ -86,7 +48,6 @@ export default function CreateForm({ closeModal, fetchNotes }: CreateFormProp) {
     }
 
     const formData = new FormData(form);
-
     const title = formData.get("title"); // Get data from form fields
     const note = formData.get("note");
 
