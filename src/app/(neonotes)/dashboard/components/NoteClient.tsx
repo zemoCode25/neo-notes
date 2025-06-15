@@ -76,6 +76,7 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
     }
   }
 
+  // Update the UI upon note update
   async function updateNote(noteDetails: TUpdateNote) {
     try {
       const result = await updateNoteToDB(noteDetails);
@@ -151,6 +152,7 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
                 updateNote={updateNote}
                 fetchNotes={fetchNotes}
                 closeModal={() => setOpenModal(false)}
+                createNote={createNote}
               />
             </Dialog>
           ))}

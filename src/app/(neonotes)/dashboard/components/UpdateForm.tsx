@@ -27,12 +27,14 @@ import { deleteNote } from "@/app/api/note/actions/note-actions";
 // types
 import { TNote } from "@/app/types/note";
 import { TUpdateNote } from "@/app/types/update-note";
+import { TCreateNote } from "@/app/types/create-note";
 
 type UpdateFormProps = {
   noteItem: TNote;
   updateNote: (noteDetails: TUpdateNote) => Promise<void>;
   fetchNotes: () => Promise<void>;
   closeModal: () => void;
+  createNote: (noteDetails: TCreateNote) => Promise<void>;
 };
 
 export default function UpdateForm({
@@ -40,6 +42,7 @@ export default function UpdateForm({
   updateNote,
   fetchNotes,
   closeModal,
+  createNote,
 }: UpdateFormProps) {
   async function handleDeleteNote(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -133,7 +136,14 @@ export default function UpdateForm({
                 <div className="flex flex-col gap-2">
                   <ButtonIcon
                     className="w-full justify-start text-left text-sm bg-blue-200 hover:bg-blue-300"
-                    onClick={(e) => e.preventDefault()}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      createNote({
+                        title: noteItem?.title || "",
+                        note: noteItem?.note || "",
+                        colorTheme: noteItem?.colortheme || "bg-blue-100",
+                      });
+                    }}
                   >
                     <CopyPlus />
                     Duplicate Note
