@@ -8,12 +8,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
-import { Tag } from "lucide-react";
 
 // Utils
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { Button } from "@/components/ui/button";
 import ColorPopover from "./ColorPopover";
+import LabelPopover from "./LabelPopover";
 // Types
 import { TCreateNote } from "@/app/types/create-note";
 
@@ -26,6 +26,8 @@ type CreateFormProp = {
 export default function CreateForm({ createNote }: CreateFormProp) {
   const [selectedColor, setSelectedColor] = useState<string>("bg-blue-100");
   const [colorThemeDialogOpen, setColorThemeDialogOpen] = useState(false);
+  const [label, setLabel] = useState<string>("");
+  const [labelDialogOpen, setLabelDialogOpen] = useState(false);
 
   function handleColorChange(colorClass: string) {
     setSelectedColor(colorClass);
@@ -81,9 +83,12 @@ export default function CreateForm({ createNote }: CreateFormProp) {
               colorThemeDialogOpen={colorThemeDialogOpen}
               setColorThemeDialogOpen={setColorThemeDialogOpen}
             />
-            <ButtonIcon className="cursor-pointer bg-blue-200">
-              <Tag />
-            </ButtonIcon>
+            <LabelPopover
+              label={label}
+              setLabel={setLabel}
+              labelDialogOpen={labelDialogOpen}
+              setLabelDialogOpen={setLabelDialogOpen}
+            />
           </div>
           <div className="flex items-center gap-3">
             <ButtonIcon
