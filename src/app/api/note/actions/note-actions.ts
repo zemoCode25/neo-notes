@@ -1,10 +1,11 @@
 import { TResult } from "@/app/types/note";
 import { TCreateNote } from "@/app/types/create-note";
 import { TNote } from "@/app/types/note";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function createNoteToDB(noteDetails: TCreateNote) {
   try {
-    const response = await fetch("http://localhost:3000/api/note/", {
+    const response = await fetch(`${API_URL}/api/note/`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,7 +31,7 @@ export async function createNoteToDB(noteDetails: TCreateNote) {
 
 export async function retriveNote() {
   try {
-    const response = await fetch("http://localhost:3000/api/note/", {
+    const response = await fetch("${API_URL}/api/note/", {
       headers: {
         "Content-Type": "application/json",
       },
@@ -47,7 +48,7 @@ export async function retriveNote() {
 
 export async function updateNoteToDB(noteDetails: TNote) {
   try {
-    const response = await fetch("/api/note", {
+    const response = await fetch("${API_URL}/api/note/", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -66,7 +67,7 @@ export async function updateNoteToDB(noteDetails: TNote) {
 
 export async function deleteNote(id: number) {
   try {
-    const response = await fetch("/api/note", {
+    const response = await fetch("${API_URL}/api/note/", {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
