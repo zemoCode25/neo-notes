@@ -31,7 +31,7 @@ export async function createNoteToDB(noteDetails: TCreateNote) {
 
 export async function retriveNote() {
   try {
-    const response = await fetch("${API_URL}/api/note/", {
+    const response = await fetch(`${API_URL}/api/note`, {
       headers: {
         "Content-Type": "application/json",
       },
@@ -48,7 +48,7 @@ export async function retriveNote() {
 
 export async function updateNoteToDB(noteDetails: TNote) {
   try {
-    const response = await fetch("${API_URL}/api/note/", {
+    const response = await fetch(`${API_URL}/api/note/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -67,7 +67,7 @@ export async function updateNoteToDB(noteDetails: TNote) {
 
 export async function deleteNote(id: number) {
   try {
-    const response = await fetch("${API_URL}/api/note/", {
+    const response = await fetch(`${API_URL}/api/note/`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
