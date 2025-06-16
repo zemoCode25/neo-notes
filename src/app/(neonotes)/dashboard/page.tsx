@@ -1,5 +1,7 @@
 import React from "react";
 
+export const dynamic = "force-dynamic";
+
 import { retriveNote } from "@/app/api/note/actions/note-actions";
 import NoteClient from "./components/NoteClient";
 
