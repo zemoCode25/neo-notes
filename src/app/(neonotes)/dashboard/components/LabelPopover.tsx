@@ -11,7 +11,9 @@ import { useEffect, useState } from "react";
 
 // actions
 import { retriveAllLabels } from "@/app/api/label/actions/label-actions";
+import { createLabelToDB } from "@/app/api/label/actions/label-actions";
 import { TLabel } from "@/app/types/label/label";
+import { Button } from "@/components/ui/button";
 
 type LabelPopoverProps = {
   selectedLabel?: number | null;
@@ -36,6 +38,42 @@ export default function LabelPopover({
     } catch (error) {
       console.error("Error fetching labels:", error);
     }
+  }
+
+  async function createLabel(labelName: string) {
+    try {
+      const result = await createLabelToDB({ label_name: labelName });
+      setLabels((prevLabels) => [...(prevLabels || []), result.label]);
+    } catch (error) {
+      console.error("Error creating label:", error);
+    }
+  }
+
+  function handleLabelCreateSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    e.stopPropagation();
+    // Prevent default form submission behavior
+
+    const form = e.currentTarget;
+    if (!form) {
+      console.error("Form is not defined");
+      return;
+    }
+
+    const formData = new FormData(form);
+    const labelName = formData.get("labelName");
+
+    if (
+      !labelName ||
+      typeof labelName !== "string" ||
+      labelName.trim() === ""
+    ) {
+      console.error("Label name is required");
+      return;
+    }
+
+    createLabel(labelName);
+    form.reset(); // Reset the form after submission
   }
 
   // Fetch labels when the component mounts
@@ -76,11 +114,20 @@ export default function LabelPopover({
               <span>{label.label_name}</span>
             </ButtonIcon>
           ))}
-          <div className="flex items-center gap-2">
-            <Input placeholder="Add new label" />
-            <ButtonIcon>
-              <Plus />
-            </ButtonIcon>
+          <div key={Date.now()} className="flex items-center gap-2">
+            <form
+              onSubmit={handleLabelCreateSubmit}
+              className="flex items-center w-full"
+            >
+              <Input
+                placeholder="Add new label"
+                name="labelName"
+                id="labelName"
+              />
+              <Button type="submit" className="ml-2">
+                <Plus />
+              </Button>
+            </form>
           </div>
         </div>
       </PopoverContent>

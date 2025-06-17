@@ -1,3 +1,4 @@
+import { TCreateLabel } from "@/app/types/label/create-label";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function retriveAllLabels() {
@@ -14,5 +15,29 @@ export async function retriveAllLabels() {
     return result;
   } catch (err) {
     throw Error(`${err}`);
+  }
+}
+
+export async function createLabelToDB(labelDetails: TCreateLabel) {
+  try {
+    const response = await fetch(`${API_URL}/api/label`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(labelDetails),
+    });
+
+    if (!response.ok) {
+      const errorResponse = await response.json();
+      throw new Error(errorResponse.error || "Failed to create label");
+    }
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error("Error creating label:", error);
+    throw Error(`${error}`);
   }
 }
