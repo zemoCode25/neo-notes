@@ -7,51 +7,73 @@ import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { Tag } from "lucide-react";
 import { Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useEffect, useState } from "react";
+
+// actions
+import { retriveAllLabels } from "@/app/api/label/actions/label-actions";
+import { TLabel } from "@/app/types/label/label";
 
 type LabelPopoverProps = {
-  label: string;
-  setLabel: (label: string) => void;
+  selectedLabel?: number | null;
+  setSelectedLabel: React.Dispatch<React.SetStateAction<number | null>>;
   labelDialogOpen: boolean;
   setLabelDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const sampleLabels = [
-  {
-    id: 1,
-    label: "Work",
-  },
-  {
-    id: 2,
-    label: "Personal",
-  },
-  {
-    id: 3,
-    label: "Urgent",
-  },
-];
-
 export default function LabelPopover({
-  label,
-  setLabel,
+  selectedLabel,
+  setSelectedLabel,
   labelDialogOpen,
   setLabelDialogOpen,
 }: LabelPopoverProps) {
+  const [labels, setLabels] = useState<TLabel[] | undefined>(undefined);
+
+  async function fetchLabels() {
+    try {
+      const result = await retriveAllLabels();
+      setLabels(result.labels);
+      console.log("Fetched labels:", result);
+    } catch (error) {
+      console.error("Error fetching labels:", error);
+    }
+  }
+
+  // Fetch labels when the component mounts
+  useEffect(() => {
+    fetchLabels();
+  }, []);
+
+  function findLabelById(id: number | null) {
+    return labels?.find((label) => label.id === id);
+  }
+
   return (
     <Popover open={labelDialogOpen} onOpenChange={setLabelDialogOpen}>
       <PopoverTrigger asChild>
-        <ButtonIcon className={`cursor-pointer`}>
+        <ButtonIcon className={`cursor-pointer flex items-center gap-2`}>
           <Tag />
+          <span
+            className={`${
+              findLabelById(selectedLabel || null)?.label_name
+                ? "flex"
+                : "hidden"
+            } text-sm`}
+          >
+            {findLabelById(selectedLabel || null)?.label_name}
+          </span>
         </ButtonIcon>
       </PopoverTrigger>
       <PopoverContent className="w-fit text-main-foreground flex flex-col gap-2 items-center">
         <div className="flex flex-col gap-2">
-          {sampleLabels.map((sampleLabel) => (
+          {labels?.map((label) => (
             <ButtonIcon
-              key={sampleLabel.id}
-              onClick={() => setLabel(sampleLabel.label)}
-              className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-cyan-50 hover:bg-cyan-100`}
+              key={label.id}
+              onClick={() => setSelectedLabel(label.id || null)}
+              className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-cyan-50 hover:bg-cyan-100 ${
+                selectedLabel === label.id ? "bg-cyan-200" : ""
+              }`}
             >
-              <span>{sampleLabel.label}</span>
+              <span>{label.label_name}</span>
             </ButtonIcon>
           ))}
           <div className="flex items-center gap-2">

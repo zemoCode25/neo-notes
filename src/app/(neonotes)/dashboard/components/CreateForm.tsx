@@ -26,7 +26,7 @@ type CreateFormProp = {
 export default function CreateForm({ createNote }: CreateFormProp) {
   const [selectedColor, setSelectedColor] = useState<string>("bg-blue-100");
   const [colorThemeDialogOpen, setColorThemeDialogOpen] = useState(false);
-  const [label, setLabel] = useState<string>("");
+  const [selectedLabel, setSelectedLabel] = useState<number | null>(null);
   const [labelDialogOpen, setLabelDialogOpen] = useState(false);
 
   function handleColorChange(colorClass: string) {
@@ -84,8 +84,8 @@ export default function CreateForm({ createNote }: CreateFormProp) {
               setColorThemeDialogOpen={setColorThemeDialogOpen}
             />
             <LabelPopover
-              label={label}
-              setLabel={setLabel}
+              selectedLabel={selectedLabel}
+              setSelectedLabel={setSelectedLabel}
               labelDialogOpen={labelDialogOpen}
               setLabelDialogOpen={setLabelDialogOpen}
             />
