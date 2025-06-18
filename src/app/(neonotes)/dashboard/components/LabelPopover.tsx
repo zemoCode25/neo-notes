@@ -127,7 +127,10 @@ export default function LabelPopover({
                 >
                   <span>{label.label_name}</span>
                 </ButtonIcon>
-                <LabelActionPopover selectedLabel={label.id} />
+                <LabelActionPopover
+                  selectedLabel={label.id}
+                  setLabels={setLabels}
+                />
               </div>
             ))}
           </ScrollArea>

@@ -14,14 +14,36 @@ import { SquarePen } from "lucide-react";
 import { Delete } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
+// types
+import { TLabel } from "@/app/types/label/label";
+// actions
+import { deleteLabelToDB } from "@/app/api/label/actions/label-actions";
+
 type LabelActionPopoverProps = {
+  setLabels: React.Dispatch<React.SetStateAction<TLabel[] | undefined>>;
   selectedLabel?: number | null;
 };
 
 export default function LabelActionPopover({
   selectedLabel,
+  setLabels,
 }: LabelActionPopoverProps) {
   const [isInputRendered, setIsInputRendered] = useState(false);
+
+  async function deleteLabel(id: number) {
+    try {
+      const result = await deleteLabelToDB(id);
+      if (!result.success) {
+        throw new Error("Failed to delete label");
+      }
+      setLabels((prevLabels) =>
+        prevLabels?.filter((label) => label?.id !== id)
+      );
+    } catch (error) {
+      console.error("Error deleting label:", error);
+    }
+  }
+
   return (
     <Popover>
       <PopoverTrigger asChild>

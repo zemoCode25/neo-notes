@@ -42,19 +42,38 @@ export async function createLabelToDB(labelDetails: TCreateLabel) {
   }
 }
 
-export async function updateNoteToDB(noteDetails: TNote) {
+export async function updateLabelToDB(labelDetails: TCreateLabel) {
   try {
-    const response = await fetch(`${API_URL}/api/note/`, {
+    const response = await fetch(`${API_URL}/api/label/`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(noteDetails),
+      body: JSON.stringify(labelDetails),
     });
-    const result: TResult = await response.json();
+    const result = await response.json();
     if (!response.ok) {
-      throw new Error("Failed to save note");
+      throw new Error("Failed to save label");
     }
+    return result;
+  } catch (err) {
+    throw Error(`${err}`);
+  }
+}
+
+export async function deleteLabelToDB(id: number) {
+  try {
+    const response = await fetch(`${API_URL}/api/label/`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: id }),
+    });
+    if (!response.ok) {
+      throw new Error("Failed to delete label");
+    }
+    const result = await response.json();
     return result;
   } catch (err) {
     throw Error(`${err}`);
