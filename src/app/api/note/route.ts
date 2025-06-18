@@ -19,13 +19,13 @@ export async function POST(req: NextRequest) {
 
     const sql = neon(url);
     const body = await req.json();
-    const { title, note, colorTheme } = body;
+    const { title, note, colorTheme, label_id } = body;
 
     if (!title || !note || !colorTheme) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    await sql`INSERT INTO note (title, note, colortheme) VALUES (${title}, ${note}, ${colorTheme})`;
+    await sql`INSERT INTO note (title, note, colortheme, label_id) VALUES (${title}, ${note}, ${colorTheme}, ${label_id})`;
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
     console.error(error);
