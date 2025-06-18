@@ -3,6 +3,8 @@ export type TNote = {
   title?: string;
   note?: string;
   colortheme?: string;
+  label_id?: number | null;
+  label_name?: string | null;
 };
 
 export type TResult = {

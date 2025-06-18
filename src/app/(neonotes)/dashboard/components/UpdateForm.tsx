@@ -89,6 +89,7 @@ export default function UpdateForm({
       title: title ? String(title) : "",
       note: note ? String(note) : "",
       colortheme: selectedColor,
+      label_id: noteItem?.label_id || null, // Assuming label_id is part of noteItem
     };
 
     updateNote(noteDetails);
@@ -142,6 +143,7 @@ export default function UpdateForm({
                         title: noteItem?.title || "",
                         note: noteItem?.note || "",
                         colorTheme: noteItem?.colortheme || "bg-blue-100",
+                        label_id: noteItem?.label_id || null,
                       });
                     }}
                   >

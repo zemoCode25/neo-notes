@@ -6,7 +6,8 @@ export async function GET() {
   if (!url) throw new Error("DATABASE_URL is not defined");
 
   const sql = neon(url);
-  const response = await sql`SELECT * FROM note ORDER BY id DESC`;
+  const response =
+    await sql`SELECT note.id, note.title, note.note, note.colortheme, label.label_name, note.label_id FROM note LEFT JOIN label ON note.label_id = label.id ORDER BY note.id DESC`;
 
   return NextResponse.json({ notes: response }, { status: 200 });
 }

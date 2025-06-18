@@ -52,6 +52,7 @@ export default function CreateForm({ createNote }: CreateFormProp) {
       title: title ? String(title) : "",
       note: note ? String(note) : "",
       colorTheme: selectedColor,
+      label_id: selectedLabel ? selectedLabel.id : null,
     };
 
     createNote(noteDetails);

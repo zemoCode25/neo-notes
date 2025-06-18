@@ -40,6 +40,7 @@ export default function LabelPopover({
     try {
       const result = await retriveAllLabels();
       setLabels(result.labels);
+      console.log(result);
       console.log("Fetched labels:", result);
     } catch (error) {
       console.error("Error fetching labels:", error);
@@ -90,7 +91,6 @@ export default function LabelPopover({
   function findLabelById(id: number | null) {
     return labels?.find((label) => label.id === id);
   }
-
   return (
     <Popover
       modal={true}
@@ -119,15 +119,16 @@ export default function LabelPopover({
             {labels?.map((label) => (
               <div
                 className="w-full flex items-center gap-2 pb-2 px-2"
-                key={label.id}
+                key={label?.id}
               >
                 <ButtonIcon
+                  key={label?.id}
                   onClick={() => setSelectedLabel(label || null)}
                   className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-blue-50 hover:bg-blue-100 ${
                     selectedLabel?.id === label.id ? "bg-blue-200" : ""
                   }`}
                 >
-                  <span>{label.label_name}</span>
+                  <span>{label?.label_name}</span>
                 </ButtonIcon>
                 <LabelActionPopover
                   selectedLabel={label}

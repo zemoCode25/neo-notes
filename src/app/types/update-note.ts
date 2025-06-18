@@ -3,4 +3,5 @@ export type TUpdateNote = {
   title: string;
   note: string;
   colortheme: string;
+  label_id?: number | null;
 };

@@ -43,7 +43,6 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
         note.id === noteDetails.id ? { ...note, ...noteDetails } : note
       )
     );
-    console.log("ASKLSAJKLASDJ", noteDetails);
   }
 
   async function fetchNotes() {
@@ -134,9 +133,12 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
                   }`}
                 >
                   <div>
-                    <h1 className="text-lg font-semibold mb-2">
-                      {noteItem?.title}
-                    </h1>
+                    <h1 className="text-lg font-semibold">{noteItem?.title}</h1>
+                    {noteItem?.label_name && (
+                      <p className="text-sm border border-black px-2 py-1 rounded-md mb-2 w-fit">
+                        {noteItem?.label_name}
+                      </p>
+                    )}
                     <p className="whitespace-pre-wrap text-sm">
                       {`${
                         (noteItem?.note?.length || 0) > 400
