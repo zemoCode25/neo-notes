@@ -6,7 +6,6 @@ import {
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { Tag } from "lucide-react";
 import { Plus } from "lucide-react";
-import { EllipsisVertical } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 
@@ -15,6 +14,9 @@ import { retriveAllLabels } from "@/app/api/label/actions/label-actions";
 import { createLabelToDB } from "@/app/api/label/actions/label-actions";
 import { TLabel } from "@/app/types/label/label";
 import { Button } from "@/components/ui/button";
+
+// utils
+import LabelActionPopover from "./LabelActionPopover";
 
 type LabelPopoverProps = {
   selectedLabel?: number | null;
@@ -112,15 +114,13 @@ export default function LabelPopover({
               >
                 <ButtonIcon
                   onClick={() => setSelectedLabel(label.id || null)}
-                  className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-cyan-50 hover:bg-cyan-100 ${
-                    selectedLabel === label.id ? "bg-cyan-200" : ""
+                  className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-cyan-50 hover:bg-blue-100 ${
+                    selectedLabel === label.id ? "bg-blue-200" : ""
                   }`}
                 >
                   <span>{label.label_name}</span>
                 </ButtonIcon>
-                <ButtonIcon>
-                  <EllipsisVertical />
-                </ButtonIcon>
+                <LabelActionPopover selectedLabel={label.id} />
               </li>
             ))}
           </ul>

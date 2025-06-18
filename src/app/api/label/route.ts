@@ -1,5 +1,5 @@
 import { neon } from "@neondatabase/serverless";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
 export async function GET() {
   const url = process.env.DATABASE_URL;
@@ -11,7 +11,7 @@ export async function GET() {
   return NextResponse.json({ labels: response }, { status: 200 });
 }
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
   try {
     const url = process.env.DATABASE_URL;
     if (!url) throw new Error("DATABASE_URL is not defined");
