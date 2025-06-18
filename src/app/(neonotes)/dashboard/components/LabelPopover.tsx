@@ -14,6 +14,7 @@ import { retriveAllLabels } from "@/app/api/label/actions/label-actions";
 import { createLabelToDB } from "@/app/api/label/actions/label-actions";
 import { TLabel } from "@/app/types/label/label";
 import { Button } from "@/components/ui/button";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 // utils
 import LabelActionPopover from "./LabelActionPopover";
@@ -89,9 +90,15 @@ export default function LabelPopover({
   }
 
   return (
-    <Popover open={labelDialogOpen} onOpenChange={setLabelDialogOpen}>
+    <Popover
+      modal={true}
+      open={labelDialogOpen}
+      onOpenChange={setLabelDialogOpen}
+    >
       <PopoverTrigger asChild>
-        <ButtonIcon className={`cursor-pointer flex items-center gap-2`}>
+        <ButtonIcon
+          className={`cursor-pointer flex items-center gap-2 bg-blue-200`}
+        >
           <Tag />
           <span
             className={`${
@@ -104,30 +111,27 @@ export default function LabelPopover({
           </span>
         </ButtonIcon>
       </PopoverTrigger>
-      <PopoverContent className="w-fit text-main-foreground flex flex-col gap-2 items-center">
+      <PopoverContent className="w-fit text-main-foreground flex flex-col gap-2 items-center bg-blue-200">
         <div className="flex flex-col gap-2">
-          <ul className="flex flex-col gap-2 h-[300px] pb-2 overflow-y-auto w-full">
+          <ScrollArea className="h-[300px] flex flex-col gap-20 text-main-foreground border-2 border-border shadow-shadow py-4 px-3 bg-blue-200">
             {labels?.map((label) => (
-              <li
-                className="w-full flex items-center gap-2 px-5"
+              <div
+                className="w-full flex items-center gap-2 pb-2 px-2"
                 key={label.id}
               >
                 <ButtonIcon
                   onClick={() => setSelectedLabel(label.id || null)}
-                  className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-cyan-50 hover:bg-blue-100 ${
+                  className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-blue-50 hover:bg-blue-100 ${
                     selectedLabel === label.id ? "bg-blue-200" : ""
                   }`}
                 >
                   <span>{label.label_name}</span>
                 </ButtonIcon>
                 <LabelActionPopover selectedLabel={label.id} />
-              </li>
+              </div>
             ))}
-          </ul>
-          <div
-            key={Date.now()}
-            className="flex items-center gap-2 bg-violet-400"
-          >
+          </ScrollArea>
+          <div key={Date.now()} className="flex items-center gap-2 bg-blue-200">
             <form
               onSubmit={handleLabelCreateSubmit}
               className="flex items-center w-full"
