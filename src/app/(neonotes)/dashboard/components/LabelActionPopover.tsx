@@ -11,8 +11,8 @@ import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { EllipsisVertical } from "lucide-react";
 import { X } from "lucide-react";
 import { SquarePen } from "lucide-react";
-import { Delete } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import AlertDelete from "./AlertDelete";
 
 // types
 import { TLabel } from "@/app/types/label/label";
@@ -77,10 +77,7 @@ export default function LabelActionPopover({
               <p>Update</p>
             </ButtonIcon>
           )}
-          <ButtonIcon className="bg-red-400 cursor-pointer">
-            {" "}
-            <Delete /> Delete
-          </ButtonIcon>
+          <AlertDelete deleteLabel={() => deleteLabel(selectedLabel || 0)} />
         </div>
       </PopoverContent>
     </Popover>
