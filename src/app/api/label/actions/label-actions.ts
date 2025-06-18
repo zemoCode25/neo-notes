@@ -41,3 +41,22 @@ export async function createLabelToDB(labelDetails: TCreateLabel) {
     throw Error(`${error}`);
   }
 }
+
+export async function updateNoteToDB(noteDetails: TNote) {
+  try {
+    const response = await fetch(`${API_URL}/api/note/`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(noteDetails),
+    });
+    const result: TResult = await response.json();
+    if (!response.ok) {
+      throw new Error("Failed to save note");
+    }
+    return result;
+  } catch (err) {
+    throw Error(`${err}`);
+  }
+}

@@ -1,12 +1,18 @@
+"use client";
+
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useState } from "react";
+
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { EllipsisVertical } from "lucide-react";
+import { X } from "lucide-react";
 import { SquarePen } from "lucide-react";
 import { Delete } from "lucide-react";
+import { Input } from "@/components/ui/input";
 
 type LabelActionPopoverProps = {
   selectedLabel?: number | null;
@@ -15,6 +21,7 @@ type LabelActionPopoverProps = {
 export default function LabelActionPopover({
   selectedLabel,
 }: LabelActionPopoverProps) {
+  const [isInputRendered, setIsInputRendered] = useState(false);
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -25,10 +32,29 @@ export default function LabelActionPopover({
       </PopoverTrigger>
       <PopoverContent className="w-fit text-main-foreground flex flex-col gap-2 items-center bg-blue-200">
         <div className="flex flex-col gap-2">
-          <ButtonIcon className="bg-blue-100 cursor-pointer">
-            <SquarePen />
-            Update
-          </ButtonIcon>
+          {isInputRendered ? (
+            <div className="flex items-center gap-2 bg-blue-200">
+              <Input
+                className="w-full"
+                placeholder="Enter new label name"
+                onBlur={() => setIsInputRendered(false)}
+              />
+              <ButtonIcon
+                className="bg-blue-100 cursor-pointer"
+                onClick={() => setIsInputRendered(false)}
+              >
+                <X />
+              </ButtonIcon>
+            </div>
+          ) : (
+            <ButtonIcon
+              onClick={() => setIsInputRendered(true)}
+              className="bg-blue-100 cursor-pointer"
+            >
+              <SquarePen />
+              <p>Update</p>
+            </ButtonIcon>
+          )}
           <ButtonIcon className="bg-red-400 cursor-pointer">
             {" "}
             <Delete /> Delete
