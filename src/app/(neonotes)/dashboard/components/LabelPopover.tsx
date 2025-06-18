@@ -6,6 +6,7 @@ import {
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { Tag } from "lucide-react";
 import { Plus } from "lucide-react";
+import { EllipsisVertical } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 
@@ -103,18 +104,30 @@ export default function LabelPopover({
       </PopoverTrigger>
       <PopoverContent className="w-fit text-main-foreground flex flex-col gap-2 items-center">
         <div className="flex flex-col gap-2">
-          {labels?.map((label) => (
-            <ButtonIcon
-              key={label.id}
-              onClick={() => setSelectedLabel(label.id || null)}
-              className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-cyan-50 hover:bg-cyan-100 ${
-                selectedLabel === label.id ? "bg-cyan-200" : ""
-              }`}
-            >
-              <span>{label.label_name}</span>
-            </ButtonIcon>
-          ))}
-          <div key={Date.now()} className="flex items-center gap-2">
+          <ul className="flex flex-col gap-2 h-[300px] pb-2 overflow-y-auto w-full">
+            {labels?.map((label) => (
+              <li
+                className="w-full flex items-center gap-2 px-5"
+                key={label.id}
+              >
+                <ButtonIcon
+                  onClick={() => setSelectedLabel(label.id || null)}
+                  className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-cyan-50 hover:bg-cyan-100 ${
+                    selectedLabel === label.id ? "bg-cyan-200" : ""
+                  }`}
+                >
+                  <span>{label.label_name}</span>
+                </ButtonIcon>
+                <ButtonIcon>
+                  <EllipsisVertical />
+                </ButtonIcon>
+              </li>
+            ))}
+          </ul>
+          <div
+            key={Date.now()}
+            className="flex items-center gap-2 bg-violet-400"
+          >
             <form
               onSubmit={handleLabelCreateSubmit}
               className="flex items-center w-full"
