@@ -1,4 +1,5 @@
 import { TCreateLabel } from "@/app/types/label/create-label";
+import { TLabel } from "@/app/types/label/label";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function retriveAllLabels() {
@@ -42,7 +43,7 @@ export async function createLabelToDB(labelDetails: TCreateLabel) {
   }
 }
 
-export async function updateLabelToDB(labelDetails: TCreateLabel) {
+export async function updateLabelToDB(labelDetails: TLabel) {
   try {
     const response = await fetch(`${API_URL}/api/label/`, {
       method: "PUT",
@@ -53,6 +54,8 @@ export async function updateLabelToDB(labelDetails: TCreateLabel) {
     });
     const result = await response.json();
     if (!response.ok) {
+      console.log(response?.status);
+      console.log(result?.error);
       throw new Error("Failed to save label");
     }
     return result;

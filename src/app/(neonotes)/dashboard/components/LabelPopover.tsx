@@ -12,16 +12,18 @@ import { useEffect, useState } from "react";
 // actions
 import { retriveAllLabels } from "@/app/api/label/actions/label-actions";
 import { createLabelToDB } from "@/app/api/label/actions/label-actions";
-import { TLabel } from "@/app/types/label/label";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 // utils
 import LabelActionPopover from "./LabelActionPopover";
 
+//types
+import { TLabel } from "@/app/types/label/label";
+
 type LabelPopoverProps = {
-  selectedLabel?: number | null;
-  setSelectedLabel: React.Dispatch<React.SetStateAction<number | null>>;
+  selectedLabel?: TLabel | null;
+  setSelectedLabel: React.Dispatch<React.SetStateAction<TLabel | null>>;
   labelDialogOpen: boolean;
   setLabelDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -102,12 +104,12 @@ export default function LabelPopover({
           <Tag />
           <span
             className={`${
-              findLabelById(selectedLabel || null)?.label_name
+              findLabelById(selectedLabel?.id || null)?.label_name
                 ? "flex"
                 : "hidden"
             } text-sm`}
           >
-            {findLabelById(selectedLabel || null)?.label_name}
+            {findLabelById(selectedLabel?.id || null)?.label_name}
           </span>
         </ButtonIcon>
       </PopoverTrigger>
@@ -120,15 +122,15 @@ export default function LabelPopover({
                 key={label.id}
               >
                 <ButtonIcon
-                  onClick={() => setSelectedLabel(label.id || null)}
+                  onClick={() => setSelectedLabel(label || null)}
                   className={`w-full justify-start text-left text-sm hover:bg-opacity-80 cursor-pointer bg-blue-50 hover:bg-blue-100 ${
-                    selectedLabel === label.id ? "bg-blue-200" : ""
+                    selectedLabel?.id === label.id ? "bg-blue-200" : ""
                   }`}
                 >
                   <span>{label.label_name}</span>
                 </ButtonIcon>
                 <LabelActionPopover
-                  selectedLabel={label.id}
+                  selectedLabel={label}
                   setLabels={setLabels}
                 />
               </div>
@@ -143,8 +145,9 @@ export default function LabelPopover({
                 placeholder="Add new label"
                 name="labelName"
                 id="labelName"
+                required
               />
-              <Button type="submit" className="ml-2">
+              <Button type="submit" className="ml-2 cursor-pointer">
                 <Plus />
               </Button>
             </form>

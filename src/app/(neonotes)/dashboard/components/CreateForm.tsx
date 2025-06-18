@@ -16,6 +16,7 @@ import ColorPopover from "./ColorPopover";
 import LabelPopover from "./LabelPopover";
 // Types
 import { TCreateNote } from "@/app/types/create-note";
+import { TLabel } from "@/app/types/label/label";
 
 type CreateFormProp = {
   closeModal: () => void;
@@ -26,7 +27,7 @@ type CreateFormProp = {
 export default function CreateForm({ createNote }: CreateFormProp) {
   const [selectedColor, setSelectedColor] = useState<string>("bg-blue-100");
   const [colorThemeDialogOpen, setColorThemeDialogOpen] = useState(false);
-  const [selectedLabel, setSelectedLabel] = useState<number | null>(null);
+  const [selectedLabel, setSelectedLabel] = useState<TLabel | null>(null);
   const [labelDialogOpen, setLabelDialogOpen] = useState(false);
 
   function handleColorChange(colorClass: string) {
