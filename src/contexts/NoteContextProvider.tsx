@@ -1,9 +1,10 @@
-import { createContext } from "react";
+"use client";
+import { createContext, useState } from "react";
 import { TNote } from "@/app/types/note";
 
 type TNoteContext = {
   notes: TNote[];
-  setNotes: (notes: TNote[]) => void;
+  setNotes: React.Dispatch<React.SetStateAction<TNote[]>>;
 };
 
 export const NoteContext = createContext<TNoteContext>({
@@ -16,8 +17,9 @@ export default function NoteContextProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const [notes, setNotes] = useState<TNote[]>([]);
   return (
-    <NoteContext.Provider value={{ notes: [], setNotes: () => {} }}>
+    <NoteContext.Provider value={{ notes, setNotes }}>
       {children}
     </NoteContext.Provider>
   );

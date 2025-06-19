@@ -6,6 +6,7 @@ import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { Suspense } from "react";
+import NoteContextProvider from "@/contexts/NoteContextProvider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -26,21 +27,23 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${archivo.className} antialiased`}>
         <Suspense>
-          <SidebarProvider
-            className="bg-neutral-200"
-            style={
-              {
-                "--sidebar-width": "calc(var(--spacing) * 72)",
-                "--header-height": "calc(var(--spacing) * 12)",
-              } as React.CSSProperties
-            }
-          >
-            <AppSidebar className="bg-violet-50" variant="inset" />
-            <SidebarInset>
-              <SiteHeader />
-              <div className="px-20 py-5">{children}</div>
-            </SidebarInset>
-          </SidebarProvider>
+          <NoteContextProvider>
+            <SidebarProvider
+              className="bg-neutral-200"
+              style={
+                {
+                  "--sidebar-width": "calc(var(--spacing) * 72)",
+                  "--header-height": "calc(var(--spacing) * 12)",
+                } as React.CSSProperties
+              }
+            >
+              <AppSidebar className="bg-violet-50" variant="inset" />
+              <SidebarInset>
+                <SiteHeader />
+                <div className="px-20 py-5">{children}</div>
+              </SidebarInset>
+            </SidebarProvider>
+          </NoteContextProvider>
         </Suspense>
       </body>
     </html>

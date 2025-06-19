@@ -8,7 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 // React
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import toast, { Toaster } from "react-hot-toast";
 // Actions
 import {
@@ -23,13 +23,22 @@ import UpdateForm from "./UpdateForm";
 import { TNote } from "@/app/types/note";
 import { TCreateNote } from "@/app/types/create-note";
 import { TUpdateNote } from "@/app/types/update-note";
+// context
+import { NoteContext } from "@/contexts/NoteContextProvider";
 
 export default function NoteClient({ notesList }: { notesList: TNote[] }) {
-  const [notes, setNotes] = useState<TNote[]>(notesList);
+  const { notes, setNotes } = useContext(NoteContext);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    setNotes(notesList);
+    setLoading(false);
+  }, [notesList, setNotes]);
+
+  console.log(notes, "notes AFTER setNotes?");
 
   function handleClick(id: number) {
     const params = new URLSearchParams(searchParams.toString());
@@ -55,10 +64,6 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
       setLoading(false);
     }
   }
-
-  useEffect(() => {
-    fetchNotes();
-  }, []);
 
   async function createNote(noteDetails: TCreateNote) {
     try {
