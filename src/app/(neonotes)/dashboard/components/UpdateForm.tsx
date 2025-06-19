@@ -93,7 +93,7 @@ export default function UpdateForm({
       title: title ? String(title) : "",
       note: note ? String(note) : "",
       colortheme: selectedColor,
-      label_id: noteItem?.label_id || null, // Assuming label_id is part of noteItem
+      label_id: selectedLabel?.id || null,
     };
 
     updateNote(noteDetails);

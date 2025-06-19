@@ -42,9 +42,9 @@ export async function PUT(req: NextRequest) {
 
   const sql = neon(url);
   const body = await req.json();
-  const { title, note, id, colortheme } = body;
+  const { title, note, id, colortheme, label_id } = body;
 
-  await sql`UPDATE note set title = ${title}, note = ${note}, colorTheme = ${colortheme} WHERE id = ${id}`;
+  await sql`UPDATE note set title = ${title}, note = ${note}, colorTheme = ${colortheme}, label_id = ${label_id} WHERE id = ${id}`;
   return NextResponse.json({ message: "Note saved!" }, { status: 201 });
 }
 
