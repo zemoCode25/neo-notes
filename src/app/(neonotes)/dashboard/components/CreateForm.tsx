@@ -8,6 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
+import Spinner from "@/components/utils/Spinner";
 
 // Utils
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
@@ -59,7 +60,7 @@ export default function CreateForm({ createNote }: CreateFormProp) {
   }
 
   return (
-    <DialogContent className="sm:max-w-[700px]">
+    <DialogContent className={`sm:max-w-[700px] ${selectedColor}`}>
       <DialogTitle className="hidden" />
       <form onSubmit={handleCreateNoteSubmit}>
         <Input
@@ -100,6 +101,7 @@ export default function CreateForm({ createNote }: CreateFormProp) {
               NeoNotes AI <Sparkle />
             </ButtonIcon>
             <Button className="cursor-pointer" type="submit">
+              <Spinner />
               Save
             </Button>
           </div>
