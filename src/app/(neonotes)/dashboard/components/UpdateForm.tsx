@@ -15,11 +15,11 @@ import {
 } from "@/components/ui/popover";
 import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
-import { Tag } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { EllipsisVertical, CopyPlus, Trash } from "lucide-react";
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
+import LabelPopover from "./LabelPopover";
 
 import ColorPopover from "./ColorPopover";
 // actions
@@ -28,6 +28,7 @@ import { deleteNote } from "@/app/api/note/actions/note-actions";
 import { TNote } from "@/app/types/note";
 import { TUpdateNote } from "@/app/types/update-note";
 import { TCreateNote } from "@/app/types/create-note";
+import { TLabel } from "@/app/types/label/label";
 
 type UpdateFormProps = {
   noteItem: TNote;
@@ -44,6 +45,9 @@ export default function UpdateForm({
   closeModal,
   createNote,
 }: UpdateFormProps) {
+  const [selectedLabel, setSelectedLabel] = useState<TLabel | null>(null);
+  const [labelDialogOpen, setLabelDialogOpen] = useState(false);
+
   async function handleDeleteNote(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
     try {
@@ -124,9 +128,12 @@ export default function UpdateForm({
               colorThemeDialogOpen={colorThemeDialogOpen}
               setColorThemeDialogOpen={setColorThemeDialogOpen}
             />
-            <ButtonIcon className="cursor-pointer bg-blue-200">
-              <Tag />
-            </ButtonIcon>
+            <LabelPopover
+              selectedLabel={selectedLabel}
+              setSelectedLabel={setSelectedLabel}
+              labelDialogOpen={labelDialogOpen}
+              setLabelDialogOpen={setLabelDialogOpen}
+            />
             <Popover>
               <PopoverTrigger asChild>
                 <ButtonIcon className="cursor-pointer bg-blue-200">
