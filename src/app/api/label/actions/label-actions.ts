@@ -82,3 +82,23 @@ export async function deleteLabelToDB(id: number) {
     throw Error(`${err}`);
   }
 }
+
+export async function retriveLastLabelID() {
+  try {
+    const response = await fetch(
+      `${API_URL}/api/label/retrieve-routes?last=true`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error("Failed to retrieve labels");
+    }
+    return result;
+  } catch (err) {
+    throw Error(`${err}`);
+  }
+}

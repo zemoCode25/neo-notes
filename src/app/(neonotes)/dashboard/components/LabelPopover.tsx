@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 // actions
 import { retriveAllLabels } from "@/app/api/label/actions/label-actions";
 import { createLabelToDB } from "@/app/api/label/actions/label-actions";
+import { retriveLastLabelID } from "@/app/api/label/actions/label-actions";
+
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
@@ -47,10 +49,24 @@ export default function LabelPopover({
     }
   }
 
+  async function fetchLastLabelID() {
+    try {
+      const result = await retriveLastLabelID();
+      console.log(result.id[0].id);
+      return result.id[0].id || null;
+    } catch (error) {
+      console.error("Error fetching last label ID:", error);
+    }
+  }
+
   async function createLabel(labelName: string) {
     try {
       const result = await createLabelToDB({ label_name: labelName });
-      setLabels((prevLabels) => [...(prevLabels || []), result.label]);
+      const lastLabelID = await fetchLastLabelID();
+      setLabels((prevLabels) => [
+        { id: lastLabelID, ...result.label },
+        ...(prevLabels || []),
+      ]);
     } catch (error) {
       console.error("Error creating label:", error);
     }
@@ -115,7 +131,7 @@ export default function LabelPopover({
       </PopoverTrigger>
       <PopoverContent className="w-fit text-main-foreground flex flex-col gap-2 items-center bg-blue-200">
         <div className="flex flex-col gap-2">
-          <ScrollArea className="h-[300px] flex flex-col gap-20 text-main-foreground border-2 border-border shadow-shadow py-4 px-3 bg-blue-200">
+          <ScrollArea className="max-h-[300px] h-full flex flex-col gap-20 text-main-foreground border-2 border-border shadow-shadow py-4 px-3 bg-blue-200">
             {labels?.map((label) => (
               <div
                 className="w-full flex items-center gap-2 pb-2 px-2"
