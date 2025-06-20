@@ -83,3 +83,20 @@ export async function deleteNote(id: number) {
     throw Error(`${err}`);
   }
 }
+
+export async function retriveNoteByLabel(labelId: number) {
+  try {
+    const response = await fetch(`${API_URL}/api/note/retrieve/${labelId}`, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error("Failed to retrieve notes by label");
+    }
+    return result;
+  } catch (err) {
+    throw Error(`${err}`);
+  }
+}
