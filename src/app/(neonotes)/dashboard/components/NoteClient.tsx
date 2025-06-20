@@ -7,7 +7,6 @@ import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 // React
-import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState, useContext } from "react";
 import toast, { Toaster } from "react-hot-toast";
 // Actions
@@ -30,8 +29,6 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   const { notes, setNotes } = useContext(NoteContext);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const searchParams = useSearchParams();
 
   useEffect(() => {
     setNotes(notesList);
@@ -39,12 +36,6 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   }, [notesList, setNotes]);
 
   console.log(notes, "notes AFTER setNotes?");
-
-  function handleClick(id: number) {
-    const params = new URLSearchParams(searchParams.toString());
-    params.set("id", id.toString());
-    router.push(`?${params.toString()}`);
-  }
 
   function updateNoteState(noteDetails: TNote) {
     setNotes((prevNotes) =>
@@ -128,10 +119,7 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
           )}
           {notes.map((noteItem) => (
             <Dialog key={noteItem?.id}>
-              <DialogTrigger
-                className="cursor-pointer w-full"
-                onClick={() => handleClick(1)}
-              >
+              <DialogTrigger className="cursor-pointer w-full">
                 <Card
                   className={`w-full rounded-md p-4 mb-4 break-inside-avoid text-left ${
                     noteItem?.colortheme || "bg-violet-100"
