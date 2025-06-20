@@ -33,6 +33,8 @@ import { retriveAllLabels } from "@/app/api/label/actions/label-actions";
 import { TLabel } from "@/app/types/label/label";
 import { TNavLink } from "@/app/types/navlink/navlink";
 
+import { ScrollArea } from "./ui/scroll-area";
+
 import NeonotesLogo from "./utils/neonotes-logo";
 
 const data = {
@@ -130,8 +132,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent className="bg-violet-100 border-x-1">
-        <NavMain items={labels} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <ScrollArea className="h-full flex flex-col">
+          <NavMain items={labels} />
+          <NavSecondary items={data.navSecondary} className="mt-auto" />
+        </ScrollArea>
       </SidebarContent>
       <SidebarFooter className="bg-violet-100 rounded-b-md border-x-1 border-b-1 hover:bg-violet-200">
         <NavUser user={data.user} />
