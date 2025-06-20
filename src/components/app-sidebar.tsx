@@ -112,7 +112,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         ...labelsData.map((label: TLabel) => ({
           id: label.id,
           title: label.label_name,
-          url: `label/${label.id}`,
+          url: `/label/${label.id}`,
           icon: Tag,
         })),
       ]);
