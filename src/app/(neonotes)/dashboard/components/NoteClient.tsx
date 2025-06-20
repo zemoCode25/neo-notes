@@ -1,8 +1,6 @@
 "use client";
 
 // UI
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
@@ -16,8 +14,8 @@ import {
   createNoteToDB,
 } from "@/app/api/note/actions/note-actions";
 // Utils component
-import CreateForm from "./CreateForm";
-import UpdateForm from "./UpdateForm";
+import UpdateForm from "../../components/UpdateForm";
+import SearchCreate from "../../components/SearchCreate";
 // type
 import { TNote } from "@/app/types/note";
 import { TCreateNote } from "@/app/types/create-note";
@@ -87,20 +85,13 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
 
   return (
     <div>
-      <div className="w-full flex items-center justify-center gap-5">
-        <Toaster position="bottom-right" reverseOrder={false} />
-        <Input className="w-1/4" placeholder="Search..."></Input>
-        <Dialog open={openModal} onOpenChange={setOpenModal}>
-          <DialogTrigger asChild>
-            <Button className="cursor">Take Note</Button>
-          </DialogTrigger>
-          <CreateForm
-            closeModal={() => setOpenModal(false)}
-            fetchNotes={fetchNotes}
-            createNote={createNote}
-          />
-        </Dialog>
-      </div>
+      <Toaster position="bottom-right" reverseOrder={false} />
+      <SearchCreate
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        fetchNotes={fetchNotes}
+        createNote={createNote}
+      />
 
       {loading ? (
         <div className="columns-1 sm:columns-2 md:columns-5 gap-4 my-5 w-full">

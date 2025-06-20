@@ -1,4 +1,4 @@
-import React from "react";
+import { LabelPageClient } from "./components/LabelPageClient";
 
 export default async function LabelPage({
   params,
@@ -6,5 +6,5 @@ export default async function LabelPage({
   params: Promise<{ labelID: string }>;
 }) {
   const { labelID } = await params;
-  return <div>{labelID}</div>;
+  return <LabelPageClient labelID={labelID} />;
 }
