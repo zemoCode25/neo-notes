@@ -15,6 +15,11 @@ import { Card } from "@/components/ui/card";
 import UpdateForm from "@/app/(neonotes)/components/UpdateForm";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import { Toaster } from "react-hot-toast";
+import Bold from "@tiptap/extension-bold";
+import Document from "@tiptap/extension-document";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import { EditorContent, useEditor } from "@tiptap/react";
 
 //actions
 import { retriveNoteByLabel } from "@/app/api/note/actions/note-actions";
@@ -31,6 +36,19 @@ export function LabelPageClient({ labelID }: { labelID: string }) {
       )
     );
   }
+
+  const editor = useEditor({
+    extensions: [Document, Paragraph, Text, Bold],
+    content: `
+        <p>This isn’t bold.</p>
+        <p><strong>This is bold.</strong></p>
+        <p><b>And this.</b></p>
+        <p style="font-weight: bold">This as well.</p>
+        <p style="font-weight: bolder">Oh, and this!</p>
+        <p style="font-weight: 500">Cool, isn’t it!?</p>
+        <p style="font-weight: 999">Up to font weight 999!!!</p>
+      `,
+  });
 
   const fetchNotes = useCallback(async () => {
     try {
@@ -139,6 +157,32 @@ export function LabelPageClient({ labelID }: { labelID: string }) {
           ))}
         </div>
       )}
+      <div className="control-group">
+        <div className="button-group">
+          <button
+            onClick={() => {
+              editor?.chain().focus().toggleBold().run();
+              console.log("TANGINA PLSS");
+            }}
+            className={editor?.isActive("bold") ? "is-active" : ""}
+          >
+            Toggle bold
+          </button>
+          <button
+            onClick={() => editor?.chain().focus().setBold().run()}
+            disabled={editor?.isActive("bold")}
+          >
+            Set bold
+          </button>
+          <button
+            onClick={() => editor?.chain().focus().unsetBold().run()}
+            disabled={!editor?.isActive("bold")}
+          >
+            Unset bold
+          </button>
+        </div>
+      </div>
+      <EditorContent editor={editor} />
     </div>
   );
 }
