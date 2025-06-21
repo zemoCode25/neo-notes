@@ -14,6 +14,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Card } from "@/components/ui/card";
 import UpdateForm from "@/app/(neonotes)/components/UpdateForm";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import { Toaster } from "react-hot-toast";
 
 //actions
 import { retriveNoteByLabel } from "@/app/api/note/actions/note-actions";
@@ -78,6 +79,7 @@ export function LabelPageClient({ labelID }: { labelID: string }) {
 
   return (
     <div>
+      <Toaster position="bottom-right" reverseOrder={false} />
       <SearchCreate
         openModal={openModal}
         setOpenModal={setOpenModal}

@@ -45,7 +45,10 @@ export default function UpdateForm({
   closeModal,
   createNote,
 }: UpdateFormProps) {
-  const [selectedLabel, setSelectedLabel] = useState<TLabel | null>(null);
+  const [selectedLabel, setSelectedLabel] = useState<TLabel | null>({
+    id: noteItem?.label_id || 0,
+    label_name: noteItem?.label_name || "",
+  });
   const [labelDialogOpen, setLabelDialogOpen] = useState(false);
 
   async function handleDeleteNote(e: React.MouseEvent<HTMLButtonElement>) {
