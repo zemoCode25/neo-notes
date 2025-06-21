@@ -29,6 +29,16 @@ import { TNote } from "@/app/types/note";
 import { TUpdateNote } from "@/app/types/update-note";
 import { TCreateNote } from "@/app/types/create-note";
 import { TLabel } from "@/app/types/label/label";
+// tiptap
+import { Editor, useEditor } from "@tiptap/react";
+import { EditorContent } from "@tiptap/react";
+import TextEditorButtons from "./TextEditorButtons";
+import Document from "@tiptap/extension-document";
+import Italic from "@tiptap/extension-italic";
+import Bold from "@tiptap/extension-bold";
+import Underline from "@tiptap/extension-underline";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
 
 type UpdateFormProps = {
   noteItem: TNote;
@@ -49,7 +59,24 @@ export default function UpdateForm({
     id: noteItem?.label_id || 0,
     label_name: noteItem?.label_name || "",
   });
+  const [editorDialogOpen, setEditorDialogOpen] = useState(false);
   const [labelDialogOpen, setLabelDialogOpen] = useState(false);
+
+  const editor: Editor | null = useEditor({
+    extensions: [Document, Paragraph, Text, Italic, Bold, Underline],
+    content: `
+        <p>${noteItem?.note}</p>
+      `,
+    editorProps: {
+      attributes: {
+        class: "outline-none",
+      },
+    },
+  });
+
+  function handleEditorDialogOpen() {
+    setEditorDialogOpen(!editorDialogOpen);
+  }
 
   async function handleDeleteNote(e: React.MouseEvent<HTMLButtonElement>) {
     e.preventDefault();
@@ -113,18 +140,38 @@ export default function UpdateForm({
           id="title"
           defaultValue={noteItem?.title}
         ></Input>
-        <textarea
+        {/* <textarea
           name="note"
           id="note"
           defaultValue={noteItem?.note}
           placeholder="Take your note"
           className="outline-none w-full min-h-150 p-3 border-black border-1 rounded-md my-2"
-        ></textarea>
+        ></textarea> */}
+        <EditorContent
+          name="note"
+          id="note"
+          defaultValue={noteItem?.note}
+          placeholder="Take your note"
+          className="outline-none w-full min-h-150 p-3 !border-black border-1 rounded-md my-2"
+          editor={editor}
+        />
+        <input type="hidden" name="note" value={editor?.getHTML() || ""} />
         <DialogFooter className="flex !justify-between !w-full">
-          <div className="flex gap-3">
-            <ButtonIcon className="cursor-pointer bg-blue-200">
+          <div className="flex gap-3 relative">
+            {/* text Editor Button */}
+            <ButtonIcon
+              className="cursor-pointer bg-blue-200"
+              onClick={handleEditorDialogOpen}
+            >
               <LetterText />
             </ButtonIcon>
+            {editorDialogOpen && (
+              <TextEditorButtons
+                className="absolute bottom-12 left-0 z-50"
+                editor={editor}
+              />
+            )}
+            {/* Color and Label Popovers */}
             <ColorPopover
               selectedColor={selectedColor}
               handleColorChange={handleColorChange}
