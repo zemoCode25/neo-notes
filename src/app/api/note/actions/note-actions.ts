@@ -86,7 +86,7 @@ export async function deleteNote(id: number) {
 
 export async function retriveNoteByLabel(labelId: number) {
   try {
-    const response = await fetch(`${API_URL}/api/note/retrieve/${labelId}`, {
+    const response = await fetch(`${API_URL}/api/note/label/${labelId}`, {
       headers: {
         "Content-Type": "application/json",
       },

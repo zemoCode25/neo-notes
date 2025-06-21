@@ -1,26 +1,52 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import toast from "react-hot-toast";
 import SearchCreate from "@/app/(neonotes)/components/SearchCreate";
 import {
-  retriveNote,
   createNoteToDB,
+  updateNoteToDB,
 } from "@/app/api/note/actions/note-actions";
 import { TCreateNote } from "@/app/types/create-note";
+import { TNote } from "@/app/types/note";
+import { TUpdateNote } from "@/app/types/update-note";
+
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card } from "@/components/ui/card";
+import UpdateForm from "@/app/(neonotes)/components/UpdateForm";
+import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+
+//actions
+import { retriveNoteByLabel } from "@/app/api/note/actions/note-actions";
 
 export function LabelPageClient({ labelID }: { labelID: string }) {
   const [openModal, setOpenModal] = useState(false);
-  const [loading, setLoading] = useState(true);
-  async function fetchNotes() {
+  const [loading, setLoading] = useState(false);
+  const [labelNotes, setLabelNotes] = useState<TNote[]>([]);
+
+  function updateNoteState(noteDetails: TNote) {
+    setLabelNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === noteDetails.id ? { ...note, ...noteDetails } : note
+      )
+    );
+  }
+
+  const fetchNotes = useCallback(async () => {
     try {
-      const result = await retriveNote();
-      setNotes(result?.notes);
+      const result = await retriveNoteByLabel(Number(labelID));
+      console.log(result, "result from label page");
+      setLabelNotes(result?.notes);
     } catch (error) {
       throw Error(`${error}`);
     } finally {
       setLoading(false);
     }
-  }
+  }, [labelID]);
+
+  useEffect(() => {
+    setLoading(true);
+    fetchNotes();
+  }, [fetchNotes]);
 
   async function createNote(noteDetails: TCreateNote) {
     try {
@@ -37,6 +63,19 @@ export function LabelPageClient({ labelID }: { labelID: string }) {
     }
   }
 
+  async function updateNote(noteDetails: TUpdateNote) {
+    try {
+      const result = await updateNoteToDB(noteDetails);
+      if (result) toast.success("Note successfully updated!");
+      setOpenModal(false);
+      updateNoteState(noteDetails);
+    } catch (err) {
+      console.error("Submit error:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
     <div>
       <SearchCreate
@@ -45,6 +84,59 @@ export function LabelPageClient({ labelID }: { labelID: string }) {
         fetchNotes={fetchNotes}
         createNote={createNote}
       />
+      {loading ? (
+        <div className="columns-1 sm:columns-2 md:columns-5 gap-4 my-5 w-full h-full">
+          {[...Array(5)].map((_, idx) => (
+            <Skeleton key={idx} className="h-90 rounded-xl" />
+          ))}
+        </div>
+      ) : (
+        <div
+          className={`columns-1 sm:columns-2 md:columns-5 w-full gap-4 my-5 ${
+            labelNotes.length === 0
+              ? "flex items-center justify-center w-full"
+              : ""
+          }`}
+        >
+          {labelNotes.length === 0 && (
+            <div className="text-center text-gray-500">No notes available.</div>
+          )}
+          {labelNotes.map((noteItem) => (
+            <Dialog key={noteItem?.id}>
+              <DialogTrigger className="cursor-pointer w-full">
+                <Card
+                  className={`w-full rounded-md p-4 mb-4 break-inside-avoid text-left ${
+                    noteItem?.colortheme || "bg-violet-100"
+                  }`}
+                >
+                  <div>
+                    <h1 className="text-lg font-semibold">{noteItem?.title}</h1>
+                    {noteItem?.label_name && (
+                      <p className="text-sm border border-black px-2 py-1 rounded-md mb-2 w-fit">
+                        {noteItem?.label_name}
+                      </p>
+                    )}
+                    <p className="whitespace-pre-wrap text-sm">
+                      {`${
+                        (noteItem?.note?.length || 0) > 400
+                          ? noteItem?.note?.slice(0, 400) + "..."
+                          : noteItem?.note
+                      }`}
+                    </p>
+                  </div>
+                </Card>
+              </DialogTrigger>
+              <UpdateForm
+                noteItem={noteItem}
+                updateNote={updateNote}
+                fetchNotes={fetchNotes}
+                closeModal={() => setOpenModal(false)}
+                createNote={createNote}
+              />
+            </Dialog>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
