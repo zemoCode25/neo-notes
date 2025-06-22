@@ -44,7 +44,7 @@ export default function TextEditorButtons({
               e.preventDefault();
               editor.chain().focus().toggleItalic().run();
             }}
-            className={editor.isActive("italic") ? "is-active" : ""}
+            className={editor.isActive("italic") ? "bg-violet-500" : ""}
           >
             <Italic />
           </Button>
@@ -53,7 +53,7 @@ export default function TextEditorButtons({
               e.preventDefault();
               editor.chain().focus().toggleBold().run();
             }}
-            className={editor.isActive("bold") ? "is-active" : ""}
+            className={editor.isActive("bold") ? "bg-violet-500" : ""}
           >
             <Bold />
           </Button>
@@ -62,7 +62,7 @@ export default function TextEditorButtons({
               e.preventDefault();
               editor.chain().focus().toggleUnderline().run();
             }}
-            className={editor.isActive("underline") ? "is-active" : ""}
+            className={`${editor.isActive("underline") ? "bg-violet-500" : ""}`}
           >
             <Underline />
           </Button>
