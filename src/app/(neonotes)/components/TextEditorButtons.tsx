@@ -11,6 +11,7 @@ import { Bold } from "lucide-react";
 import { Underline } from "lucide-react";
 import { Heading1 } from "lucide-react";
 import { Heading2 } from "lucide-react";
+import { List } from "lucide-react";
 
 type TextEditorButtonsProps = {
   editor: Editor | null;
@@ -21,18 +22,6 @@ export default function TextEditorButtons({
   editor,
   className = "",
 }: TextEditorButtonsProps) {
-  //   setEditor(
-  //     useEditor({
-  //       extensions: [Document, Paragraph, Text, Italic],
-  //       content: `
-  //         <p>This isn’t italic.</p>
-  //         <p><em>This is italic.</em></p>
-  //         <p><i>And this.</i></p>
-  //         <p style="font-style: italic">This as well.</p>
-  //       `,
-  //     })
-  //   );
-
   if (!editor) {
     return null;
   }
@@ -89,6 +78,17 @@ export default function TextEditorButtons({
             className={`${editor.isActive("underline") ? "bg-violet-500" : ""}`}
           >
             <Underline />
+          </Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              editor.chain().focus().toggleBulletList().run();
+            }}
+            className={`${
+              editor.isActive("bulletList") ? "bg-violet-500" : ""
+            }`}
+          >
+            <List />
           </Button>
         </div>
       </div>

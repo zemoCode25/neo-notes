@@ -40,6 +40,8 @@ import Underline from "@tiptap/extension-underline";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
 import Heading from "@tiptap/extension-heading";
+import BulletList from "@tiptap/extension-bullet-list";
+import ListItem from "@tiptap/extension-list-item";
 
 type UpdateFormProps = {
   noteItem: TNote;
@@ -74,6 +76,12 @@ export default function UpdateForm({
       Heading.configure({
         levels: [1, 2],
       }),
+      BulletList.configure({
+        HTMLAttributes: {
+          class: "list-disc pl-2",
+        },
+      }),
+      ListItem,
     ],
     content: `
         <p>${noteItem?.note}</p>
@@ -151,13 +159,6 @@ export default function UpdateForm({
           id="title"
           defaultValue={noteItem?.title}
         ></Input>
-        {/* <textarea
-          name="note"
-          id="note"
-          defaultValue={noteItem?.note}
-          placeholder="Take your note"
-          className="outline-none w-full min-h-150 p-3 border-black border-1 rounded-md my-2"
-        ></textarea> */}
         <EditorContent
           name="note"
           id="note"
