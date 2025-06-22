@@ -9,6 +9,8 @@ import { Button } from "@/components/ui/button";
 import { Italic } from "lucide-react";
 import { Bold } from "lucide-react";
 import { Underline } from "lucide-react";
+import { Heading1 } from "lucide-react";
+import { Heading2 } from "lucide-react";
 
 type TextEditorButtonsProps = {
   editor: Editor | null;
@@ -39,6 +41,28 @@ export default function TextEditorButtons({
     <Card className={`${className} p-2 bg-blue-200 !rounded-md`}>
       <div className="">
         <div className="flex gap-2 w-fit">
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              editor.chain().focus().toggleHeading({ level: 1 }).run();
+            }}
+            className={
+              editor.isActive("heading", { level: 1 }) ? "bg-violet-500" : ""
+            }
+          >
+            <Heading1 />
+          </Button>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              editor.chain().focus().toggleHeading({ level: 2 }).run();
+            }}
+            className={
+              editor.isActive("heading", { level: 2 }) ? "bg-violet-500" : ""
+            }
+          >
+            <Heading2 />
+          </Button>
           <Button
             onClick={(e) => {
               e.preventDefault();

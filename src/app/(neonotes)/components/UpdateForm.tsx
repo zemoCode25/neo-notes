@@ -39,6 +39,7 @@ import Bold from "@tiptap/extension-bold";
 import Underline from "@tiptap/extension-underline";
 import Paragraph from "@tiptap/extension-paragraph";
 import Text from "@tiptap/extension-text";
+import Heading from "@tiptap/extension-heading";
 
 type UpdateFormProps = {
   noteItem: TNote;
@@ -63,7 +64,17 @@ export default function UpdateForm({
   const [labelDialogOpen, setLabelDialogOpen] = useState(false);
 
   const editor: Editor | null = useEditor({
-    extensions: [Document, Paragraph, Text, Italic, Bold, Underline],
+    extensions: [
+      Document,
+      Paragraph,
+      Text,
+      Italic,
+      Bold,
+      Underline,
+      Heading.configure({
+        levels: [1, 2],
+      }),
+    ],
     content: `
         <p>${noteItem?.note}</p>
       `,
