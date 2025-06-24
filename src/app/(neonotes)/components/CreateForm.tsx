@@ -18,6 +18,19 @@ import LabelPopover from "./LabelPopover";
 // Types
 import { TCreateNote } from "@/app/types/create-note";
 import { TLabel } from "@/app/types/label/label";
+// tiptap
+import { Editor, useEditor } from "@tiptap/react";
+import { EditorContent } from "@tiptap/react";
+import TextEditorButtons from "./TextEditorButtons";
+import Document from "@tiptap/extension-document";
+import Italic from "@tiptap/extension-italic";
+import Bold from "@tiptap/extension-bold";
+import Underline from "@tiptap/extension-underline";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import Heading from "@tiptap/extension-heading";
+import BulletList from "@tiptap/extension-bullet-list";
+import ListItem from "@tiptap/extension-list-item";
 
 type CreateFormProp = {
   closeModal: () => void;
@@ -30,6 +43,39 @@ export default function CreateForm({ createNote }: CreateFormProp) {
   const [colorThemeDialogOpen, setColorThemeDialogOpen] = useState(false);
   const [selectedLabel, setSelectedLabel] = useState<TLabel | null>(null);
   const [labelDialogOpen, setLabelDialogOpen] = useState(false);
+  const [editorDialogOpen, setEditorDialogOpen] = useState(false);
+
+  const editor: Editor | null = useEditor({
+    extensions: [
+      Document,
+      Paragraph,
+      Text,
+      Italic,
+      Bold,
+      Underline,
+      Heading.configure({
+        levels: [1, 2],
+      }),
+      BulletList.configure({
+        HTMLAttributes: {
+          class: "list-disc pl-2",
+        },
+      }),
+      ListItem,
+    ],
+    content: `
+          <p></p>
+        `,
+    editorProps: {
+      attributes: {
+        class: "outline-none",
+      },
+    },
+  });
+
+  function handleEditorDialogOpen() {
+    setEditorDialogOpen(!editorDialogOpen);
+  }
 
   function handleColorChange(colorClass: string) {
     setSelectedColor(colorClass);
@@ -69,17 +115,27 @@ export default function CreateForm({ createNote }: CreateFormProp) {
           name="title"
           id="title"
         ></Input>
-        <textarea
+        <EditorContent
           name="note"
           id="note"
           placeholder="Take your note"
-          className="outline-none w-full min-h-150 p-3 border-black border-1 rounded-md my-2"
-        ></textarea>
+          className="outline-none w-full h-150 p-3 border-black border-1 rounded-md my-2"
+          editor={editor}
+        />
         <DialogFooter className="flex !justify-between !w-full">
           <div className="flex gap-3">
-            <ButtonIcon className="cursor-pointer bg-blue-200">
+            <ButtonIcon
+              onClick={handleEditorDialogOpen}
+              className="cursor-pointer bg-blue-200"
+            >
               <LetterText />
             </ButtonIcon>
+            {editorDialogOpen && (
+              <TextEditorButtons
+                className="absolute bottom-12 left-0 z-50"
+                editor={editor}
+              />
+            )}
             <ColorPopover
               selectedColor={selectedColor}
               handleColorChange={handleColorChange}
