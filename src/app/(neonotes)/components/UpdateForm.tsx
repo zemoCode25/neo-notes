@@ -162,9 +162,9 @@ export default function UpdateForm({
         <EditorContent
           name="note"
           id="note"
-          defaultValue={noteItem?.note}
+          value={noteItem?.note}
           placeholder="Take your note"
-          className="outline-none w-full !min-h-1500 p-3 !border-black border-1 rounded-md my-2"
+          className="outline-none w-full !min-h-150 p-3 !border-black border-1 rounded-md my-2"
           editor={editor}
         />
         <input type="hidden" name="note" value={editor?.getHTML() || ""} />
