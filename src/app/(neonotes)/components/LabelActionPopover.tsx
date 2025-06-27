@@ -5,7 +5,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { useState } from "react";
+import { useState, useContext } from "react";
 
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { EllipsisVertical } from "lucide-react";
@@ -20,18 +20,19 @@ import { TLabel } from "@/app/types/label/label";
 import { deleteLabelToDB } from "@/app/api/label/actions/label-actions";
 import { updateLabelToDB } from "@/app/api/label/actions/label-actions";
 import { Button } from "@/components/ui/button";
+// context
+import { LabelContext } from "@/contexts/LabelContextProvider";
 
 type LabelActionPopoverProps = {
-  setLabels: React.Dispatch<React.SetStateAction<TLabel[] | undefined>>;
   selectedLabel?: TLabel | null;
 };
 
 export default function LabelActionPopover({
   selectedLabel,
-  setLabels,
 }: LabelActionPopoverProps) {
   const [isInputRendered, setIsInputRendered] = useState(false);
   const [actionPopoverOpen, setActionPopoverOpen] = useState(false);
+  const { setLabels } = useContext(LabelContext);
 
   async function deleteLabel(id: number) {
     try {

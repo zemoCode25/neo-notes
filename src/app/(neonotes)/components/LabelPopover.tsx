@@ -7,21 +7,19 @@ import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import { Tag } from "lucide-react";
 import { Plus } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { useEffect, useState } from "react";
-
+import { useEffect, useContext, useCallback } from "react";
 // actions
 import { retriveAllLabels } from "@/app/api/label/actions/label-actions";
 import { createLabelToDB } from "@/app/api/label/actions/label-actions";
 import { retriveLastLabelID } from "@/app/api/label/actions/label-actions";
-
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
 // utils
 import LabelActionPopover from "./LabelActionPopover";
-
 //types
 import { TLabel } from "@/app/types/label/label";
+// context
+import { LabelContext } from "@/contexts/LabelContextProvider";
 
 type LabelPopoverProps = {
   selectedLabel?: TLabel | null;
@@ -36,9 +34,9 @@ export default function LabelPopover({
   labelDialogOpen,
   setLabelDialogOpen,
 }: LabelPopoverProps) {
-  const [labels, setLabels] = useState<TLabel[] | undefined>(undefined);
+  const { labels, setLabels } = useContext(LabelContext);
 
-  async function fetchLabels() {
+  const fetchLabels = useCallback(async () => {
     try {
       const result = await retriveAllLabels();
       setLabels(result.labels);
@@ -47,7 +45,12 @@ export default function LabelPopover({
     } catch (error) {
       console.error("Error fetching labels:", error);
     }
-  }
+  }, [setLabels]);
+
+  // Fetch labels when the component mounts
+  useEffect(() => {
+    fetchLabels();
+  }, [fetchLabels]);
 
   async function fetchLastLabelID() {
     try {
@@ -99,11 +102,6 @@ export default function LabelPopover({
     form.reset(); // Reset the form after submission
   }
 
-  // Fetch labels when the component mounts
-  useEffect(() => {
-    fetchLabels();
-  }, []);
-
   function findLabelById(id: number | null) {
     return labels?.find((label) => label.id === id);
   }
@@ -146,10 +144,7 @@ export default function LabelPopover({
                 >
                   <span>{label?.label_name}</span>
                 </ButtonIcon>
-                <LabelActionPopover
-                  selectedLabel={label}
-                  setLabels={setLabels}
-                />
+                <LabelActionPopover selectedLabel={label} />
               </div>
             ))}
           </ScrollArea>
