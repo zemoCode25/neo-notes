@@ -134,8 +134,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent className="bg-violet-100 border-x-1">
         <ScrollArea className="h-full flex flex-col">
           <NavMain items={labels} />
-          <NavSecondary items={data.navSecondary} className="mt-auto" />
         </ScrollArea>
+        <NavSecondary items={data.navSecondary} className="!mt-auto" />
       </SidebarContent>
       <SidebarFooter className="bg-violet-100 rounded-b-md border-x-1 border-b-1 hover:bg-violet-200">
         <NavUser user={data.user} />
