@@ -4,6 +4,7 @@ import { LabelContext } from "@/contexts/LabelContextProvider";
 import { useContext } from "react";
 import { Tag } from "lucide-react";
 import { LayoutDashboard } from "lucide-react";
+import { usePathname } from "next/navigation";
 
 import {
   SidebarGroup,
@@ -15,6 +16,7 @@ import {
 
 export function NavMain() {
   const { labels } = useContext(LabelContext);
+  const pathname = usePathname();
 
   console.log(labels, "labels in NavMain");
 
@@ -24,7 +26,9 @@ export function NavMain() {
         <SidebarMenu>
           <Link href={`/dashboard`} className="w-full">
             <SidebarMenuButton
-              className="hover:bg-violet-200 text-black active:bg-violet-200 cursor-pointer"
+              className={`hover:bg-violet-200 text-black active:bg-violet-200 cursor-pointer ${
+                pathname === "/dashboard" ? "bg-violet-200" : ""
+              }`}
               tooltip={"Dashboard"}
             >
               <LayoutDashboard className="w-4 h-4" />
@@ -35,7 +39,9 @@ export function NavMain() {
             <SidebarMenuItem key={label.id}>
               <Link href={`/label/${label.id}`} className="w-full">
                 <SidebarMenuButton
-                  className="hover:bg-violet-200 text-black active:bg-violet-200 cursor-pointer"
+                  className={`hover:bg-violet-200 text-black active:bg-violet-200 cursor-pointer ${
+                    pathname === `/label/${label.id}` ? "bg-violet-200" : ""
+                  }`}
                   tooltip={label?.label_name}
                 >
                   {<Tag className="w-4 h-4" />}

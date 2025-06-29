@@ -7,7 +7,7 @@ export async function GET() {
 
   const sql = neon(url);
   const response =
-    await sql`SELECT note.id, note.title, note.note, note.colortheme, label.label_name, note.label_id FROM note LEFT JOIN label ON note.label_id = label.id ORDER BY note.id DESC`;
+    await sql`SELECT note.id, note.title, note.note, note.colortheme, label.label_name, note.label_id FROM note LEFT JOIN label ON note.label_id = label.id WHERE note.user_id = 1 ORDER BY note.id DESC`;
 
   return NextResponse.json({ notes: response }, { status: 200 });
 }
