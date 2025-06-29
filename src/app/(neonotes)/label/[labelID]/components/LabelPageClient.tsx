@@ -18,6 +18,7 @@ import { Toaster } from "react-hot-toast";
 
 //actions
 import { retriveNoteByLabel } from "@/app/api/note/actions/note-actions";
+import DOMPurify from "dompurify";
 
 export function LabelPageClient({ labelID }: { labelID: string }) {
   const [openModal, setOpenModal] = useState(false);
@@ -118,13 +119,16 @@ export function LabelPageClient({ labelID }: { labelID: string }) {
                         {noteItem?.label_name}
                       </p>
                     )}
-                    <p className="whitespace-pre-wrap text-sm">
-                      {`${
-                        (noteItem?.note?.length || 0) > 400
-                          ? noteItem?.note?.slice(0, 400) + "..."
-                          : noteItem?.note
-                      }`}
-                    </p>
+                    <p
+                      className="whitespace-pre-wrap text-sm"
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(
+                          (noteItem?.note?.length || 0) > 400
+                            ? (noteItem?.note?.slice(0, 400) ?? "") + "..."
+                            : noteItem?.note ?? ""
+                        ),
+                      }}
+                    />
                   </div>
                 </Card>
               </DialogTrigger>

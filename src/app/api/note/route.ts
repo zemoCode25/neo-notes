@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    await sql`INSERT INTO note (title, note, colortheme, label_id) VALUES (${title}, ${note}, ${colorTheme}, ${label_id})`;
+    await sql`INSERT INTO note (title, note, colortheme, label_id, user_id) VALUES (${title}, ${note}, ${colorTheme}, ${label_id}, 1)`;
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
     console.error(error);

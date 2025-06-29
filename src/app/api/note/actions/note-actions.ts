@@ -13,6 +13,8 @@ export async function createNoteToDB(noteDetails: TCreateNote) {
       body: JSON.stringify(noteDetails),
     });
 
+    console.log(noteDetails, "noteDetails in createNoteToDB");
+
     const result = await response.json();
 
     if (!response.ok) {

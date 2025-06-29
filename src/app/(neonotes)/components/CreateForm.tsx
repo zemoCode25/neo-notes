@@ -94,6 +94,7 @@ export default function CreateForm({ createNote }: CreateFormProp) {
     const formData = new FormData(form);
     const title = formData.get("title"); // Get data from form fields
     const note = formData.get("note");
+    console.log(title, note, "title and note from formData");
 
     const noteDetails = {
       title: title ? String(title) : "",
@@ -116,12 +117,12 @@ export default function CreateForm({ createNote }: CreateFormProp) {
           id="title"
         ></Input>
         <EditorContent
-          name="note"
           id="note"
           placeholder="Take your note"
           className="outline-none w-full h-150 p-3 border-black border-1 rounded-md my-2"
           editor={editor}
         />
+        <input type="hidden" name="note" value={editor?.getHTML() || ""} />
         <DialogFooter className="flex !justify-between !w-full">
           <div className="flex gap-3">
             <ButtonIcon
