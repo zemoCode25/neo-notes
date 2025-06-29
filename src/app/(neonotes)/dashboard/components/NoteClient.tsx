@@ -22,10 +22,13 @@ import { TCreateNote } from "@/app/types/create-note";
 import { TUpdateNote } from "@/app/types/update-note";
 // context
 import { NoteContext } from "@/contexts/NoteContextProvider";
+import { LabelContext } from "@/contexts/LabelContextProvider";
 import DOMPurify from "dompurify";
+import { TLabel } from "@/app/types/label/label";
 
 export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   const { notes, setNotes } = useContext(NoteContext);
+  const { setLabels } = useContext(LabelContext);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -40,6 +43,13 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
     setNotes((prevNotes) =>
       prevNotes.map((note) =>
         note.id === noteDetails.id ? { ...note, ...noteDetails } : note
+      )
+    );
+    setLabels((prevLabels: TLabel[]) =>
+      prevLabels.map((label: TLabel) =>
+        label.id === noteDetails.label_id
+          ? { id: label.id, label_name: label.label_name }
+          : label
       )
     );
   }
@@ -74,9 +84,12 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   async function updateNote(noteDetails: TUpdateNote) {
     try {
       const result = await updateNoteToDB(noteDetails);
-      if (result) toast.success("Note successfully updated!");
+      if (result) {
+        toast.success("Note successfully updated!");
+      }
       setOpenModal(false);
       updateNoteState(noteDetails);
+      fetchNotes();
     } catch (err) {
       console.error("Submit error:", err);
     } finally {
