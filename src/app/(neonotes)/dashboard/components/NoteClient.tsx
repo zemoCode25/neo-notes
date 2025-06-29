@@ -22,6 +22,7 @@ import { TCreateNote } from "@/app/types/create-note";
 import { TUpdateNote } from "@/app/types/update-note";
 // context
 import { NoteContext } from "@/contexts/NoteContextProvider";
+import DOMPurify from "dompurify";
 
 export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   const { notes, setNotes } = useContext(NoteContext);
@@ -123,13 +124,16 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
                         {noteItem?.label_name}
                       </p>
                     )}
-                    <p className="whitespace-pre-wrap text-sm">
-                      {`${
-                        (noteItem?.note?.length || 0) > 400
-                          ? noteItem?.note?.slice(0, 400) + "..."
-                          : noteItem?.note
-                      }`}
-                    </p>
+                    <p
+                      className="whitespace-pre-wrap text-sm"
+                      dangerouslySetInnerHTML={{
+                        __html: DOMPurify.sanitize(
+                          (noteItem?.note?.length || 0) > 400
+                            ? (noteItem?.note?.slice(0, 400) ?? "") + "..."
+                            : noteItem?.note ?? ""
+                        ),
+                      }}
+                    />
                   </div>
                 </Card>
               </DialogTrigger>

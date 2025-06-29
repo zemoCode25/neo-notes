@@ -3,6 +3,7 @@ import Link from "next/link";
 import { LabelContext } from "@/contexts/LabelContextProvider";
 import { useContext } from "react";
 import { Tag } from "lucide-react";
+import { LayoutDashboard } from "lucide-react";
 
 import {
   SidebarGroup,
@@ -26,7 +27,7 @@ export function NavMain() {
               className="hover:bg-violet-200 text-black active:bg-violet-200 cursor-pointer"
               tooltip={"Dashboard"}
             >
-              {<Tag className="w-4 h-4" />}
+              <LayoutDashboard className="w-4 h-4" />
               <span>{"Dashboard"}</span>
             </SidebarMenuButton>
           </Link>
