@@ -17,10 +17,10 @@ import NeonotesLogo from "@/components/utils/neonotes-logo";
 import { useForm } from "react-hook-form";
 // Zod Imports
 import { zodResolver } from "@hookform/resolvers/zod";
-import { userSchema } from "@/schema/zod/user";
-import { User } from "@/schema/zod/user";
 // Utils component import
 import ErrorMessage from "@/components/utils/error-message";
+import { logInSchema } from "../schema";
+import { TLogIn } from "../schema";
 
 console.log("assdasad");
 
@@ -30,15 +30,16 @@ export default function LogInForm() {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<User>({
-    resolver: zodResolver(userSchema), // Connects the zod schema to the react hook form
+  } = useForm<TLogIn>({
+    resolver: zodResolver(logInSchema), // Connects the zod schema to the react hook form
   });
 
-  const onSubmit = async (data: User) => {
+  const onSubmit = async (data: TLogIn) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     reset();
     console.log(data);
   };
+
   return (
     <Card className="w-full max-w-sm ">
       <CardHeader>
@@ -61,26 +62,6 @@ export default function LogInForm() {
               />
               {errors?.email && (
                 <ErrorMessage message={`${errors?.email?.message}`} />
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Age</Label>
-              <Input {...register("age")} id="age" type="age" required />
-              {errors?.age && (
-                <ErrorMessage message={`${errors?.age?.message}`} />
-              )}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="email">Location</Label>
-              <Input
-                {...register("location")}
-                id="location"
-                type="location"
-                placeholder="neonotes@example.com"
-                required
-              />
-              {errors.location && (
-                <ErrorMessage message={`${errors?.location?.message}`} />
               )}
             </div>
             <div className="grid gap-2">
