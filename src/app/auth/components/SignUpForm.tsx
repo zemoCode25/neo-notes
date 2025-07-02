@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,8 +11,42 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import NeonotesLogo from "@/components/utils/neonotes-logo";
+import ErrorMessage from "@/components/utils/error-message";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+
+const SignUpSchema = z
+  .object({
+    email: z.string().email({ message: "Invalid Email" }),
+    password: z
+      .string()
+      .min(8, "Kulang bai HAHHAA")
+      .max(100, "Sumusobra kanaaaa"),
+    confirmPassword: z.string().min(8).max(100),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Password needs to match",
+    path: ["confirmPassword"],
+  });
+
+type TSignUp = z.infer<typeof SignUpSchema>;
 
 export default function SignUpForm() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<TSignUp>({
+    resolver: zodResolver(SignUpSchema), // Connects the zod schema to the react hook form
+  });
+
+  async function handleSignUpSubmit(data: TSignUp) {
+    console.log(data);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    reset();
+  }
   return (
     <Card className="w-full max-w-sm ">
       <CardHeader>
@@ -20,30 +55,54 @@ export default function SignUpForm() {
         <CardDescription>Enter your email below to signup.</CardDescription>
       </CardHeader>
       <CardContent>
-        <form>
+        <form onSubmit={handleSubmit(handleSignUpSubmit)}>
           <div className="flex flex-col gap-6">
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
-                id="email"
-                type="email"
+                {...register("email")}
                 placeholder="m@example.com"
                 required
               />
+              {errors?.email && (
+                <ErrorMessage message={`${errors?.email.message}`} />
+              )}
             </div>
             <div className="grid gap-2">
               <div className="flex items-center">
                 <Label htmlFor="password">Password</Label>
               </div>
-              <Input id="password" type="password" required />
+              <Input
+                {...register("password")}
+                id="password"
+                type="password"
+                required
+              />
+              {errors?.password && (
+                <ErrorMessage message={`${errors?.password.message}`} />
+              )}
+            </div>
+            <div className="grid gap-2">
+              <div className="flex items-center">
+                <Label htmlFor="confirmPassword">Confirm Password</Label>
+              </div>
+              <Input
+                {...register("confirmPassword")}
+                id="confirmPassword"
+                type="password"
+                required
+              />
+              {errors?.confirmPassword && (
+                <ErrorMessage message={`${errors?.confirmPassword.message}`} />
+              )}
             </div>
           </div>
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            Signup
+          </Button>
         </form>
       </CardContent>
       <CardFooter className="flex-col gap-2">
-        <Button type="submit" className="w-full">
-          Signup
-        </Button>
         <Button variant="neutral" className="w-full">
           Signup with Google
         </Button>
