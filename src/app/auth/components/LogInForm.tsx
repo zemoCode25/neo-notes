@@ -37,6 +37,7 @@ export default function LogInForm() {
   const onSubmit = async (data: TLogIn) => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     reset();
+
     console.log(data);
   };
 

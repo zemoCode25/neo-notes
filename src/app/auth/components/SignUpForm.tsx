@@ -15,6 +15,7 @@ import ErrorMessage from "@/components/utils/error-message";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { signUp } from "../action";
 
 const SignUpSchema = z
   .object({
@@ -46,6 +47,10 @@ export default function SignUpForm() {
     console.log(data);
     await new Promise((resolve) => setTimeout(resolve, 1000));
     reset();
+
+    const signUpResult: string | undefined = await signUp(data);
+
+    console.log(signUpResult, "UY");
   }
   return (
     <Card className="w-full max-w-sm ">
