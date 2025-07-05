@@ -1,6 +1,8 @@
+"use server";
 import { TSignUp } from "./schema";
 import { logInSchema } from "./schema";
 import { findUserByEmail } from "../api/user/user-action";
+import { hashPassword } from "./core/passwordHasher";
 
 export async function signUp(unsafeData: TSignUp): Promise<string | undefined> {
   const { success, data } = logInSchema.safeParse(unsafeData);
@@ -13,7 +15,9 @@ export async function signUp(unsafeData: TSignUp): Promise<string | undefined> {
   const userEmailExist = await findUserByEmail(data?.email);
   console.log(userEmailExist, "userEmailExist");
 
-  if (!userEmailExist.exists) {
-    return "ULOL WALA NAMAN EH AHAHHAHAH";
+  if (userEmailExist.exists) {
+    return "Email already exists. Log in instead.";
   }
+
+  console.log(await hashPassword(data.password, "salt"));
 }
