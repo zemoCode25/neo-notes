@@ -9,3 +9,7 @@ export function hashPassword(password: string, salt: string) {
     });
   });
 }
+
+export function generateRandomSalt() {
+  return crypto.randomBytes(16).toString("hex").normalize();
+}

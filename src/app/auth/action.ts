@@ -3,9 +3,12 @@ import { TSignUp } from "./schema";
 import { logInSchema } from "./schema";
 import { findUserByEmail } from "../api/user/user-action";
 import { hashPassword } from "./core/passwordHasher";
+import { generateRandomSalt } from "./core/passwordHasher";
 
 export async function signUp(unsafeData: TSignUp): Promise<string | undefined> {
   const { success, data } = logInSchema.safeParse(unsafeData);
+
+  console.log("AYEEE, actions");
 
   if (!success) {
     console.log("Invalid data", data);
@@ -19,5 +22,7 @@ export async function signUp(unsafeData: TSignUp): Promise<string | undefined> {
     return "Email already exists. Log in instead.";
   }
 
-  console.log(await hashPassword(data.password, "salt"));
+  const randomSalt = generateRandomSalt();
+
+  console.log(await hashPassword(data.password, randomSalt));
 }
