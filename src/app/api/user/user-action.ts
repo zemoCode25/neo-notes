@@ -15,9 +15,11 @@ export async function findUserByEmail(email: string | undefined) {
       throw Error("Error in request");
     }
 
-    const result = response.json();
+    const result = await response.json();
     return result;
   } catch (error) {
     throw Error(`${error}`);
   }
 }
+
+export async function createUser(userDetails);

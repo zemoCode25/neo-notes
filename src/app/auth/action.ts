@@ -24,5 +24,5 @@ export async function signUp(unsafeData: TSignUp): Promise<string | undefined> {
 
   const randomSalt = generateRandomSalt();
 
-  console.log(await hashPassword(data.password, randomSalt));
+  const hashedPassword = await hashPassword(data.password, randomSalt);
 }
