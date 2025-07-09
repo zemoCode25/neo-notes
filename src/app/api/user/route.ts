@@ -16,6 +16,8 @@ export async function POST(req: NextRequest) {
     }
 
     await sql`INSERT INTO "user" (email, password) VALUES (${email}, ${hashedPassword})`;
+
+    return NextResponse.json({ success: true }, { status: 200 });
   } catch (error) {
     console.error(`${error}`);
     return NextResponse.json(

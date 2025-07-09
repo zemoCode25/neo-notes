@@ -4,7 +4,8 @@ import { logInSchema } from "./schema";
 import { findUserByEmail } from "../api/user/user-action";
 import { hashPassword } from "./core/passwordHasher";
 import { generateRandomSalt } from "./core/passwordHasher";
-
+import { createUserToDB } from "../api/user/user-action";
+import { TUser } from "../types/user/user";
 export async function signUp(unsafeData: TSignUp): Promise<string | undefined> {
   const { success, data } = logInSchema.safeParse(unsafeData);
 
@@ -24,5 +25,12 @@ export async function signUp(unsafeData: TSignUp): Promise<string | undefined> {
 
   const randomSalt = generateRandomSalt();
 
-  const hashedPassword = await hashPassword(data.password, randomSalt);
+  const hashedPassword: string = await hashPassword(data.password, randomSalt);
+
+  const userDetails: TUser = {
+    email: data.email,
+    hashedPassword: hashedPassword,
+  };
+
+  createUserToDB(userDetails);
 }
