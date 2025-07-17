@@ -15,7 +15,10 @@ import ErrorMessage from "@/components/utils/error-message";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { signUp } from "../action";
+import { checkCookie } from "@/app/api/user/user-action";
+
+const cookiesSet = await checkCookie();
+console.log(cookiesSet, "Cookies Set in SignUpForm");
 
 const SignUpSchema = z
   .object({
@@ -32,7 +35,6 @@ const SignUpSchema = z
   });
 
 type TSignUp = z.infer<typeof SignUpSchema>;
-
 export default function SignUpForm() {
   const {
     register,
@@ -44,14 +46,31 @@ export default function SignUpForm() {
   });
 
   async function handleSignUpSubmit(data: TSignUp) {
-    console.log(data);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    reset();
+    try {
+      const response = await fetch("/api/user", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include", // 🔥 this is critical
+        body: JSON.stringify({
+          email: data.email,
+          password: data.password,
+        }),
+      });
 
-    const signUpResult: string | undefined = await signUp(data);
+      if (!response.ok) {
+        throw new Error("Failed to sign up");
+      }
 
-    console.log(signUpResult, "UY");
+      const result = await response.json();
+      console.log(response.headers);
+      console.log(result);
+      reset();
+    } catch (error) {
+      console.error("Error during sign up:", error);
+      // Handle error appropriately, e.g., show a notification or message to the user
+    }
   }
+
   return (
     <Card className="w-full max-w-sm ">
       <CardHeader>
