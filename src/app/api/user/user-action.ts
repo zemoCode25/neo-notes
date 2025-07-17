@@ -25,14 +25,16 @@ export async function findUserByEmail(email: string | undefined) {
 
 export async function getUserByEmail(email: string | undefined) {
   try {
-    const response = await fetch(`${API_URL}/api/user/get-user-by-email`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email }),
-      credentials: "include",
-    });
+    const response = await fetch(
+      `${API_URL}/api/user/get-user-by-email?email=${email}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      }
+    );
 
     if (!response.ok) {
       throw Error("Error in request");

@@ -15,7 +15,9 @@ export async function GET(req: NextRequest) {
 
     const result = await sql`SELECT * FROM "user" WHERE email = ${email}`;
 
-    return NextResponse.json({ result });
+    const user = result[0];
+
+    return NextResponse.json({ user });
   } catch (error) {
     console.error("Error in GET request:", error);
     return NextResponse.json(

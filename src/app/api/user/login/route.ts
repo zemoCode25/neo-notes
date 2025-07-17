@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
 
     // Check if user exists
     const user = await findUserByEmail(email);
+    console.log(user, "User found in POST request");
     if (!user)
       return NextResponse.json({ error: "Email does not exist", status: 401 });
 
@@ -26,8 +27,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    console.log(userDetails, "User details retrieved");
+
+    if (!userDetails.hashedPassword || !userDetails.salt) {
+      return NextResponse.json(
+        { error: "Incomplete user credentials" },
+        { status: 200 }
+      );
+    }
+
     // Compare passwords
-    const isMatchingPassword = comparePasswords({
+    const isMatchingPassword = await comparePasswords({
       inputPassword: password,
       hashedPassword: userDetails.hashedPassword,
       salt: userDetails.salt,

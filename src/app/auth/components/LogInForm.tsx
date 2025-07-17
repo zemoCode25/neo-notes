@@ -21,6 +21,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "@/components/utils/error-message";
 import { logInSchema } from "../schema";
 import { TLogIn } from "../schema";
+import { checkCookie } from "@/app/api/user/user-action";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 console.log("assdasad");
 
@@ -35,8 +37,31 @@ export default function LogInForm() {
   });
 
   const onSubmit = async (data: TLogIn) => {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    reset();
+    try {
+      const response = await fetch(`${API_URL}/api/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+        credentials: "include", // Include cookies in the request
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || "Login failed");
+      }
+
+      const result = await response.json();
+
+      console.log(result, "Login successful");
+      const cookieCheck = await checkCookie();
+      console.log(cookieCheck, "Cookie check successful");
+
+      reset(); // Reset the form after successful submission
+    } catch (error) {
+      console.error("Error during login:", error);
+    }
 
     console.log(data);
   };
