@@ -19,10 +19,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing Values" }, { status: 400 });
     }
 
-    const hashedPassword = await hashPassword(password, generateRandomSalt());
+    const salt = generateRandomSalt();
+    const hashedPassword = await hashPassword(password, salt);
 
     const result =
-      await sql`INSERT INTO "user" (email, password) VALUES (${email}, ${hashedPassword}) RETURNING id`;
+      await sql`INSERT INTO "user" (email, password, salt) VALUES (${email}, ${hashedPassword}, ${salt}) RETURNING id`;
 
     const userID = result[0]?.id;
 
