@@ -9,7 +9,7 @@ export async function comparePasswords({
   inputPassword: string;
   hashedPassword: string;
   salt: string;
-}) {
+}): Promise<boolean> {
   const inputHashedPassword = await hashPassword(inputPassword, salt);
 
   return crypto.timingSafeEqual(

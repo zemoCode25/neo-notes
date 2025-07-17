@@ -23,6 +23,28 @@ export async function findUserByEmail(email: string | undefined) {
   }
 }
 
+export async function getUserByEmail(email: string | undefined) {
+  try {
+    const response = await fetch(`${API_URL}/api/user/get-user-by-email`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+      credentials: "include",
+    });
+
+    if (!response.ok) {
+      throw Error("Error in request");
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    throw Error(`${error}`);
+  }
+}
+
 export async function createUserToDB(userDetails: TUser) {
   try {
     const response = await fetch(`${API_URL}/api/user`, {

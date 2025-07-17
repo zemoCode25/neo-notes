@@ -1,17 +1,12 @@
 import { NextResponse, NextRequest } from "next/server";
-import { neon } from "@neondatabase/serverless";
 import { findUserByEmail } from "../user-action";
+import { comparePasswords } from "@/app/auth/core/comparePassword";
+import { getUserByEmail } from "../user-action";
+import { TUserDetails } from "@/app/types/user/user";
 import { signJwt } from "@/app/auth/jwt";
-import { hashPassword } from "@/app/auth/core/passwordHasher";
-import { generateRandomSalt } from "@/app/auth/core/passwordHasher";
 
 export async function POST(req: NextRequest) {
   try {
-    const url = process.env.DATABASE_URL;
-    if (!url) throw new Error("DATABASE_URL is not defined");
-
-    const sql = neon(url);
-
     const body = await req.json();
 
     const { email, password } = body;
@@ -20,9 +15,45 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing Values" }, { status: 400 });
     }
 
+    // Check if user exists
     const user = await findUserByEmail(email);
     if (!user)
-      return NextResponse.json({ error: "Email does not exsit", status: 401 });
+      return NextResponse.json({ error: "Email does not exist", status: 401 });
+
+    const userDetails: TUserDetails | null = await getUserByEmail(email);
+
+    if (!userDetails) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Compare passwords
+    const isMatchingPassword = comparePasswords({
+      inputPassword: password,
+      hashedPassword: userDetails.hashedPassword,
+      salt: userDetails.salt,
+    });
+
+    if (!isMatchingPassword) {
+      return NextResponse.json({ error: "Invalid password" }, { status: 401 });
+    }
+
+    // Generate JWT token
+    const token = await signJwt({
+      email: email,
+      userID: userDetails.id,
+    });
+
+    const response = NextResponse.json({ success: true }, { status: 200 });
+
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      secure: false,
+      sameSite: "lax",
+      path: "/",
+      maxAge: 60 * 60 * 24 * 7, // 7 days
+    });
+
+    return response;
   } catch (error) {
     console.error(`${error}`);
     return NextResponse.json(
