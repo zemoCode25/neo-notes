@@ -6,4 +6,5 @@ export type TUser = {
 
 export type TUserDetails = TUser & {
   id: number;
+  password: string;
 };

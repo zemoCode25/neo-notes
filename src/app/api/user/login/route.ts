@@ -2,7 +2,6 @@ import { NextResponse, NextRequest } from "next/server";
 import { findUserByEmail } from "../user-action";
 import { comparePasswords } from "@/app/auth/core/comparePassword";
 import { getUserByEmail } from "../user-action";
-import { TUserDetails } from "@/app/types/user/user";
 import { signJwt } from "@/app/auth/jwt";
 
 export async function POST(req: NextRequest) {
@@ -21,25 +20,20 @@ export async function POST(req: NextRequest) {
     if (!user)
       return NextResponse.json({ error: "Email does not exist", status: 401 });
 
-    const userDetails: TUserDetails | null = await getUserByEmail(email);
+    const userEntry = await getUserByEmail(email);
+
+    const userDetails = userEntry.user;
 
     if (!userDetails) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    console.log(userDetails, "User details retrieved");
-
-    if (!userDetails.hashedPassword || !userDetails.salt) {
-      return NextResponse.json(
-        { error: "Incomplete user credentials" },
-        { status: 200 }
-      );
-    }
+    console.log(userDetails.password, "User details retrieved");
 
     // Compare passwords
     const isMatchingPassword = await comparePasswords({
       inputPassword: password,
-      hashedPassword: userDetails.hashedPassword,
+      hashedPassword: userDetails.password,
       salt: userDetails.salt,
     });
 

@@ -55,6 +55,7 @@ export default function LogInForm() {
       const result = await response.json();
 
       console.log(result, "Login successful");
+
       const cookieCheck = await checkCookie();
       console.log(cookieCheck, "Cookie check successful");
 
