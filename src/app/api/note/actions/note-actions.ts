@@ -1,6 +1,9 @@
+"use server";
 import { TResult } from "@/app/types/note";
 import { TCreateNote } from "@/app/types/create-note";
 import { TNote } from "@/app/types/note";
+import { cookies } from "next/headers";
+import { verifyJwt } from "@/app/auth/jwt";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function createNoteToDB(noteDetails: TCreateNote) {
@@ -33,7 +36,20 @@ export async function createNoteToDB(noteDetails: TCreateNote) {
 
 export async function retriveNote() {
   try {
-    const response = await fetch(`${API_URL}/api/note`, {
+    const token = (await cookies()).get("token")?.value || "";
+    if (!token) {
+      throw new Error("Missing Token");
+    }
+
+    const payload = await verifyJwt(token);
+
+    const { userID } = payload || {};
+
+    if (!userID) {
+      throw new Error("Invalid Token");
+    }
+
+    const response = await fetch(`${API_URL}/api/note?userId=${userID}`, {
       headers: {
         "Content-Type": "application/json",
       },

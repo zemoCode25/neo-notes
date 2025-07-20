@@ -16,7 +16,7 @@ export async function signJwt(payload: TAuthPayload, expiry: string = "7d") {
 export async function verifyJwt(token: string) {
   try {
     const payload = await jwtVerify(token, JWT_SECRET);
-    return payload;
+    return payload.payload;
   } catch {
     return null;
   }

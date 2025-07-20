@@ -1,15 +1,25 @@
 import { neon } from "@neondatabase/serverless";
 import { NextResponse, NextRequest } from "next/server";
 
-export async function GET() {
-  const url = process.env.DATABASE_URL;
-  if (!url) throw new Error("DATABASE_URL is not defined");
+export async function GET(req: NextRequest) {
+  try {
+    const url = process.env.DATABASE_URL;
+    if (!url) throw new Error("DATABASE_URL is not defined");
 
-  const sql = neon(url);
-  const response =
-    await sql`SELECT note.id, note.title, note.note, note.colortheme, label.label_name, note.label_id FROM note LEFT JOIN label ON note.label_id = label.id WHERE note.user_id = 1 ORDER BY note.id DESC`;
+    const userID = req.nextUrl.searchParams.get("userId");
 
-  return NextResponse.json({ notes: response }, { status: 200 });
+    const sql = neon(url);
+    const response =
+      await sql`SELECT note.id, note.title, note.note, note.colortheme, label.label_name, note.label_id FROM note LEFT JOIN label ON note.label_id = label.id WHERE note.user_id = ${userID} ORDER BY note.id DESC`;
+
+    return NextResponse.json({ notes: response }, { status: 200 });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
 }
 
 export async function POST(req: NextRequest) {

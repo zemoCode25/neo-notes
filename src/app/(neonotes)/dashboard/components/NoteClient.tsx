@@ -9,7 +9,7 @@ import { useEffect, useState, useContext } from "react";
 import toast, { Toaster } from "react-hot-toast";
 // Actions
 import {
-  retriveNote,
+  // retriveNote,
   updateNoteToDB,
   createNoteToDB,
 } from "@/app/api/note/actions/note-actions";
@@ -25,6 +25,7 @@ import { NoteContext } from "@/contexts/NoteContextProvider";
 import { LabelContext } from "@/contexts/LabelContextProvider";
 import DOMPurify from "dompurify";
 import { TLabel } from "@/app/types/label/label";
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   const { notes, setNotes } = useContext(NoteContext);
@@ -56,8 +57,17 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
 
   async function fetchNotes() {
     try {
-      const result = await retriveNote();
-      setNotes(result?.notes);
+      const response = await fetch(`${API_URL}/api/note`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+      });
+      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(`${response} TANGINA AAA`);
+      }
+      setNotes(result);
     } catch (error) {
       throw Error(`${error}`);
     } finally {
