@@ -7,5 +7,5 @@ import NoteClient from "./components/NoteClient";
 
 export default async function Dashboard() {
   const notes = await retriveNote();
-  return <NoteClient notesList={notes?.notes} />;
+  return <NoteClient notesList={notes} />;
 }

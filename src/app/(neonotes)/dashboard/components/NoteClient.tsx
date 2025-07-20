@@ -9,7 +9,7 @@ import { useEffect, useState, useContext } from "react";
 import toast, { Toaster } from "react-hot-toast";
 // Actions
 import {
-  // retriveNote,
+  retriveNote,
   updateNoteToDB,
   createNoteToDB,
 } from "@/app/api/note/actions/note-actions";
@@ -25,7 +25,6 @@ import { NoteContext } from "@/contexts/NoteContextProvider";
 import { LabelContext } from "@/contexts/LabelContextProvider";
 import DOMPurify from "dompurify";
 import { TLabel } from "@/app/types/label/label";
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function NoteClient({ notesList }: { notesList: TNote[] }) {
   const { notes, setNotes } = useContext(NoteContext);
@@ -57,16 +56,12 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
 
   async function fetchNotes() {
     try {
-      const response = await fetch(`${API_URL}/api/note`, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      });
-      const result = await response.json();
-      if (!response.ok) {
-        throw new Error(`${response} TANGINA AAA`);
+      const result = await retriveNote();
+      if (!result) {
+        throw new Error("Failed to fetch notes");
       }
+
+      console.log(result, "Fetched notes from API");
       setNotes(result);
     } catch (error) {
       throw Error(`${error}`);
@@ -74,6 +69,8 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
       setLoading(false);
     }
   }
+
+  console.log(notes, "Notes in NoteClient");
 
   async function createNote(noteDetails: TCreateNote) {
     try {

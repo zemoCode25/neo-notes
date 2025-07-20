@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
     const response =
       await sql`SELECT note.id, note.title, note.note, note.colortheme, label.label_name, note.label_id FROM note LEFT JOIN label ON note.label_id = label.id WHERE note.user_id = ${userID} ORDER BY note.id DESC`;
 
-    return NextResponse.json({ notes: response }, { status: 200 });
+    return NextResponse.json(response, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
@@ -27,6 +27,8 @@ export async function POST(req: NextRequest) {
     const url = process.env.DATABASE_URL;
     if (!url) throw new Error("DATABASE_URL is not defined");
 
+    const userID = req.nextUrl.searchParams.get("userId");
+
     const sql = neon(url);
     const body = await req.json();
     const { title, note, colorTheme, label_id } = body;
@@ -35,7 +37,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    await sql`INSERT INTO note (title, note, colortheme, label_id, user_id) VALUES (${title}, ${note}, ${colorTheme}, ${label_id}, 1)`;
+    await sql`INSERT INTO note (title, note, colortheme, label_id, user_id) VALUES (${title}, ${note}, ${colorTheme}, ${label_id}, ${userID})`;
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
     console.error(error);

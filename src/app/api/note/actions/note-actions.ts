@@ -2,14 +2,18 @@
 import { TResult } from "@/app/types/note";
 import { TCreateNote } from "@/app/types/create-note";
 import { TNote } from "@/app/types/note";
-import { cookies } from "next/headers";
-import { verifyJwt } from "@/app/auth/jwt";
 import { getCurrentUser } from "@/app/auth/getCurrentUser";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export async function createNoteToDB(noteDetails: TCreateNote) {
   try {
-    const response = await fetch(`${API_URL}/api/note/`, {
+    const payload = await getCurrentUser();
+
+    if (!payload) {
+      throw new Error("User not authenticated");
+    }
+    const { userID } = payload;
+    const response = await fetch(`${API_URL}/api/note/?userId=${userID}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
