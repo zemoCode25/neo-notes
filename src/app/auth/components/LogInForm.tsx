@@ -21,12 +21,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import ErrorMessage from "@/components/utils/error-message";
 import { logInSchema } from "../schema";
 import { TLogIn } from "../schema";
-import { checkCookie } from "@/app/api/user/user-action";
+import { useRouter } from "next/navigation";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 console.log("assdasad");
 
 export default function LogInForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -51,15 +52,13 @@ export default function LogInForm() {
         const errorData = await response.json();
         throw new Error(errorData.error || "Login failed");
       }
-
       const result = await response.json();
 
-      console.log(result, "Login successful");
-
-      const cookieCheck = await checkCookie();
-      console.log(cookieCheck, "Cookie check successful");
-
+      if (!result.success) {
+        throw new Error(result.error || "Login failed");
+      }
       reset(); // Reset the form after successful submission
+      router.push("/dashboard"); // Redirect to the dashboard after successful login
     } catch (error) {
       console.error("Error during login:", error);
     }
