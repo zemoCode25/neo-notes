@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { checkCookie } from "@/app/api/user/user-action";
+import { useRouter } from "next/navigation";
 
 const cookiesSet = await checkCookie();
 console.log(cookiesSet, "Cookies Set in SignUpForm");
@@ -35,7 +36,9 @@ const SignUpSchema = z
   });
 
 type TSignUp = z.infer<typeof SignUpSchema>;
+
 export default function SignUpForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -62,9 +65,14 @@ export default function SignUpForm() {
       }
 
       const result = await response.json();
-      console.log(response.headers);
-      console.log(result);
+
+      if (!result.success) {
+        throw new Error(result.error || "Sign up failed");
+      }
+
       reset();
+
+      router.push("/dashboard"); // Redirect to the dashboard after successful signup
     } catch (error) {
       console.error("Error during sign up:", error);
       // Handle error appropriately, e.g., show a notification or message to the user
