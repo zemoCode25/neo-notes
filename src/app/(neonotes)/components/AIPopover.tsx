@@ -16,9 +16,9 @@ export default function AIPopover() {
       </PopoverTrigger>
       <PopoverContent className="bg-cyan-100 w-fit">
         <div className="flex flex-col gap-2 p-1 w-fit">
-          <Button className="text-left">Summarize</Button>
-          <Button className="text-left">Outline</Button>
-          <Button className="text-left">Generate</Button>
+          <Button className="text-left cursor-pointer">Summarize</Button>
+          <Button className="text-left cursor-pointer">Outline</Button>
+          <Button className="text-left cursor-pointer">Generate</Button>
         </div>
       </PopoverContent>
     </Popover>

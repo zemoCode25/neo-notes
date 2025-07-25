@@ -6,9 +6,9 @@ import {
   DialogContent,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
 import Spinner from "@/components/utils/Spinner";
+import AIPopover from "./AIPopover";
 
 // Utils
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
@@ -151,12 +151,7 @@ export default function CreateForm({ createNote }: CreateFormProp) {
             />
           </div>
           <div className="flex items-center gap-3">
-            <ButtonIcon
-              onClick={(e) => e.preventDefault()}
-              className="bg-cyan-100 cursor-pointer"
-            >
-              NeoNotes AI <Sparkle />
-            </ButtonIcon>
+            <AIPopover />
             <Button className="cursor-pointer" type="submit">
               <Spinner />
               Save
