@@ -13,13 +13,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Sparkle } from "lucide-react";
 import { LetterText } from "lucide-react";
 import toast from "react-hot-toast";
 
 import { EllipsisVertical, CopyPlus, Trash } from "lucide-react";
 import { ButtonIcon } from "@/components/utils/ButtonIcon";
 import LabelPopover from "./LabelPopover";
+import AIPopover from "./AIPopover";
 
 import ColorPopover from "./ColorPopover";
 // actions
@@ -231,12 +231,7 @@ export default function UpdateForm({
             </Popover>
           </div>
           <div className="flex items-center gap-3">
-            <Button
-              onClick={(e) => e.preventDefault()}
-              className="bg-cyan-100 cursor-pointer"
-            >
-              NeoNotes AI <Sparkle />
-            </Button>
+            <AIPopover />
             <Button className="cursor-pointer" type="submit">
               Save
             </Button>
