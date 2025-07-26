@@ -7,6 +7,7 @@ import { Sparkle } from "lucide-react";
 // AI components
 import AIButtons from "@/components/utils/AIContent/AIButtons";
 import AIAccept from "@/components/utils/AIContent/AIAccept";
+import AIGenerate from "@/components/utils/AIContent/AIGenerate";
 
 import {
   Popover,
@@ -19,6 +20,7 @@ export default function AIPopover() {
   const componentsMap = new Map([
     ["buttons", <AIButtons key="buttons" />],
     ["accept", <AIAccept key="accept" />],
+    ["generate", <AIGenerate key="generate" />],
   ]);
   return (
     <Popover>
