@@ -6,6 +6,7 @@ import { Sparkle } from "lucide-react";
 
 // AI components
 import AIButtons from "@/components/utils/AIContent/AIButtons";
+import AIAccept from "@/components/utils/AIContent/AIAccept";
 
 import {
   Popover,
@@ -17,8 +18,7 @@ export default function AIPopover() {
 
   const componentsMap = new Map([
     ["buttons", <AIButtons key="buttons" />],
-    ["b", <ComponentB key="b" />],
-    ["c", <ComponentC key="c" />],
+    ["accept", <AIAccept key="accept" />],
   ]);
   return (
     <Popover>
@@ -28,11 +28,7 @@ export default function AIPopover() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="bg-cyan-100 w-fit">
-        <div className="flex flex-col gap-2 p-1 w-fit">
-          <Button className="text-left cursor-pointer">Generate</Button>
-          <Button className="text-left cursor-pointer">Summarize</Button>
-          <Button className="text-left cursor-pointer">Outline</Button>
-        </div>
+        {componentsMap.get(popoverContent)}
       </PopoverContent>
     </Popover>
   );
