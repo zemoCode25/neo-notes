@@ -7,7 +7,6 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { LetterText } from "lucide-react";
-import Spinner from "@/components/utils/Spinner";
 import AIPopover from "./AIPopover";
 
 // Utils
@@ -153,7 +152,6 @@ export default function CreateForm({ createNote }: CreateFormProp) {
           <div className="flex items-center gap-3">
             <AIPopover />
             <Button className="cursor-pointer" type="submit">
-              <Spinner />
               Save
             </Button>
           </div>

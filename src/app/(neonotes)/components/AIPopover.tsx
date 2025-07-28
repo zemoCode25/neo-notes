@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkle } from "lucide-react";
 
@@ -15,15 +15,36 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 export default function AIPopover() {
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [popoverContent, setPopoverContent] = useState<string>("buttons");
 
+  function handlePopoverContentChange(content: string) {
+    setPopoverContent(content);
+  }
+
+  function closePopover() {
+    setIsPopoverOpen(false);
+  }
+
+  useEffect(() => {
+    if (isPopoverOpen) {
+      setPopoverContent("buttons");
+    }
+  }, [isPopoverOpen]);
+
   const componentsMap = new Map([
-    ["buttons", <AIButtons key="buttons" />],
-    ["accept", <AIAccept key="accept" />],
+    [
+      "buttons",
+      <AIButtons
+        key="buttons"
+        handlePopoverContentChange={handlePopoverContentChange}
+      />,
+    ],
+    ["accept", <AIAccept key="accept" closePopover={closePopover} />],
     ["generate", <AIGenerate key="generate" />],
   ]);
   return (
-    <Popover>
+    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
         <Button className="bg-cyan-100 cursor-pointer">
           NeoNotes AI <Sparkle />
