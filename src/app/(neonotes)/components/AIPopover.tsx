@@ -41,7 +41,13 @@ export default function AIPopover() {
       />,
     ],
     ["accept", <AIAccept key="accept" closePopover={closePopover} />],
-    ["generate", <AIGenerate key="generate" />],
+    [
+      "generate",
+      <AIGenerate
+        key="generate"
+        handlePopoverContentChange={handlePopoverContentChange}
+      />,
+    ],
   ]);
 
   return (

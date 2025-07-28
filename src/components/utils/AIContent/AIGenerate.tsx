@@ -1,19 +1,57 @@
 import { Button } from "@/components/ui/button";
+import Spinner from "../Spinner";
+import { submitPrompt } from "@/app/api/ai/actions/ai-actions";
+import { useState } from "react";
 
-function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-  e.preventDefault();
+export default function AIGenerate({
+  handlePopoverContentChange,
+}: {
+  handlePopoverContentChange?: (content: string) => void;
+}) {
+  const [isGenerating, setIsGenerating] = useState(false);
 
-  const form = e.currentTarget;
-  if (!form) {
-    console.error("Form is not defined");
-    return;
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const form = e.currentTarget;
+    if (!form) {
+      console.error("Form is not defined");
+      return;
+    }
+
+    const formData = new FormData(form);
+    const prompt = formData.get("prompt");
+
+    try {
+      if (!prompt) {
+        console.error("Prompt is required");
+        return;
+      }
+
+      setIsGenerating(true);
+      const result = await submitPrompt(prompt ? String(prompt) : "");
+      console.log("Generated content:", result);
+      if (result && handlePopoverContentChange) {
+        handlePopoverContentChange("accept");
+      }
+    } catch (error) {
+      console.error("Error processing prompt:", error);
+      return;
+    } finally {
+      setIsGenerating(false);
+    }
   }
 
-  const formData = new FormData(form);
-  const prompt = formData.get("prompt");
-}
+  if (isGenerating) {
+    return (
+      <div className="flex items-center justify-center">
+        <span>Generating</span>
+        <Spinner />
+      </div>
+    );
+  }
 
-export default function AIGenerate() {
   return (
     <div>
       <form action="" onSubmit={handleSubmit}>

@@ -93,6 +93,12 @@ export default function UpdateForm({
     },
   });
 
+  // const updateEditorContent = (newContent: string) => {
+  //   if (editor && editor.commands) {
+  //     editor.commands.setContent(newContent);
+  //   }
+  // };
+
   function handleEditorDialogOpen() {
     setEditorDialogOpen(!editorDialogOpen);
   }

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getGeminiModel } from "@/lib/gemini";
+import { getGenAI } from "@/lib/gemini";
 
 export async function POST(request: NextRequest) {
   const { prompt } = await request.json();
@@ -9,9 +9,12 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const model = getGeminiModel();
-    const result = await model.generateContent(prompt);
-    const response = result.response.text();
+    const genAI = getGenAI();
+    const result = await genAI.models.generateContent({
+      model: "gemini-2.5-flash",
+      contents: prompt,
+    });
+    const response = result.text ?? "";
 
     return new NextResponse(JSON.stringify({ result: response }), {
       headers: { "Content-Type": "application/json" },
