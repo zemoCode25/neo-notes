@@ -43,6 +43,7 @@ export default function AIPopover() {
     ["accept", <AIAccept key="accept" closePopover={closePopover} />],
     ["generate", <AIGenerate key="generate" />],
   ]);
+
   return (
     <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
       <PopoverTrigger asChild>
