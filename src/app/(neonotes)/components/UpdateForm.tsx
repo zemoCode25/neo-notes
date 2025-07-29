@@ -170,7 +170,7 @@ export default function UpdateForm({
           id="note"
           value={noteItem?.note}
           placeholder="Take your note"
-          className="outline-none w-full !min-h-150 p-3 !border-black border-1 rounded-md my-2"
+          className="outline-none w-full max-h-150 p-3 !border-black border-1 rounded-md my-2 overflow-y-scroll"
           editor={editor}
         />
         <input type="hidden" name="note" value={editor?.getHTML() || ""} />
