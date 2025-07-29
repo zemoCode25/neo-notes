@@ -2,11 +2,15 @@ import { Button } from "@/components/ui/button";
 import Spinner from "../Spinner";
 import { submitPrompt } from "@/app/api/ai/actions/ai-actions";
 import { useState } from "react";
+import { Editor } from "@tiptap/react";
+import { updateEditorContent } from "@/app/utils/updateEditor";
 
 export default function AIGenerate({
   handlePopoverContentChange,
+  textEditor,
 }: {
   handlePopoverContentChange?: (content: string) => void;
+  textEditor: Editor | null;
 }) {
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -32,6 +36,11 @@ export default function AIGenerate({
       setIsGenerating(true);
       const result = await submitPrompt(prompt ? String(prompt) : "");
       console.log("Generated content:", result);
+
+      if (textEditor && result) {
+        updateEditorContent(textEditor, result);
+      }
+
       if (result && handlePopoverContentChange) {
         handlePopoverContentChange("accept");
       }

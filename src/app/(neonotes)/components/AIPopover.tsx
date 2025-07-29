@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Sparkle } from "lucide-react";
 
+import { Editor } from "@tiptap/react";
+
 // AI components
 import AIButtons from "@/components/utils/AIContent/AIButtons";
 import AIAccept from "@/components/utils/AIContent/AIAccept";
@@ -14,9 +16,14 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-export default function AIPopover() {
+export default function AIPopover({
+  textEditor,
+}: {
+  textEditor: Editor | null;
+}) {
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [popoverContent, setPopoverContent] = useState<string>("buttons");
+  const [previousContent, setPreviousContent] = useState<string>("");
 
   function handlePopoverContentChange(content: string) {
     setPopoverContent(content);
@@ -30,7 +37,11 @@ export default function AIPopover() {
     if (isPopoverOpen) {
       setPopoverContent("buttons");
     }
-  }, [isPopoverOpen]);
+
+    if (textEditor) {
+      setPreviousContent(textEditor.getText());
+    }
+  }, [isPopoverOpen, textEditor]);
 
   const componentsMap = new Map([
     [
@@ -40,12 +51,21 @@ export default function AIPopover() {
         handlePopoverContentChange={handlePopoverContentChange}
       />,
     ],
-    ["accept", <AIAccept key="accept" closePopover={closePopover} />],
+    [
+      "accept",
+      <AIAccept
+        key="accept"
+        closePopover={closePopover}
+        previousContent={previousContent}
+        textEditor={textEditor}
+      />,
+    ],
     [
       "generate",
       <AIGenerate
         key="generate"
         handlePopoverContentChange={handlePopoverContentChange}
+        textEditor={textEditor}
       />,
     ],
   ]);

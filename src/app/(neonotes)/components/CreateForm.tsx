@@ -30,6 +30,7 @@ import Text from "@tiptap/extension-text";
 import Heading from "@tiptap/extension-heading";
 import BulletList from "@tiptap/extension-bullet-list";
 import ListItem from "@tiptap/extension-list-item";
+import { updateEditorContent } from "@/app/utils/updateEditor";
 
 type CreateFormProp = {
   closeModal: () => void;
@@ -102,6 +103,8 @@ export default function CreateForm({ createNote }: CreateFormProp) {
       label_id: selectedLabel ? selectedLabel.id : null,
     };
 
+    updateEditorContent(editor, "");
+
     createNote(noteDetails);
   }
 
@@ -150,7 +153,7 @@ export default function CreateForm({ createNote }: CreateFormProp) {
             />
           </div>
           <div className="flex items-center gap-3">
-            <AIPopover />
+            <AIPopover textEditor={editor} />
             <Button className="cursor-pointer" type="submit">
               Save
             </Button>
