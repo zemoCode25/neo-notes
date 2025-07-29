@@ -237,7 +237,7 @@ export default function UpdateForm({
             </Popover>
           </div>
           <div className="flex items-center gap-3">
-            <AIPopover />
+            <AIPopover textEditor={editor} />
             <Button className="cursor-pointer" type="submit">
               Save
             </Button>

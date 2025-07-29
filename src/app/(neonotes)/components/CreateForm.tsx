@@ -121,7 +121,7 @@ export default function CreateForm({ createNote }: CreateFormProp) {
         <EditorContent
           id="note"
           placeholder="Take your note"
-          className="outline-none w-full h-150 p-3 border-black border-1 rounded-md my-2 overflow-scroll"
+          className="outline-none w-full h-100 p-3 border-black border-1 rounded-md my-2 overflow-scroll"
           editor={editor}
         />
         <input type="hidden" name="note" value={editor?.getHTML() || ""} />
