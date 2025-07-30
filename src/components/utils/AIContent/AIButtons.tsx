@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Editor } from "@tiptap/react";
 import { summarizePrompt } from "@/app/api/ai/actions/ai-actions";
+import { outlinePrompt } from "@/app/api/ai/actions/ai-actions";
 import { updateEditorContent } from "@/app/utils/updateEditor";
 
 export default function AIButtons({
@@ -30,6 +31,25 @@ export default function AIButtons({
       handlePopoverContentChange("accept");
     }
   }
+
+  async function outlineTextContent() {
+    try {
+      if (!textEditor) {
+        throw new Error("Text editor is not available");
+      }
+      handlePopoverContentChange("outline");
+      const content = textEditor.getText();
+      const result = await outlinePrompt(content);
+      if (!result) {
+        throw new Error(`No result returned from outlining: ${result.error}`);
+      }
+      updateEditorContent(textEditor, result);
+    } catch (error) {
+      console.error("Error outlining text content:", error);
+    } finally {
+      handlePopoverContentChange("accept");
+    }
+  }
   return (
     <div className="flex flex-col gap-2 p-1 w-fit">
       <Button
@@ -44,10 +64,7 @@ export default function AIButtons({
       >
         Summarize
       </Button>
-      <Button
-        className="text-left cursor-pointer"
-        onClick={() => handlePopoverContentChange("accept")}
-      >
+      <Button className="text-left cursor-pointer" onClick={outlineTextContent}>
         Outline
       </Button>
     </div>

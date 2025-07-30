@@ -72,6 +72,7 @@ export default function AIPopover({
       />,
     ],
     ["summarize", <GenerateLoading key="summarize" AIAction="Summarizing" />],
+    ["outline", <GenerateLoading key="outline" AIAction="Creating Outline" />],
   ]);
 
   return (
