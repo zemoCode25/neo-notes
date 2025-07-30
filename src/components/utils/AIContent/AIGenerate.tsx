@@ -8,9 +8,11 @@ import GenerateLoading from "./GenerateLoading";
 export default function AIGenerate({
   handlePopoverContentChange,
   textEditor,
+  previousContent = "",
 }: {
   handlePopoverContentChange?: (content: string) => void;
   textEditor: Editor | null;
+  previousContent?: string;
 }) {
   const [isGenerating, setIsGenerating] = useState(false);
 
@@ -38,7 +40,7 @@ export default function AIGenerate({
       console.log("Generated content:", result);
 
       if (textEditor && result) {
-        updateEditorContent(textEditor, result);
+        updateEditorContent(textEditor, result, previousContent);
       }
 
       if (result && handlePopoverContentChange) {

@@ -69,6 +69,7 @@ export default function AIPopover({
         key="generate"
         handlePopoverContentChange={handlePopoverContentChange}
         textEditor={textEditor}
+        previousContent={previousContent}
       />,
     ],
     ["summarize", <GenerateLoading key="summarize" AIAction="Summarizing" />],

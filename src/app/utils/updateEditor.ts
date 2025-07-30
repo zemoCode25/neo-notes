@@ -3,9 +3,11 @@ import { marked } from "marked";
 
 export const updateEditorContent = (
   editor: Editor | null,
-  newContent: string
+  newContent: string,
+  previousContent: string = ""
 ) => {
-  const htmlContent = marked.parse(newContent);
+  const textContent = previousContent + newContent;
+  const htmlContent = marked.parse(textContent);
   if (editor && editor.commands) {
     editor.commands.setContent(htmlContent);
   }
