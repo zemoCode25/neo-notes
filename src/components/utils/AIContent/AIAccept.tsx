@@ -6,21 +6,29 @@ export default function AIAccept({
   closePopover,
   previousContent,
   textEditor,
+  handlePopoverContentChange,
 }: {
   closePopover: () => void;
   previousContent: string;
   textEditor: Editor | null;
+  handlePopoverContentChange: (content: string) => void;
 }) {
   function handleDecline() {
     if (textEditor) {
       updateEditorContent(textEditor, previousContent);
     }
     closePopover();
+    handlePopoverContentChange("buttons");
+  }
+
+  function handleAccept() {
+    closePopover();
+    handlePopoverContentChange("buttons");
   }
 
   return (
     <div className="flex flex-col gap-2 p-1 w-fit">
-      <Button onClick={closePopover} className="text-left cursor-pointer">
+      <Button onClick={handleAccept} className="text-left cursor-pointer">
         Accept
       </Button>
       <Button onClick={handleDecline} className="text-left cursor-pointer">

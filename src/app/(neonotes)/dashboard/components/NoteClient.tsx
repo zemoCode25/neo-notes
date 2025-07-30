@@ -1,29 +1,24 @@
 "use client";
 
 // UI
-import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Dialog, DialogTrigger } from "@/components/ui/dialog";
+import NoteDialog from "../../components/NoteDialog";
 // React
 import { useEffect, useState, useContext } from "react";
 import toast, { Toaster } from "react-hot-toast";
 // Actions
 import {
   retriveNote,
-  updateNoteToDB,
   createNoteToDB,
 } from "@/app/api/note/actions/note-actions";
 // Utils component
-import UpdateForm from "../../components/UpdateForm";
 import SearchCreate from "../../components/SearchCreate";
 // type
 import { TNote } from "@/app/types/note";
 import { TCreateNote } from "@/app/types/create-note";
-import { TUpdateNote } from "@/app/types/update-note";
 // context
 import { NoteContext } from "@/contexts/NoteContextProvider";
 import { LabelContext } from "@/contexts/LabelContextProvider";
-import DOMPurify from "dompurify";
 import { TLabel } from "@/app/types/label/label";
 
 export default function NoteClient({ notesList }: { notesList: TNote[] }) {
@@ -86,24 +81,6 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
       toast.error("Failed to create note.");
     }
   }
-
-  // Update the UI upon note update
-  async function updateNote(noteDetails: TUpdateNote) {
-    try {
-      const result = await updateNoteToDB(noteDetails);
-      if (result) {
-        toast.success("Note successfully updated!");
-      }
-      setOpenModal(false);
-      updateNoteState(noteDetails);
-      fetchNotes();
-    } catch (err) {
-      console.error("Submit error:", err);
-    } finally {
-      setLoading(false);
-    }
-  }
-
   return (
     <div>
       <Toaster position="bottom-right" reverseOrder={false} />
@@ -130,41 +107,13 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
             <div className="text-center text-gray-500">No notes available.</div>
           )}
           {notes.map((noteItem) => (
-            <Dialog key={noteItem?.id}>
-              <DialogTrigger className="cursor-pointer w-full">
-                <Card
-                  className={`w-full rounded-md p-4 mb-4 break-inside-avoid text-left ${
-                    noteItem?.colortheme || "bg-violet-100"
-                  }`}
-                >
-                  <div>
-                    <h1 className="text-lg font-semibold">{noteItem?.title}</h1>
-                    {noteItem?.label_name && (
-                      <p className="text-sm border border-black px-2 py-1 rounded-md mb-2 w-fit">
-                        {noteItem?.label_name}
-                      </p>
-                    )}
-                    <p
-                      className="whitespace-pre-wrap text-sm"
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(
-                          (noteItem?.note?.length || 0) > 400
-                            ? (noteItem?.note?.slice(0, 400) ?? "") + "..."
-                            : noteItem?.note ?? ""
-                        ),
-                      }}
-                    />
-                  </div>
-                </Card>
-              </DialogTrigger>
-              <UpdateForm
-                noteItem={noteItem}
-                updateNote={updateNote}
-                fetchNotes={fetchNotes}
-                closeModal={() => setOpenModal(false)}
-                createNote={createNote}
-              />
-            </Dialog>
+            <NoteDialog
+              key={noteItem.id}
+              updateNoteState={updateNoteState}
+              noteItem={noteItem}
+              fetchNotes={fetchNotes}
+              createNote={createNote}
+            />
           ))}
         </div>
       )}

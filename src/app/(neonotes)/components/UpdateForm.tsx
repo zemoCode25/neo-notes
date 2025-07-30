@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   DialogContent,
   DialogFooter,
@@ -49,6 +49,7 @@ type UpdateFormProps = {
   fetchNotes: () => Promise<void>;
   closeModal: () => void;
   createNote: (noteDetails: TCreateNote) => Promise<void>;
+  isUpdateFormOpen: boolean;
 };
 
 export default function UpdateForm({
@@ -57,6 +58,7 @@ export default function UpdateForm({
   fetchNotes,
   closeModal,
   createNote,
+  isUpdateFormOpen,
 }: UpdateFormProps) {
   const [selectedLabel, setSelectedLabel] = useState<TLabel | null>({
     id: noteItem?.label_id || 0,
@@ -65,39 +67,48 @@ export default function UpdateForm({
   const [editorDialogOpen, setEditorDialogOpen] = useState(false);
   const [labelDialogOpen, setLabelDialogOpen] = useState(false);
 
-  const editor: Editor | null = useEditor({
-    extensions: [
-      Document,
-      Paragraph,
-      Text,
-      Italic,
-      Bold,
-      Underline,
-      Heading.configure({
-        levels: [1, 2],
-      }),
-      BulletList.configure({
-        HTMLAttributes: {
-          class: "list-disc pl-2",
-        },
-      }),
-      ListItem,
-    ],
-    content: `
+  const editor: Editor | null = useEditor(
+    {
+      extensions: [
+        Document,
+        Paragraph,
+        Text,
+        Italic,
+        Bold,
+        Underline,
+        Heading.configure({
+          levels: [1, 2],
+        }),
+        BulletList.configure({
+          HTMLAttributes: {
+            class: "list-disc pl-2",
+          },
+        }),
+        ListItem,
+      ],
+      content: `
         <p>${noteItem?.note}</p>
       `,
-    editorProps: {
-      attributes: {
-        class: "outline-none",
+      editorProps: {
+        attributes: {
+          class: "outline-none",
+        },
       },
     },
-  });
+    []
+  );
 
   // const updateEditorContent = (newContent: string) => {
   //   if (editor && editor.commands) {
   //     editor.commands.setContent(newContent);
   //   }
   // };
+
+  useEffect(() => {
+    if (isUpdateFormOpen && editor) {
+      editor.commands.setContent(noteItem?.note || "");
+    }
+  }, [noteItem, isUpdateFormOpen, editor]);
 
   function handleEditorDialogOpen() {
     setEditorDialogOpen(!editorDialogOpen);

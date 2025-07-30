@@ -27,6 +27,14 @@ export default function AIPopover({
   const [popoverContent, setPopoverContent] = useState<string>("buttons");
   const [previousContent, setPreviousContent] = useState<string>("");
 
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      console.log("Popover closed");
+      // ✅ Add your custom logic here
+    }
+    setIsPopoverOpen(isOpen);
+  };
+
   function handlePopoverContentChange(content: string) {
     setPopoverContent(content);
   }
@@ -36,14 +44,14 @@ export default function AIPopover({
   }
 
   useEffect(() => {
-    if (isPopoverOpen) {
+    if (!isPopoverOpen && popoverContent === "generate") {
       setPopoverContent("buttons");
     }
 
     if (textEditor) {
       setPreviousContent(textEditor.getText());
     }
-  }, [isPopoverOpen, textEditor]);
+  }, [isPopoverOpen, textEditor, popoverContent]);
 
   const componentsMap = new Map([
     [
@@ -61,6 +69,7 @@ export default function AIPopover({
         closePopover={closePopover}
         previousContent={previousContent}
         textEditor={textEditor}
+        handlePopoverContentChange={handlePopoverContentChange}
       />,
     ],
     [
@@ -77,7 +86,7 @@ export default function AIPopover({
   ]);
 
   return (
-    <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+    <Popover open={isPopoverOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
         <Button className="bg-cyan-100 cursor-pointer">
           NeoNotes AI <Sparkle />
