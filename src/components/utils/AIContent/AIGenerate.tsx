@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import Spinner from "../Spinner";
 import { submitPrompt } from "@/app/api/ai/actions/ai-actions";
 import { useState } from "react";
 import { Editor } from "@tiptap/react";
 import { updateEditorContent } from "@/app/utils/updateEditor";
+import GenerateLoading from "./GenerateLoading";
 
 export default function AIGenerate({
   handlePopoverContentChange,
@@ -53,12 +53,7 @@ export default function AIGenerate({
   }
 
   if (isGenerating) {
-    return (
-      <div className="flex items-center justify-center">
-        <span>Generating</span>
-        <Spinner />
-      </div>
-    );
+    return <GenerateLoading AIAction="Generating" />;
   }
 
   return (

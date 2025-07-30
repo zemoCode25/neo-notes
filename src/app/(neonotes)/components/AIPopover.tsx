@@ -10,7 +10,6 @@ import { Editor } from "@tiptap/react";
 import AIButtons from "@/components/utils/AIContent/AIButtons";
 import AIAccept from "@/components/utils/AIContent/AIAccept";
 import AIGenerate from "@/components/utils/AIContent/AIGenerate";
-import AISummarize from "@/components/utils/AIContent/AISummarize";
 import GenerateLoading from "@/components/utils/AIContent/GenerateLoading";
 
 import {
@@ -18,6 +17,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+// import { updateEditorContent } from "@/app/utils/updateEditor";
 export default function AIPopover({
   textEditor,
 }: {
@@ -51,6 +51,7 @@ export default function AIPopover({
       <AIButtons
         key="buttons"
         handlePopoverContentChange={handlePopoverContentChange}
+        textEditor={textEditor}
       />,
     ],
     [
@@ -70,7 +71,7 @@ export default function AIPopover({
         textEditor={textEditor}
       />,
     ],
-    ["summarize", <GenerateLoading AIAction="Summarizing" key="summarizing" />],
+    ["summarize", <GenerateLoading key="summarize" AIAction="Summarizing" />],
   ]);
 
   return (
