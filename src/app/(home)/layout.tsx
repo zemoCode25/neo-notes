@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 const archivo = Archivo({
-  weight: "400",
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
