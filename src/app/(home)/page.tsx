@@ -8,6 +8,10 @@ import { features } from "@/lib/features";
 import FeaturesCard from "@/components/utils/FeaturesCard";
 import Image from "next/image";
 import { Card } from "@/components/ui/card";
+import { TFAQ } from "@/lib/faqs";
+import { faqs } from "@/lib/faqs";
+import FaqsItem from "@/components/utils/FaqsItem";
+import { Accordion } from "@/components/ui/accordion";
 
 export default function Home() {
   return (
@@ -38,7 +42,7 @@ export default function Home() {
           ideas, and letting creativity flow. With powerful AI features built
           in, you can write faster, think clearer, and do more with every note.
         </p>
-        <div className="flex flex-wrap justify-between gap-3 w-full">
+        <div className="flex flex-wrap justify-center gap-3 w-full">
           {features.map((feature, index) => (
             <FeaturesCard
               key={index}
@@ -50,7 +54,8 @@ export default function Home() {
           ))}
         </div>
       </section>
-      <section className="w-full mx-auto flex flex-col items-center justify-center">
+      {/* AI FEATURES */}
+      <section className="w-full mx-auto flex flex-col items-center justify-center max-w-[1280px] mb-10">
         <div className="flex items-center flex-col">
           <h4 className="text-5xl font-bold text-violet-900">
             Smarter Notes, Powered by AI
@@ -112,6 +117,20 @@ export default function Home() {
             />
           </span>
         </Card>
+      </section>
+      {/* FAQS */}
+      <section className="w-full mx-auto flex flex-col items-center justify-center max-w-[1280px]">
+        <h2 className="text-5xl font-bold text-violet-900">FAQS</h2>
+        <Accordion type="single" collapsible className="w-full max-w-[850px]">
+          {faqs.map((faq: TFAQ, index: number) => (
+            <FaqsItem
+              key={index}
+              question={faq.question}
+              answer={faq.answer}
+              index={index}
+            />
+          ))}
+        </Accordion>
       </section>
     </div>
   );

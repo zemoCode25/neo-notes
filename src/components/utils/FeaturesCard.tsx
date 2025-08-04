@@ -16,7 +16,7 @@ export default function FeaturesCard({
 }: TFeature) {
   return (
     <Card
-      className={clsx("p-6 max-w-[450px] !gap-2 relative", cardColor[color])}
+      className={clsx("p-6 max-w-[420px] !gap-2 relative", cardColor[color])}
     >
       <span className="absolute top-[-16px] right-4 bg-violet-200 p-2 rounded-md border border-black">
         {<IconComponent />}
