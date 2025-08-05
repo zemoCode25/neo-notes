@@ -146,7 +146,9 @@ export default function Home() {
         </section>
       </div>
       <section className="w-full mx-auto flex flex-col items-center justify-center mt-10 bg-yellow-200 py-40">
-        <h4 className="text-5xl font-bold">Are you ready to take a note?</h4>
+        <h4 className="text-5xl font-bold text-center w-[90%]">
+          Are you ready to take a note?
+        </h4>
         <Link href="/dashboard">
           <Button className="font-medium text-xl cursor-pointer mt-2 px-8 py-5">
             Get started
@@ -154,8 +156,8 @@ export default function Home() {
         </Link>
       </section>
       <footer className="w-full mt-10 bg-violet-900 rounded-tr-lg rounded-tl-lg border-4 border-black border-b-transparent max-w-[1380px]">
-        <div className="flex items-center justify-center">
-          <article className="w-full max-w-[600px] p-10 text-gray-200">
+        <div className="flex flex-col md:flex-row items-center justify-center p-10">
+          <article className="w-full max-w-[600px] p-5 text-gray-200">
             <h5 className="text-xl font-bold">About Neonotes</h5>
             <p>
               Neonotes is built for thinkers, creators, and doers who want
@@ -164,7 +166,7 @@ export default function Home() {
               way you write and work.
             </p>
           </article>
-          <article className="w-full flex flex-col items-center justify-center max-w-[600px] p-10 text-gray-200">
+          <article className="w-full flex flex-col md:items-center justify-center max-w-[600px] p-5 text-gray-200">
             <div>
               <h5 className="text-xl font-bold">Links</h5>
               <ul className="list-none space-y-1">
@@ -186,7 +188,7 @@ export default function Home() {
               </ul>
             </div>
           </article>
-          <article className="w-full max-w-[600px] p-10 text-gray-200">
+          <article className="w-full max-w-[600px] p-5 text-gray-200">
             <h5 className="text-xl font-bold">Socials</h5>
             <Link href="https://github.com/zemoCode25" target="_blank">
               <FaGithub size={24} />
