@@ -20,7 +20,7 @@ export default function Home() {
       <div className="w-full max-w-[1380px] flex flex-col items-center justify-center">
         <section className="flex flex-col items-center justify-center h-[46rem] text-center">
           <AuroraText
-            className="text-4xl font-bold sm:text-7xl"
+            className="text-5xl font-bold sm:text-7xl"
             colors={["#FF0080", "#7928CA", "#0070F3", "#38bdf8"]}
           >
             Smarter Notes. <br />
@@ -61,64 +61,69 @@ export default function Home() {
         {/* AI FEATURES */}
         <section className="w-full mx-auto flex flex-col items-center justify-center max-w-[1280px] mb-10">
           <div className="flex items-center flex-col">
-            <h4 className="text-5xl font-bold text-violet-900">
-              Smarter Notes, Powered by AI
+            <h4 className="text-4xl sm:text-5xl font-bold text-violet-900">
+              Smarter Notes,
+              <br /> Powered by AI
             </h4>
-            <p className="text-lg w-[60%] text-center mt-2 mb-8">
+            <p className="text-lg w-[90%] max-w-[40rem] text-center mt-4 mb-8">
               Neonotes goes beyond basic note-taking with built-in AI tools that
               help you think, write, and organize faster. Whether you need a
-              quick summary, a clear outline, or fresh content—AI is just a
-              click away.
+              quick summary, a clear outline, or fresh content—AI is here to
+              help.
             </p>
           </div>
-          <Card className="bg-yellow-200 p-4 w-full flex flex-row justify-between items-center gap-4 px-30 mb-10">
-            <div>
-              <h4 className="text-4xl font-bold">AI Summarize</h4>
-              <p className="text-xl mt-2 max-w-[550px]">
+          <Card className="bg-blue-200 p-4 w-[90%] flex flex-col lg:flex-row justify-between items-center gap-4 px-5 md:px-30 mb-10">
+            <div className="flex flex-col items-center lg:items-start">
+              <h4 className="text-4xl font-bold text-center lg:text-left">
+                AI Summarize
+              </h4>
+              <p className="text-xl mt-2 w-full max-w-[500px] text-center lg:text-left">
                 Turn long notes into clear, bite-sized summaries. Perfect for
                 reviewing key points without rereading everything.
               </p>
             </div>
-            <span>
+            <span className="w-[50%] max-w-[30rem] min-w-[20rem] h-[300px] relative">
               <Image
                 src="/images/AI_1.png"
-                width={400}
-                height={300}
+                fill={true}
                 alt="Description"
+                className="object-contain"
               />
             </span>
           </Card>
-          <Card className="bg-cyan-200 p-4 w-full flex flex-row justify-between items-center gap-4 px-30 my-10">
-            <span>
+          <Card className="bg-cyan-200 p-4 w-[90%] flex flex-col lg:flex-row justify-between items-center gap-4 px-5 md:px-30 mb-10">
+            <span className="w-[90%] min-w-[20rem] h-[300px] relative">
               <Image
                 src="/images/AI_2.png"
-                width={400}
-                height={300}
+                fill={true}
                 alt="Description"
+                className="object-contain"
               />
             </span>
-            <div className="flex justify-end flex-col items-end">
-              <h4 className="text-4xl font-bold">AI Outline</h4>
-              <p className="text-xl mt-2 max-w-[550px] text-right">
+            <div className="flex flex-col items-center lg:items-start">
+              <h4 className="text-4xl font-bold text-center lg:text-left">
+                AI Outline
+              </h4>
+              <p className="text-xl mt-2 w-full max-w-[500px] text-center lg:text-left">
                 Structure your thoughts in seconds. Get an organized overview of
                 your content to improve flow and focus.
               </p>
             </div>
           </Card>
-          <Card className="bg-red-200 p-4 w-full flex flex-row justify-between items-center gap-4 px-30 my-10">
-            <div>
+          <Card className="bg-yellow-200 p-4 w-[90%] flex flex-col lg:flex-row justify-between items-center gap-4 px-5 md:px-30 mb-10">
+            <div className="flex items-center flex-col">
               <h4 className="text-4xl font-bold">AI Generate</h4>
-              <p className="text-xl mt-2 max-w-[550px]">
+              <p className="text-xl mt-2 w-full max-w-[500px] text-center lg:text-left">
                 Spark new ideas or expand on existing ones with AI-powered
                 content generation—just type a prompt and let it write.
               </p>
             </div>
-            <span>
+            <span className="w-[90%] min-w-[20rem] h-[300px] relative">
               <Image
                 src="/images/AI_3.png"
-                width={400}
-                height={300}
+                fill={true}
                 alt="Description"
+                className="object-contain"
               />
             </span>
           </Card>

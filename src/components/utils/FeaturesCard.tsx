@@ -21,7 +21,7 @@ export default function FeaturesCard({
       <span className="absolute top-[-16px] right-4 bg-violet-200 p-2 rounded-md border border-black">
         {<IconComponent />}
       </span>
-      <h3 className="text-lg font-bold">{title}</h3>
+      <h3 className="text-xl font-bold">{title}</h3>
       <p>{description}</p>
     </Card>
   );
