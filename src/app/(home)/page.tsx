@@ -36,17 +36,17 @@ export default function Home() {
             </Button>
           </Link>
         </section>
-        <section className="w-full mx-auto flex flex-col items-center justify-center mb-30">
+        <section className="w-full mx-auto flex flex-col items-center justify-center mb-30 text-center">
           <h2 className="text-5xl font-bold text-violet-900">
-            Write Less, Create More
+            Write Less, <br /> Create More
           </h2>
-          <p className="text-lg w-[60%] text-center mt-4 mb-8">
-            Neonotes is your smart workspace for capturing thoughts, organizing
-            ideas, and letting creativity flow. With powerful AI features built
-            in, you can write faster, think clearer, and do more with every
-            note.
+          <p className="text-lg w-[90%] max-w-[40rem] text-center mt-4 mb-8">
+            Neonotes is your smart workspace for capturing thoughts and letting
+            creativity flow. With powerful AI features built in, you can write
+            faster, clearer, and do more with every note.
           </p>
-          <div className="flex flex-wrap justify-center gap-3 w-full">
+
+          <div className="flex flex-wrap justify-center gap-3 w-[90%] max-w-[1280px]">
             {features.map((feature, index) => (
               <FeaturesCard
                 key={index}
