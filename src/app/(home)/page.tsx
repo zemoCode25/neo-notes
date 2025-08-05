@@ -112,7 +112,9 @@ export default function Home() {
           </Card>
           <Card className="bg-yellow-200 p-4 w-[90%] flex flex-col lg:flex-row justify-between items-center gap-4 px-5 md:px-30 mb-10">
             <div className="flex items-center flex-col">
-              <h4 className="text-4xl font-bold">AI Generate</h4>
+              <h4 className="text-4xl font-bold text-center lg:text-left">
+                AI Generate
+              </h4>
               <p className="text-xl mt-2 w-full max-w-[500px] text-center lg:text-left">
                 Spark new ideas or expand on existing ones with AI-powered
                 content generation—just type a prompt and let it write.
@@ -129,7 +131,7 @@ export default function Home() {
           </Card>
         </section>
         {/* FAQS */}
-        <section className="w-full mx-auto flex flex-col items-center justify-center max-w-[1280px] my-15">
+        <section className="mx-auto flex flex-col items-center justify-center w-[90%] md:w-full max-w-[1280px] my-15">
           <h2 className="text-5xl font-bold text-violet-900">FAQS</h2>
           <Accordion type="single" collapsible className="w-full max-w-[850px]">
             {faqs.map((faq: TFAQ, index: number) => (
