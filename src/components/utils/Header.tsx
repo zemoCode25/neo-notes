@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <header className="max-w-[1380px] m-auto my-5">
+    <header className="max-w-[1380px] m-auto my-5 hidden lg:block">
       <Card className="flex flex-row items-center justify-between py-5 px-7 bg-violet-100">
         <div>
           <NeonotesLogo />

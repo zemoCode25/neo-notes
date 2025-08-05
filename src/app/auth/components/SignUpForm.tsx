@@ -15,11 +15,7 @@ import ErrorMessage from "@/components/utils/error-message";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
-import { checkCookie } from "@/app/api/user/user-action";
 import { useRouter } from "next/navigation";
-
-const cookiesSet = await checkCookie();
-console.log(cookiesSet, "Cookies Set in SignUpForm");
 
 const SignUpSchema = z
   .object({

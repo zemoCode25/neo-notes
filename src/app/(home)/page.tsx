@@ -18,19 +18,20 @@ export default function Home() {
   return (
     <div className="w-full m-auto mt-5 flex flex-col items-center justify-center h-full">
       <div className="w-full max-w-[1380px] flex flex-col items-center justify-center">
-        <section className="flex flex-col items-center justify-center h-[46rem]">
+        <section className="flex flex-col items-center justify-center h-[46rem] text-center">
           <AuroraText
-            className="text-7xl font-bold"
+            className="text-4xl font-bold sm:text-7xl"
             colors={["#FF0080", "#7928CA", "#0070F3", "#38bdf8"]}
           >
-            Smarter Notes. Less Chaos.
+            Smarter Notes. <br />
+            Less Chaos.
           </AuroraText>
-          <p className="mb-8 text-xl">
+          <p className="mb-4 text-xl ">
             Let AI organize your thoughts to help you focus on what really
             matters.
           </p>
           <Link href="/dashboard">
-            <Button className="font-medium text-lg cursor-pointer">
+            <Button className="font-medium text-lg cursor-pointer px-8 py-5">
               Start taking notes
             </Button>
           </Link>
