@@ -14,8 +14,10 @@ export default function FaqsItem({
 }) {
   return (
     <AccordionItem value={`item-${index}`} className="mt-3">
-      <AccordionTrigger className="cursor-pointer">{question}</AccordionTrigger>
-      <AccordionContent className="bg-violet-100">{answer}</AccordionContent>
+      <AccordionTrigger className="cursor-pointer bg-blue-300">
+        {question}
+      </AccordionTrigger>
+      <AccordionContent className="bg-blue-100">{answer}</AccordionContent>
     </AccordionItem>
   );
 }
