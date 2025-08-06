@@ -42,7 +42,7 @@ export default function RootLayout({
                 <AppSidebar className="bg-violet-50" variant="inset" />
                 <SidebarInset>
                   <SiteHeader />
-                  <div className="px-20 py-5">{children}</div>
+                  <div className="py-5">{children}</div>
                 </SidebarInset>
               </SidebarProvider>
             </NoteContextProvider>

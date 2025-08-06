@@ -16,7 +16,6 @@ export async function signUp(unsafeData: TSignUp): Promise<string | undefined> {
   }
 
   const userEmailExist = await findUserByEmail(data?.email);
-  console.log(userEmailExist, "userEmailExist");
 
   if (userEmailExist.exists) {
     return "Email already exists. Log in instead.";
@@ -29,6 +28,7 @@ export async function signUp(unsafeData: TSignUp): Promise<string | undefined> {
   const userDetails: TUser = {
     email: data.email,
     hashedPassword: hashedPassword,
+    salt: randomSalt,
   };
 
   createUserToDB(userDetails);

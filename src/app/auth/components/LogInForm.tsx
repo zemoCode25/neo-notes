@@ -24,8 +24,6 @@ import { TLogIn } from "../schema";
 import { useRouter } from "next/navigation";
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-console.log("assdasad");
-
 export default function LogInForm() {
   const router = useRouter();
   const {
@@ -62,8 +60,6 @@ export default function LogInForm() {
     } catch (error) {
       console.error("Error during login:", error);
     }
-
-    console.log(data);
   };
 
   return (

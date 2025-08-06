@@ -99,8 +99,10 @@ export default function NoteClient({ notesList }: { notesList: TNote[] }) {
         </div>
       ) : (
         <div
-          className={`columns-1 sm:columns-2 md:columns-5 w-full gap-4 my-5 ${
-            notes.length === 0 ? "flex items-center justify-center w-full" : ""
+          className={`columns-2 sm:columns-2 md:columns-3 lg:columns-4 xl:columns-5 w-full px-3 gap-4 my-5 ${
+            notes.length === 0
+              ? "flex items-center justify-center w-[95%] p-3"
+              : ""
           }`}
         >
           {notes.length === 0 && (

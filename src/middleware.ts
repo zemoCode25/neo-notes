@@ -9,13 +9,13 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get("token")?.value || "";
 
     if (!token) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/signup", request.url));
     }
 
     const payload = await verifyJwt(token);
 
     if (!payload) {
-      return NextResponse.redirect(new URL("/login", request.url));
+      return NextResponse.redirect(new URL("/signup", request.url));
     }
   }
 
