@@ -20,7 +20,9 @@ export default function SearchCreate({
 }: SearchCreateProps) {
   return (
     <div className="w-full flex items-center justify-center gap-5">
-      <Input className="w-1/4" placeholder="Search..."></Input>
+      <form action="" className="w-[60%] max-w-[400px]">
+        <Input placeholder="Search..."></Input>
+      </form>
       <Dialog open={openModal} onOpenChange={setOpenModal}>
         <DialogTrigger asChild>
           <Button className="cursor">Take Note</Button>

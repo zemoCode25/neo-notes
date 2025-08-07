@@ -88,7 +88,7 @@ export default function AIPopover({
   return (
     <Popover open={isPopoverOpen} onOpenChange={handleOpenChange}>
       <PopoverTrigger asChild>
-        <Button className="bg-cyan-100 cursor-pointer">
+        <Button className="bg-cyan-100 cursor-pointer w-full lg:w-fit">
           NeoNotes AI <Sparkle />
         </Button>
       </PopoverTrigger>

@@ -166,7 +166,9 @@ export default function UpdateForm({
   }
 
   return (
-    <DialogContent className={`sm:max-w-[700px] ${selectedColor}`}>
+    <DialogContent
+      className={`sm:max-w-[700px] ${selectedColor} flex items-center flex-col justify-center h-[90%] lg:h-fit pt-15 lg:pt-5 rounded-lg`}
+    >
       <DialogTitle className="hidden" />
       <form onSubmit={handleUpdateNoteSubmit} data-id={`${noteItem?.id}`}>
         <Input
@@ -185,7 +187,7 @@ export default function UpdateForm({
           editor={editor}
         />
         <input type="hidden" name="note" value={editor?.getHTML() || ""} />
-        <DialogFooter className="flex !justify-between !w-full">
+        <DialogFooter className="flex justify-between !w-full">
           <div className="flex gap-3 relative">
             {/* text Editor Button */}
             <ButtonIcon
@@ -247,9 +249,9 @@ export default function UpdateForm({
               </PopoverContent>
             </Popover>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 w-full justify-end">
             <AIPopover textEditor={editor} />
-            <Button className="cursor-pointer" type="submit">
+            <Button className="cursor-pointer w-full lg:w-fit" type="submit">
               Save
             </Button>
           </div>
