@@ -167,28 +167,34 @@ export default function UpdateForm({
 
   return (
     <DialogContent
-      className={`sm:max-w-[700px] ${selectedColor} flex items-center flex-col justify-center h-[90%] lg:h-fit pt-15 lg:pt-5 rounded-lg`}
+      className={`sm:max-w-[700px] ${selectedColor} flex flex-col h-full lg:h-fit pt-5 lg:pt-5 rounded-lg overflow-y-scroll`}
     >
       <DialogTitle className="hidden" />
-      <form onSubmit={handleUpdateNoteSubmit} data-id={`${noteItem?.id}`}>
-        <Input
-          className="h-10 mt-5 block !text-xl"
-          placeholder="Title"
-          name="title"
-          id="title"
-          defaultValue={noteItem?.title}
-        ></Input>
-        <EditorContent
-          name="note"
-          id="note"
-          value={noteItem?.note}
-          placeholder="Take your note"
-          className="outline-none w-full max-h-150 p-3 !border-black border-1 rounded-md my-2 overflow-y-scroll"
-          editor={editor}
-        />
+      <form
+        onSubmit={handleUpdateNoteSubmit}
+        data-id={`${noteItem?.id}`}
+        className="flex flex-col justify-between h-full"
+      >
+        <div>
+          <Input
+            className="h-10 mt-5 block !text-xl"
+            placeholder="Title"
+            name="title"
+            id="title"
+            defaultValue={noteItem?.title}
+          ></Input>
+          <EditorContent
+            name="note"
+            id="note"
+            value={noteItem?.note}
+            placeholder="Take your note"
+            className="outline-none w-full max-h-120 p-3 !border-black border-1 rounded-md my-2 overflow-y-scroll"
+            editor={editor}
+          />
+        </div>
         <input type="hidden" name="note" value={editor?.getHTML() || ""} />
         <DialogFooter className="flex justify-between !w-full">
-          <div className="flex gap-3 relative">
+          <div className="w-full flex justify-between gap-3 relative">
             {/* text Editor Button */}
             <ButtonIcon
               className="cursor-pointer bg-blue-200"
