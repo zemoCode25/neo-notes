@@ -17,6 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
 const SignUpSchema = z
   .object({
     email: z.string().email({ message: "Invalid Email" }),
@@ -46,7 +48,7 @@ export default function SignUpForm() {
 
   async function handleSignUpSubmit(data: TSignUp) {
     try {
-      const response = await fetch("/api/user", {
+      const response = await fetch(`${API_URL}/api/user`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include", // 🔥 this is critical
