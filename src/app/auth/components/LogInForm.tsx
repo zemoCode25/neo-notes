@@ -22,7 +22,7 @@ import ErrorMessage from "@/components/utils/error-message";
 import { logInSchema } from "../schema";
 import { TLogIn } from "../schema";
 import { useRouter } from "next/navigation";
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
+// const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 export default function LogInForm() {
   const router = useRouter();
@@ -37,7 +37,7 @@ export default function LogInForm() {
 
   const onSubmit = async (data: TLogIn) => {
     try {
-      const response = await fetch(`${API_URL}/api/user/login`, {
+      const response = await fetch(`/api/user/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
