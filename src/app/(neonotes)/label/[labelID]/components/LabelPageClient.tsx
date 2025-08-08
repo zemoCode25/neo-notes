@@ -138,6 +138,7 @@ export function LabelPageClient({ labelID }: { labelID: string }) {
                 fetchNotes={fetchNotes}
                 closeModal={() => setOpenModal(false)}
                 createNote={createNote}
+                isUpdateFormOpen={openModal}
               />
             </Dialog>
           ))}
